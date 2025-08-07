@@ -1,26 +1,146 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:is(.dark *));
+
+body {
+  font-family: var(--font-metrophobic), sans-serif;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--bg-light-base);
+  --color-foreground: var(--bg-black);
+  --color-card: var(--bg-light-base);
+  --color-card-foreground: var(--bg-black);
+  --color-popover: var(--bg-light-base);
+  --color-popover-foreground: var(--bg-black);
+  --color-primary: var(--bg-primary);
+  --color-primary-foreground: var(--bg-light-base);
+  --color-secondary: var(--bg-soft-gray);
+  --color-secondary-foreground: var(--bg-black);
+  --color-muted: var(--bg-soft-gray);
+  --color-muted-foreground: var(--bg-muted-orange);
+  --color-accent: var(--bg-hover-accent);
+  --color-accent-foreground: var(--bg-light-base);
+  --color-destructive: #ef4444;
+  --color-border: var(--bg-soft-gray);
+  --color-input: var(--bg-soft-gray);
+  --color-ring: var(--bg-primary);
+  --color-chart-1: #3b82f6;
+  --color-chart-2: #10b981;
+  --color-chart-3: #f59e0b;
+  --color-chart-4: #8b5cf6;
+  --color-chart-5: #ec4899;
+  --color-sidebar: var(--bg-light-base);
+  --color-sidebar-foreground: var(--bg-black);
+  --color-sidebar-primary: var(--bg-primary);
+  --color-sidebar-primary-foreground: var(--bg-light-base);
+  --color-sidebar-accent: var(--bg-hover-accent);
+  --color-sidebar-accent-foreground: var(--bg-light-base);
+  --color-sidebar-border: var(--bg-soft-gray);
+  --color-sidebar-ring: var(--bg-primary);
+
+  /* Custom Colors for Invenza */
+  --color-primary: var(--primary);
+  --color-dark-base: var(--dark-base);
+  --color-light-base: var(--light-base);
+  --color-soft-gray: var(--soft-gray);
+  --color-hover-accent: var(--hover-accent);
+  --color-muted-orange: var(--muted-orange);
+  --color-black: var(--black);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.625rem;
+  /* Using your custom colors throughout */
+  --background: var(--bg-light-base);
+  --foreground: var(--bg-black);
+  --card: var(--bg-light-base);
+  --card-foreground: var(--bg-black);
+  --popover: var(--bg-light-base);
+  --popover-foreground: var(--bg-black);
+  --primary: var(--bg-primary);
+  --primary-foreground: var(--bg-light-base);
+  --secondary: var(--bg-soft-gray);
+  --secondary-foreground: var(--bg-black);
+  --muted: var(--bg-soft-gray);
+  --muted-foreground: var(--bg-muted-orange);
+  --accent: var(--bg-hover-accent);
+  --accent-foreground: var(--bg-light-base);
+  --destructive: #ef4444; /* Keeping a standard destructive color */
+  --border: var(--bg-soft-gray);
+  --input: var(--bg-soft-gray);
+  --ring: var(--bg-primary);
+  --chart-1: #3b82f6; /* Blue */
+  --chart-2: #10b981; /* Green */
+  --chart-3: #f59e0b; /* Amber */
+  --chart-4: #8b5cf6; /* Violet */
+  --chart-5: #ec4899; /* Pink */
+  --sidebar: var(--bg-light-base);
+  --sidebar-foreground: var(--bg-black);
+  --sidebar-primary: var(--bg-primary);
+  --sidebar-primary-foreground: var(--bg-light-base);
+  --sidebar-accent: var(--bg-hover-accent);
+  --sidebar-accent-foreground: var(--bg-light-base);
+  --sidebar-border: var(--bg-soft-gray);
+  --sidebar-ring: var(--bg-primary);
+  --primary: #ff6b00;
+  --dark-base: #121212;
+  --light-base: #ffffff;
+  --soft-gray: #e0e0e0;
+  --hover-accent: #ff8c42;
+  --muted-orange: #f57c00;
+  --black: #1e1e1e;
+}
+
+.dark {
+  /* Dark mode using your custom colors */
+  --background: var(--bg-dark-base);
+  --foreground: var(--bg-light-base);
+  --card: var(--bg-black);
+  --card-foreground: var(--bg-light-base);
+  --popover: var(--bg-black);
+  --popover-foreground: var(--bg-light-base);
+  --primary: var(--bg-primary);
+  --primary-foreground: var(--bg-light-base);
+  --secondary: var(--bg-black);
+  --secondary-foreground: var(--bg-light-base);
+  --muted: var(--bg-black);
+  --muted-foreground: var(--bg-muted-orange);
+  --accent: var(--bg-muted-orange);
+  --accent-foreground: var(--bg-light-base);
+  --destructive: #dc2626; /* Darker red for dark mode */
+  --border: var(--bg-black);
+  --input: var(--bg-black);
+  --ring: var(--bg-primary);
+  --chart-1: #60a5fa; /* Lighter blue */
+  --chart-2: #34d399; /* Lighter green */
+  --chart-3: #fbbf24; /* Lighter amber */
+  --chart-4: #a78bfa; /* Lighter violet */
+  --chart-5: #f472b6; /* Lighter pink */
+  --sidebar: var(--bg-black);
+  --sidebar-foreground: var(--bg-light-base);
+  --sidebar-primary: var(--bg-primary);
+  --sidebar-primary-foreground: var(--bg-light-base);
+  --sidebar-accent: var(--bg-muted-orange);
+  --sidebar-accent-foreground: var(--bg-light-base);
+  --sidebar-border: var(--bg-black);
+  --sidebar-ring: var(--bg-primary);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.bg-invenza-primary {
+  background-color: var(--bg-primary);
 }
