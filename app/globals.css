@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 body {
-  font-family: var(--font-metrophobic), sans-serif;
+  font-family: var(--font-sans);
 }
 
 @theme inline {
@@ -52,6 +52,9 @@ body {
   --color-hover-accent: var(--hover-accent);
   --color-muted-orange: var(--muted-orange);
   --color-black: var(--black);
+
+  
+  --shadow-block: 5px 5px rgba(0, 0, 0, 1);
 }
 
 :root {
@@ -136,9 +139,10 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
+}
+
+.font-mono {
+  font-family: var(--font-mono), monospace;
 }
 
 .bg-invenza-primary {

@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
-import { Metrophobic } from "next/font/google";
+import { Bai_Jamjuree, Space_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
 
-const metrophobic = Metrophobic({
-  variable: "--font-metrophobic",
-  weight: "400",
+const baiJamjuree = Bai_Jamjuree({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  weight: ["200", "300", "400", "500", "600", "700"],
+});
+
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -20,11 +26,11 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <Navbar />
-      <html lang="en">
-        <body className={`${metrophobic.variable} antialiased`}>
-          {children}
-        </body>
+      <html
+        lang="en"
+        className={`${baiJamjuree.variable} ${spaceMono.variable} h-full`}
+      >
+        <body className="antialiased">{children}</body>
       </html>
     </>
   );
