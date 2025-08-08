@@ -10,9 +10,13 @@
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.7",
+    "axios": "^1.11.0",
+    "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.536.0",
+    "mongoose": "^8.17.1",
     "motion": "^12.23.12",
     "next": "15.4.5",
     "react": "19.1.0",
@@ -22,6 +26,8 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
