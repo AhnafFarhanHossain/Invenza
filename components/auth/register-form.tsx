@@ -9,58 +9,88 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function RegisterForm() {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
-  }
+    try {
+      const response = await axios.post("/api/auth/register", formData);
+      toast.success("Registration successful!");
+    } catch (error) {
+      toast.error("Registration failed. Please try again.");
+    }
+  };
 
   return (
-    <Card className="w-[360px] border-border/60 rounded-none bg-card/70 backdrop-blur-sm shadow-sm focus-within:ring-1 focus-within:ring-ring/50 focus-within:border-ring transition">
-      <CardHeader className="space-y-1.5">
-        <CardTitle className="text-xl font-semibold tracking-tight">Create account</CardTitle>
-        <CardDescription className="text-xs text-muted-foreground">
-          Enter your details to get started.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="space-y-1.5">
-          <Label htmlFor="name">Name</Label>
-          <Input id="text" placeholder="John Doe" name="name" onChange={handleChange} />
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" placeholder="you@example.com" name="email" onChange={handleChange} />
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" placeholder="••••••••" name="password" onChange={handleChange} />
-        </div>
-        <Button
-          type="submit"
-          size="sm"
-          className="w-full rounded-none uppercase"
-        >
-          Create account
-        </Button>
-        <p className="text-center text-xs text-muted-foreground">
-          Already have an account?{" "}
-          <Link href="/auth/signin" className="underline underline-offset-4">
-            Sign in
-          </Link>
-        </p>
-      </CardContent>
-    </Card>
+    <form onSubmit={handleSubmit}>
+      <Card className="w-[420px] bg-card/90 backdrop-blur-sm rounded-sm shadow-lg border-2 border-gray-200">
+        <CardHeader className="space-y-3 px-8 pt-8 pb-2">
+          <CardTitle className="text-2xl font-medium">
+            Create an account
+          </CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">
+            Get started with Invenza
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-5 px-8 pb-8">
+          <div className="space-y-2">
+            <Input
+              id="name"
+              name="name"
+              placeholder="Full name"
+              onChange={handleChange}
+              className="border-0 border-b border-gray-200 rounded-none bg-transparent px-0 py-3 focus-visible:ring-0 focus-visible:border-b-2 focus-visible:border-primary placeholder:text-gray-500"
+            />
+          </div>
+          <div className="space-y-2">
+<Input
+  id="email"
+  name="email"
+  placeholder="Email address"
+  onChange={handleChange}
+  className="border-0 border-b border-gray-200 rounded-none bg-transparent px-0 py-3 focus-visible:ring-0 focus-visible:border-b-2 focus-visible:border-primary placeholder:text-gray-500"
+/>
+          </div>
+          <div className="space-y-2">
+<Input
+  id="password"
+  name="password"
+  type="password"
+  placeholder="Password"
+  onChange={handleChange}
+  className="border-0 border-b border-gray-200 rounded-none bg-transparent px-0 py-3 focus-visible:ring-0 focus-visible:border-b-2 focus-visible:border-primary placeholder:text-gray-500"
+/>
+          </div>
+          <Button
+            type="submit"
+            size="lg"
+            className="w-full rounded-sm bg-primary hover:bg-primary/90 transition-colors mt-4"
+          >
+            Create account
+          </Button>
+          <p className="text-center text-xs text-muted-foreground">
+            Already have an account?{" "}
+            <Link href="/auth/signin" className="underline underline-offset-4">
+              Sign in
+            </Link>
+          </p>
+        </CardContent>
+      </Card>
+    </form>
   );
 }

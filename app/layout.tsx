@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Bai_Jamjuree, Space_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
+
 
 const baiJamjuree = Bai_Jamjuree({
   subsets: ["latin"],
@@ -30,7 +32,10 @@ export default function RootLayout({
         lang="en"
         className={`${baiJamjuree.variable} ${spaceMono.variable} h-full`}
       >
-        <body className="antialiased">{children}</body>
+        <body className="antialiased">
+        {children}
+        <Toaster />
+      </body>
       </html>
     </>
   );
