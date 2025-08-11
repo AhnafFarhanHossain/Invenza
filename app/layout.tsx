@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import { Bai_Jamjuree, Space_Mono } from "next/font/google";
+import { Play, Lekton } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 
-
-const baiJamjuree = Bai_Jamjuree({
+const play = Play({
   subsets: ["latin"],
   variable: "--font-sans",
-  weight: ["200", "300", "400", "500", "600", "700"],
+  weight: ["400", "700"],
 });
 
-const spaceMono = Space_Mono({
+const lekton = Lekton({
   subsets: ["latin"],
   variable: "--font-mono",
   weight: ["400", "700"],
@@ -28,14 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <html
-        lang="en"
-        className={`${baiJamjuree.variable} ${spaceMono.variable} h-full`}
-      >
+      <html lang="en" className={`${play.variable} ${lekton.variable} h-full`}>
         <body className="antialiased">
-        {children}
-        <Toaster />
-      </body>
+          {children}
+          <Toaster />
+        </body>
       </html>
     </>
   );
