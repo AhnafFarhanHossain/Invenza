@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
 
     // Generate JWT with jose (Edge-compatible)
     const secret = new TextEncoder().encode(JWT_SECRET);
-    const token = await new SignJWT({ id: user._id })
+    const token = await new SignJWT({ id: user._id.toString() })
       .setProtectedHeader({ alg: "HS256" })
       .setExpirationTime("7d")
       .sign(secret);
