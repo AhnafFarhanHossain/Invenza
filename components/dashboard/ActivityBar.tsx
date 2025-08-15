@@ -26,6 +26,41 @@ export function ActivityBar({
   onSignOut,
 }: ActivityBarProps) {
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [userEmail, setUserEmail] = React.useState<string>("");
+  const [userName, setUserName] = React.useState<string>("");
+  
+  React.useEffect(() => {
+    // Get user data from localStorage
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('userEmail') || "";
+      const name = localStorage.getItem('userName') || "";
+      setUserEmail(email);
+      setUserName(name);
+      
+      // If localStorage is empty, fetch from API
+      if (!email || !name) {
+        fetchUserData();
+      }
+    }
+  }, []);
+  
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch('/api/auth/profile');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.user) {
+          setUserEmail(data.user.email);
+          setUserName(data.user.name);
+          // Also store in localStorage for future use
+          localStorage.setItem('userEmail', data.user.email);
+          localStorage.setItem('userName', data.user.name);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
+  };
 
   const handleAddProduct = () => {
     if (onAddProduct) {
@@ -126,24 +161,24 @@ export function ActivityBar({
                 </div>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 font-mono">
+            <DropdownMenuContent align="end" className="w-48 font-mono bg-light-base border-soft-gray">
               <div className="px-2 py-1.5">
-                <p className="text-xs font-medium text-black">John Doe</p>
-                <p className="text-[10px] text-gray-500">admin@invenza.com</p>
+                <p className="text-xs font-medium text-black">{userName || "User"}</p>
+                <p className="text-[10px] text-gray-500">{userEmail || "user@example.com"}</p>
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-xs">
+              <DropdownMenuItem className="text-xs cursor-pointer">
                 <User className="mr-2 h-3.5 w-3.5" />
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-xs">
+              <DropdownMenuItem className="text-xs cursor-pointer">
                 <Settings className="mr-2 h-3.5 w-3.5" />
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleSignOut}
-                className="text-xs text-red-600 focus:text-red-600"
+                className="text-xs text-red-600 focus:text-red-600 cursor-pointer"
               >
                 <LogOut className="mr-2 h-3.5 w-3.5" />
                 Sign Out

@@ -29,10 +29,26 @@ export default function LoginForm() {
     e.preventDefault();
     try {
       const response = await axios.post("/api/auth/signin", formData);
+      console.log("Login response:", response);
+      
+      // Store user data in localStorage
+      if (response.data.user) {
+        localStorage.setItem('userEmail', response.data.user.email);
+        localStorage.setItem('userName', response.data.user.name);
+      }
+      
       toast.success("Login successful!");
-      router.push("/dashboard");
-    } catch (error) {
-      toast.error("Login failed. Please try again.");
+      // Add a small delay to ensure cookie is set
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 100);
+    } catch (error: any) {
+      console.error("Login error:", error);
+      if (error.response) {
+        toast.error(error.response.data.message || "Login failed. Please try again.");
+      } else {
+        toast.error("Network error. Please try again.");
+      }
     }
   };
 

@@ -168,7 +168,7 @@ export function DashboardSidebar({ isOpen, onOpenChange, onLogout }: DashboardSi
                       <CollapsibleTrigger asChild>
                         <button
                           className={`
-                            flex w-full items-center justify-between rounded-none px-3 py-2 text-left text-sm font-medium transition-all duration-200
+                            flex w-full items-center justify-between rounded-none px-3 py-2 text-left text-xs font-medium transition-all duration-200
                             ${
                               isActive
                                 ? "bg-orange-500 text-white"
@@ -191,7 +191,7 @@ export function DashboardSidebar({ isOpen, onOpenChange, onLogout }: DashboardSi
                               href={subItem.url}
                               onClick={handleLinkClick}
                               className={`
-                                flex items-center gap-2.5 rounded-none px-3 py-1.5 text-sm transition-all duration-200
+                                flex items-center gap-2.5 rounded-none px-3 py-1.5 text-xs transition-all duration-200
                                 ${
                                   isActiveLink(subItem.url)
                                     ? "bg-orange-500 text-white"
@@ -216,7 +216,7 @@ export function DashboardSidebar({ isOpen, onOpenChange, onLogout }: DashboardSi
                     href={item.url!}
                     onClick={handleLinkClick}
                     className={`
-                      flex items-center gap-2.5 rounded-none px-3 py-2 text-sm font-medium transition-all duration-200
+                      flex items-center gap-2.5 rounded-none px-3 py-2 text-xs font-medium transition-all duration-200
                       ${
                         isActive
                           ? "bg-primary/10 text-primary"

@@ -26,6 +26,9 @@ export default function DashboardLayout({
   const handleSignOut = async () => {
     try {
       await axios.post("/api/auth/logout");
+      // Clear user data from localStorage
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userName');
       router.push("/auth/signin");
       toast.success("Logged out successfully");
     } catch (error) {
@@ -35,19 +38,17 @@ export default function DashboardLayout({
 
   return (
     <div className="flex min-h-screen">
-      <DashboardSidebar 
+      <DashboardSidebar
         isOpen={isSidebarOpen}
         onOpenChange={setIsSidebarOpen}
       />
       <div className="flex-1 flex flex-col">
-        <ActivityBar 
+        <ActivityBar
           onSidebarToggle={handleSidebarToggle}
           onAddProduct={handleAddProduct}
           onSignOut={handleSignOut}
         />
-        <main className="mt-14 flex-1 p-6">
-          {children}
-        </main>
+        <main className="mt-14 flex-1 p-6">{children}</main>
       </div>
     </div>
   );

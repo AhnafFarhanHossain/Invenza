@@ -13,6 +13,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -20,6 +21,7 @@ export default function RegisterForm() {
     email: "",
     password: "",
   });
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,9 +32,25 @@ export default function RegisterForm() {
     e.preventDefault();
     try {
       const response = await axios.post("/api/auth/register", formData);
+      
+      // Store user data in localStorage
+      if (response.data.user) {
+        localStorage.setItem('userEmail', response.data.user.email);
+        localStorage.setItem('userName', response.data.user.name);
+      }
+      
       toast.success("Registration successful!");
-    } catch (error) {
-      toast.error("Registration failed. Please try again.");
+      // Redirect to dashboard after successful registration
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 100);
+    } catch (error: any) {
+      console.error("Registration error:", error);
+      if (error.response) {
+        toast.error(error.response.data.message || "Registration failed. Please try again.");
+      } else {
+        toast.error("Network error. Please try again.");
+      }
     }
   };
 

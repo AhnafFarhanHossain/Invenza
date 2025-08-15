@@ -35,16 +35,15 @@ export async function POST(req: NextRequest) {
       user: { id: user._id, name: user.name, email: user.email },
       message: "Login Successful",
     });
-    +(
-      // Set JWT in HTTP-only cookie
-      response.cookies.set("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 7 * 24 * 60 * 60, // 7 days
-        sameSite: "strict",
-        path: "/",
-      })
-    );
+
+    // Set JWT in HTTP-only cookie
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60, // 7 days
+      sameSite: "strict",
+      path: "/",
+    });
 
     // Log the token for debugging
     console.log("Signin: Token set in cookie:", token);
