@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Play, Lekton } from "next/font/google";
+import { Play, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 
@@ -9,10 +9,10 @@ const play = Play({
   weight: ["400", "700"],
 });
 
-const lekton = Lekton({
+const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
-  weight: ["400", "700"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <html lang="en" className={`${play.variable} ${lekton.variable} h-full`}>
+      <html lang="en" className={`${play.variable} ${geistMono.variable} h-full`}>
         <body className="antialiased">
           {children}
           <Toaster />

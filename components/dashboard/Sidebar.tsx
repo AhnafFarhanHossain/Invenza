@@ -91,12 +91,13 @@ const navigationItems = [
 ];
 
 interface DashboardSidebarProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
   onLogout?: () => void;
 }
 
-export function DashboardSidebar({ onLogout }: DashboardSidebarProps) {
+export function DashboardSidebar({ isOpen, onOpenChange, onLogout }: DashboardSidebarProps) {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = React.useState(false);
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -114,22 +115,12 @@ export function DashboardSidebar({ onLogout }: DashboardSidebarProps) {
   };
 
   const handleLinkClick = () => {
-    setIsOpen(false);
+    onOpenChange(false);
   };
 
   return (
     <>
-      {/* Menu Button */}
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="fixed left-4 top-4 z-40 h-9 w-9 bg-white transition-all duration-200 hover:bg-orange-50 rounded-sm border-2 border-soft-gray"
-          >
-            <Menu className="h-4 w-4 text-dark-base" />
-          </Button>
-        </SheetTrigger>
+      <Sheet open={isOpen} onOpenChange={onOpenChange}>
 
         <SheetContent
           side="left"
