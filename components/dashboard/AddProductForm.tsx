@@ -235,7 +235,7 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
                   id="name"
                   {...register("name")}
                   placeholder="Enter product name"
-                  className={`font-mono text-xs placeholder:text-gray-500 ${
+                  className={`font-mono text-xs placeholder:text-gray-500 border-soft-gray ${
                     errors.name ? "border-red-500" : ""
                   }`}
                 />
@@ -257,7 +257,7 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
                   id="sku"
                   {...register("sku")}
                   placeholder="Enter SKU"
-                  className="font-mono text-xs placeholder:text-gray-500"
+                  className="font-mono text-xs placeholder:text-gray-500 border-soft-gray"
                 />
                 {errors.sku && (
                   <p className="font-mono text-[10px] text-red-600 font-medium">
@@ -278,7 +278,7 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
                 id="description"
                 {...register("description")}
                 placeholder="Enter product description"
-                className="font-mono text-xs placeholder:text-gray-500"
+                className="font-mono text-xs placeholder:text-gray-500 border-soft-gray"
                 rows={3}
               />
               {errors.description && (

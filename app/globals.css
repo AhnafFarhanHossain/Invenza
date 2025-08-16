@@ -91,6 +91,7 @@ body {
   --sidebar-accent-foreground: var(--bg-light-base);
   --sidebar-border: var(--bg-soft-gray);
   --sidebar-ring: var(--bg-primary);
+  /* Invenza Colors */
   --primary: #ff6b00;
   --dark-base: #121212;
   --light-base: #ffffff;
@@ -148,4 +149,27 @@ body {
 
 .bg-invenza-primary {
   background-color: var(--bg-primary);
+}
+
+/* Product image loading */
+.product-image {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.product-image-loading {
+  opacity: 0;
+}
+
+.product-image-loaded {
+  opacity: 1;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
 }

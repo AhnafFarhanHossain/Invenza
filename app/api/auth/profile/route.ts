@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   try {
     await dbConnect();
     const userId = await getUserIdFromRequest(req);
-    
+
     const user = await User.findById(userId).select("-password");
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });

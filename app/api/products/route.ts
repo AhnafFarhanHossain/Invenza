@@ -62,7 +62,6 @@ export async function POST(req: Request) {
     }
 
     const body = (await req.json()) as CreateBody;
-    console.log("Received body:", body); // Add logging
 
     // Validate required fields
     if (!body.name) {
