@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import { usePathname } from "next/navigation";
 
 interface ActivityBarProps {
   onSidebarToggle: () => void;
@@ -28,37 +29,45 @@ export function ActivityBar({
   const [searchQuery, setSearchQuery] = React.useState("");
   const [userEmail, setUserEmail] = React.useState<string>("");
   const [userName, setUserName] = React.useState<string>("");
-  
+  const pathname = usePathname();
+
+  const checkIfProductsPage = () => {
+    if (pathname.endsWith("/products")) {
+      return true;
+    }
+    return false;
+  };
+
   React.useEffect(() => {
     // Get user data from localStorage
-    if (typeof window !== 'undefined') {
-      const email = localStorage.getItem('userEmail') || "";
-      const name = localStorage.getItem('userName') || "";
+    if (typeof window !== "undefined") {
+      const email = localStorage.getItem("userEmail") || "";
+      const name = localStorage.getItem("userName") || "";
       setUserEmail(email);
       setUserName(name);
-      
+
       // If localStorage is empty, fetch from API
       if (!email || !name) {
         fetchUserData();
       }
     }
   }, []);
-  
+
   const fetchUserData = async () => {
     try {
-      const response = await fetch('/api/auth/profile');
+      const response = await fetch("/api/auth/profile");
       if (response.ok) {
         const data = await response.json();
         if (data.user) {
           setUserEmail(data.user.email);
           setUserName(data.user.name);
           // Also store in localStorage for future use
-          localStorage.setItem('userEmail', data.user.email);
-          localStorage.setItem('userName', data.user.name);
+          localStorage.setItem("userEmail", data.user.email);
+          localStorage.setItem("userName", data.user.name);
         }
       }
     } catch (error) {
-      console.error('Failed to fetch user data:', error);
+      console.error("Failed to fetch user data:", error);
     }
   };
 
@@ -111,21 +120,22 @@ export function ActivityBar({
           </div>
         </div>
 
-
         {/* Right Section - Search Bar + Actions + Profile */}
         <div className="flex items-center gap-3">
-          <div className="flex-1 max-w-md">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
-            <Input
-              type="text"
-              placeholder="Search products, orders..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-8 w-full rounded-md border-gray-200 bg-gray-50 pl-9 pr-4 font-mono text-xs placeholder:text-gray-400 focus:bg-white focus:border-orange-300 focus:ring-orange-200"
-            />
-          </div>
-        </div>
+          {checkIfProductsPage() && (
+            <div className="flex-1 max-w-md">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
+                <Input
+                  type="text"
+                  placeholder="Search products"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="h-8 w-full rounded-md border-gray-200 bg-gray-50 pl-9 pr-4 font-mono text-xs placeholder:text-gray-400 focus:bg-white focus:border-orange-300 focus:ring-orange-200"
+                />
+              </div>
+            </div>
+          )}
           {/* Add Product Button */}
           <Button
             onClick={handleAddProduct}
@@ -161,10 +171,17 @@ export function ActivityBar({
                 </div>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 font-mono bg-light-base border-soft-gray">
+            <DropdownMenuContent
+              align="end"
+              className="w-48 font-mono bg-light-base border-soft-gray"
+            >
               <div className="px-2 py-1.5">
-                <p className="text-xs font-medium text-black">{userName || "User"}</p>
-                <p className="text-[10px] text-gray-500">{userEmail || "user@example.com"}</p>
+                <p className="text-xs font-medium text-black">
+                  {userName || "User"}
+                </p>
+                <p className="text-[10px] text-gray-500">
+                  {userEmail || "user@example.com"}
+                </p>
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-xs cursor-pointer">
