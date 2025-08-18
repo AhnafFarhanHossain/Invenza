@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Bell, Menu, Plus, Search, User, LogOut, Settings } from "lucide-react";
+import { Bell, Menu, Plus, Search, User, LogOut, Settings, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { usePathname } from "next/navigation";
+import { useSearch } from "@/lib/context/SearchContext";
 
 interface ActivityBarProps {
   onSidebarToggle: () => void;
@@ -26,35 +27,41 @@ export function ActivityBar({
   onAddProduct,
   onSignOut,
 }: ActivityBarProps) {
-  const [searchQuery, setSearchQuery] = React.useState("");
   const [userEmail, setUserEmail] = React.useState<string>("");
   const [userName, setUserName] = React.useState<string>("");
+  const [userLoading, setUserLoading] = React.useState(true);
   const pathname = usePathname();
+  const { searchQuery, setSearchQuery } = useSearch();
 
   const checkIfProductsPage = () => {
-    if (pathname.endsWith("/products")) {
-      return true;
-    }
-    return false;
+    return pathname.endsWith("/products");
   };
 
   React.useEffect(() => {
-    // Get user data from localStorage
+    // Get user data from localStorage with proper error handling
     if (typeof window !== "undefined") {
-      const email = localStorage.getItem("userEmail") || "";
-      const name = localStorage.getItem("userName") || "";
-      setUserEmail(email);
-      setUserName(name);
+      try {
+        const email = localStorage.getItem("userEmail") || "";
+        const name = localStorage.getItem("userName") || "";
+        setUserEmail(email);
+        setUserName(name);
 
-      // If localStorage is empty, fetch from API
-      if (!email || !name) {
+        // If localStorage is empty, fetch from API
+        if (!email || !name) {
+          fetchUserData();
+        } else {
+          setUserLoading(false);
+        }
+      } catch (error) {
+        console.error("Error accessing localStorage:", error);
         fetchUserData();
       }
     }
-  }, []);
+  }, [fetchUserData]);
 
-  const fetchUserData = async () => {
+  const fetchUserData = React.useCallback(async () => {
     try {
+      setUserLoading(true);
       const response = await fetch("/api/auth/profile");
       if (response.ok) {
         const data = await response.json();
@@ -62,13 +69,21 @@ export function ActivityBar({
           setUserEmail(data.user.email);
           setUserName(data.user.name);
           // Also store in localStorage for future use
-          localStorage.setItem("userEmail", data.user.email);
-          localStorage.setItem("userName", data.user.name);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("userEmail", data.user.email);
+            localStorage.setItem("userName", data.user.name);
+          }
         }
       }
     } catch (error) {
       console.error("Failed to fetch user data:", error);
+    } finally {
+      setUserLoading(false);
     }
+  }, []);
+
+  const clearSearch = () => {
+    setSearchQuery("");
   };
 
   const handleAddProduct = () => {
@@ -128,12 +143,27 @@ export function ActivityBar({
                 <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
                 <Input
                   type="text"
-                  placeholder="Search products"
+                  placeholder="Search products by name, category, SKU..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="h-8 w-full rounded-md border-gray-200 bg-gray-50 pl-9 pr-4 font-mono text-xs placeholder:text-gray-400 focus:bg-white focus:border-orange-300 focus:ring-orange-200"
+                  className="h-8 w-full rounded-md border-gray-200 bg-gray-50 pl-9 pr-8 font-mono text-xs placeholder:text-gray-400 focus:bg-white focus:border-orange-300 focus:ring-orange-200"
                 />
+                {searchQuery && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={clearSearch}
+                    className="absolute right-1 top-1/2 h-6 w-6 -translate-y-1/2 hover:bg-gray-200"
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                )}
               </div>
+              {searchQuery && (
+                <div className="absolute mt-1 text-xs text-gray-500">
+                  Searching for &ldquo;{searchQuery}&rdquo;...
+                </div>
+              )}
             </div>
           )}
           {/* Add Product Button */}
@@ -176,12 +206,21 @@ export function ActivityBar({
               className="w-48 font-mono bg-light-base border-soft-gray"
             >
               <div className="px-2 py-1.5">
-                <p className="text-xs font-medium text-black">
-                  {userName || "User"}
-                </p>
-                <p className="text-[10px] text-gray-500">
-                  {userEmail || "user@example.com"}
-                </p>
+                {userLoading ? (
+                  <>
+                    <div className="h-3 w-20 bg-gray-200 rounded animate-pulse mb-1"></div>
+                    <div className="h-2.5 w-32 bg-gray-200 rounded animate-pulse"></div>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-xs font-medium text-black">
+                      {userName || "User"}
+                    </p>
+                    <p className="text-[10px] text-gray-500">
+                      {userEmail || "user@example.com"}
+                    </p>
+                  </>
+                )}
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-xs cursor-pointer">

@@ -1,6 +1,9 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import ProductCard from "@/components/dashboard/ProductCard";
+import { useSearch } from "@/lib/context/SearchContext";
+import { filterProducts } from "@/lib/utils/search";
+import { useDebounce } from "@/hooks/useDebounce";
 
 interface Product {
   _id: string;
@@ -22,13 +25,20 @@ const Products = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { searchQuery } = useSearch();
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+
+  // Memoize filtered products for better performance
+  const filteredProducts = useMemo(() => {
+    return filterProducts(products, debouncedSearchQuery);
+  }, [products, debouncedSearchQuery]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
+        setError(null);
         const res = await fetch("/api/products", {
-          cache: "no-store",
           credentials: "include"
         });
 
@@ -53,9 +63,20 @@ const Products = () => {
       <div className="w-full">
         <h1 className="text-2xl font-bold mb-6">All Products</h1>
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <p className="text-red-600 font-base text-center py-8">
-            Failed to load products 😓
-          </p>
+          <div className="text-center py-8">
+            <p className="text-red-600 font-base mb-4">
+              Failed to load products 😓
+            </p>
+            <p className="text-sm text-gray-500 mb-4">
+              {error}
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -63,7 +84,18 @@ const Products = () => {
 
   return (
     <div className="w-full">
-      <h1 className="text-4xl font-bold mb-8">All Products</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold">All Products</h1>
+        {searchQuery && (
+          <div className="text-sm text-gray-600">
+            {loading ? (
+              "Searching..."
+            ) : (
+              `Found ${filteredProducts.length} result${filteredProducts.length !== 1 ? 's' : ''} for &ldquo;${searchQuery}&rdquo;`
+            )}
+          </div>
+        )}
+      </div>
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 animate-pulse">
           {Array.from({ length: 10 }).map((_, index) => (
@@ -72,10 +104,20 @@ const Products = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 animate-fade-in">
-          {products.map((product) => (
-            <ProductCard key={product._id} product={product} />
+          {filteredProducts.map((product) => (
+            <ProductCard key={product._id} product={product} searchQuery={searchQuery} />
           ))}
-          {products.length === 0 && (
+          {filteredProducts.length === 0 && searchQuery && (
+            <div className="col-span-full bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
+              <p className="text-muted-foreground">
+                No products found matching &ldquo;{searchQuery}&rdquo;
+              </p>
+              <p className="text-sm text-gray-500 mt-2">
+                Try searching with different keywords
+              </p>
+            </div>
+          )}
+          {products.length === 0 && !searchQuery && (
             <div className="col-span-full bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
               <p className="text-muted-foreground">No products found</p>
             </div>
