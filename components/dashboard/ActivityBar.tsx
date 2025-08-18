@@ -15,6 +15,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { usePathname } from "next/navigation";
 import { useSearch } from "@/lib/context/SearchContext";
+import { useGlobalShortcuts } from "@/hooks/useKeyboardShortcuts";
 
 interface ActivityBarProps {
   onSidebarToggle: () => void;
@@ -32,32 +33,14 @@ export function ActivityBar({
   const [userLoading, setUserLoading] = React.useState(true);
   const pathname = usePathname();
   const { searchQuery, setSearchQuery } = useSearch();
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
+
+  // Enable keyboard shortcuts
+  useGlobalShortcuts(searchInputRef);
 
   const checkIfProductsPage = () => {
     return pathname.endsWith("/products");
   };
-
-  React.useEffect(() => {
-    // Get user data from localStorage with proper error handling
-    if (typeof window !== "undefined") {
-      try {
-        const email = localStorage.getItem("userEmail") || "";
-        const name = localStorage.getItem("userName") || "";
-        setUserEmail(email);
-        setUserName(name);
-
-        // If localStorage is empty, fetch from API
-        if (!email || !name) {
-          fetchUserData();
-        } else {
-          setUserLoading(false);
-        }
-      } catch (error) {
-        console.error("Error accessing localStorage:", error);
-        fetchUserData();
-      }
-    }
-  }, [fetchUserData]);
 
   const fetchUserData = React.useCallback(async () => {
     try {
@@ -81,6 +64,28 @@ export function ActivityBar({
       setUserLoading(false);
     }
   }, []);
+
+  React.useEffect(() => {
+    // Get user data from localStorage with proper error handling
+    if (typeof window !== "undefined") {
+      try {
+        const email = localStorage.getItem("userEmail") || "";
+        const name = localStorage.getItem("userName") || "";
+        setUserEmail(email);
+        setUserName(name);
+
+        // If localStorage is empty, fetch from API
+        if (!email || !name) {
+          fetchUserData();
+        } else {
+          setUserLoading(false);
+        }
+      } catch (error) {
+        console.error("Error accessing localStorage:", error);
+        fetchUserData();
+      }
+    }
+  }, [fetchUserData]);
 
   const clearSearch = () => {
     setSearchQuery("");
@@ -112,6 +117,7 @@ export function ActivityBar({
             size="icon"
             onClick={onSidebarToggle}
             className="h-8 w-8 rounded-sm hover:bg-orange-50 border border-soft-gray"
+            aria-label="Toggle sidebar"
           >
             <Menu className="h-4 w-4 text-gray-700" />
           </Button>
@@ -142,11 +148,14 @@ export function ActivityBar({
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
                 <Input
+                  ref={searchInputRef}
                   type="text"
-                  placeholder="Search products by name, category, SKU..."
+                  placeholder="Search products by name, category, SKU... (Ctrl+K or /)"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="h-8 w-full rounded-md border-gray-200 bg-gray-50 pl-9 pr-8 font-mono text-xs placeholder:text-gray-400 focus:bg-white focus:border-orange-300 focus:ring-orange-200"
+                  aria-label="Search products"
+                  role="searchbox"
                 />
                 {searchQuery && (
                   <Button
@@ -154,6 +163,7 @@ export function ActivityBar({
                     size="icon"
                     onClick={clearSearch}
                     className="absolute right-1 top-1/2 h-6 w-6 -translate-y-1/2 hover:bg-gray-200"
+                    aria-label="Clear search"
                   >
                     <X className="h-3 w-3" />
                   </Button>
@@ -181,6 +191,7 @@ export function ActivityBar({
             variant="ghost"
             size="icon"
             className="relative h-8 w-8 rounded-md hover:bg-gray-100"
+            aria-label="Notifications"
           >
             <Bell className="h-4 w-4 text-gray-600" />
             <Badge className="absolute -right-1 -top-1 h-4 w-4 rounded-full bg-orange-500 p-0 text-[10px] font-mono text-white">

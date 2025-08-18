@@ -4,6 +4,7 @@ import ProductCard from "@/components/dashboard/ProductCard";
 import { useSearch } from "@/lib/context/SearchContext";
 import { filterProducts } from "@/lib/utils/search";
 import { useDebounce } from "@/hooks/useDebounce";
+import { cachedFetch } from "@/lib/utils/cache";
 
 interface Product {
   _id: string;
@@ -38,15 +39,12 @@ const Products = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch("/api/products", {
-          credentials: "include"
+        
+        const data = await cachedFetch<{ products: Product[] }>("/api/products", {
+          credentials: "include",
+          cacheTtl: 2 * 60 * 1000, // Cache for 2 minutes
         });
 
-        if (!res.ok) {
-          throw new Error("Failed to load products");
-        }
-
-        const data = await res.json();
         setProducts(data.products || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load products");
@@ -97,13 +95,21 @@ const Products = () => {
         )}
       </div>
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 animate-pulse">
+        <div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 animate-pulse"
+          role="status" 
+          aria-label="Loading products"
+        >
           {Array.from({ length: 10 }).map((_, index) => (
             <ProductCard key={index} isLoading={true} />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 animate-fade-in">
+        <div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 animate-fade-in"
+          role="grid"
+          aria-label="Products list"
+        >
           {filteredProducts.map((product) => (
             <ProductCard key={product._id} product={product} searchQuery={searchQuery} />
           ))}

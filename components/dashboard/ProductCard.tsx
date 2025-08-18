@@ -98,8 +98,12 @@ const ProductCard = ({ product, isLoading = false, searchQuery = "" }: ProductCa
   const isLowStock = product.quantity <= product.reorderLevel;
 
   return (
-    <Link href={`/dashboard/products/${product._id}`}>
-      <div className="bg-white border border-gray-200 transition-all duration-200 hover:border-gray-300">
+    <Link href={`/dashboard/products/${product._id}`} aria-label={`View details for ${product.name}`}>
+      <div 
+        className="bg-white border border-gray-200 transition-all duration-200 hover:border-gray-300 focus-within:ring-2 focus-within:ring-orange-200 focus-within:border-orange-300"
+        role="gridcell"
+        tabIndex={0}
+      >
         <div className="relative aspect-square">
           {imageLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
