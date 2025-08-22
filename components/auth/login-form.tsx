@@ -137,9 +137,9 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Card className="w-[420px] bg-card/90 backdrop-blur-sm rounded-sm shadow-lg border-2 border-gray-200">
+      <Card className="w-[420px] bg-card/90 backdrop-blur-sm rounded-sm shadow-md border-2 border-gray-200">
         <CardHeader className="space-y-3 px-8 pt-8 pb-2">
-          <CardTitle className="text-2xl font-medium">Welcome back</CardTitle>
+          <CardTitle className="text-2xl font-medium">Welcome back 👋</CardTitle>
           <CardDescription className="text-sm text-muted-foreground">
             Sign in to your account
           </CardDescription>
