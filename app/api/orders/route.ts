@@ -4,6 +4,7 @@ import Product from "@/models/Product";
 import Order from "@/models/Order";
 import { getUserIdFromRequest } from "@/lib/auth";
 import mongoose from "mongoose";
+import Orders from "@/app/dashboard/(pages)/orders/page";
 
 export async function POST(req: NextRequest) {
   try {
@@ -95,6 +96,26 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         message: "Order Creation Error: " + error.message,
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    await dbConnect();
+    const userId = await getUserIdFromRequest(req);
+    const objectUserId = new mongoose.Types.ObjectId(userId);
+
+    const orders = await Order.find({ createdBy: objectUserId })
+      .sort({ createdAt: -1 })
+      .populate("items.product", "name image");
+    return NextResponse.json(orders, { status: 200 });
+  } catch (err: any) {
+    return NextResponse.json(
+      {
+        message: "Order Retrieval Error: " + err.message,
       },
       { status: 500 }
     );
