@@ -17,6 +17,7 @@ import {
   Hash,
 } from "lucide-react";
 import { format } from "date-fns";
+import Link from "next/link";
 
 interface Product {
   _id: string;
@@ -211,6 +212,28 @@ const SingleProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
           Back to Products
         </Button>
 
+        <div
+          className={`mt-4 mb-6 ${
+            stockStatus?.label === "Out of Stock"
+              ? "bg-red-100"
+              : stockStatus?.label === "Low Stock"
+              ? "bg-orange-100"
+              : "hidden"
+          } rounded-sm px-6 py-3`}
+        >
+          <p
+            className={
+              stockStatus?.label === "Out of Stock"
+                ? "text-orange-600"
+                : stockStatus?.label === "Low Stock"
+                ? "text-yellow-600"
+                : "hidden"
+            }
+          >
+            {stockStatus?.label}
+          </p>
+        </div>
+
         <div className="flex justify-between items-start">
           <div>
             <h1 className="text-3xl font-semibold text-gray-900">
@@ -222,16 +245,18 @@ const SingleProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
           </div>
 
           <div className="flex gap-3">
+            <Link href={`/dashboard/products/${id}/edit`}>
+              <Button
+                variant="outline"
+                className="cursor-pointer bg-neutral-100 border-neutral-400"
+              >
+                <Edit className="w-4 h-4 mr-2" />
+                Edit
+              </Button>
+            </Link>
             <Button
               variant="outline"
-              onClick={() => router.push(`/dashboard/products/${id}/edit`)}
-            >
-              <Edit className="w-4 h-4 mr-2" />
-              Edit
-            </Button>
-            <Button
-              variant="outline"
-              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              className="text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer"
               onClick={handleDelete}
             >
               <Trash2 className="w-4 h-4 mr-2" />
@@ -397,6 +422,7 @@ const SingleProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
           </div>
         </div>
       </div>
+      
     </div>
   );
 };

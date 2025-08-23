@@ -51,6 +51,7 @@ const ProductCard = ({ product, isLoading = false }: ProductCardProps) => {
       setImageObjectUrl(null);
     }
   }, [product?.image]);
+
   if (isLoading) {
     return (
       <div className="bg-white border border-gray-200 transition-all duration-200">
@@ -78,7 +79,15 @@ const ProductCard = ({ product, isLoading = false }: ProductCardProps) => {
 
   return (
     <Link href={`/dashboard/products/${product._id}`}>
-      <div className="bg-white border border-gray-200 transition-all duration-200 hover:border-gray-300">
+      <div
+        className={`bg-white border-2 transition-all duration-200 hover:shadow-md ${
+          isOutOfStock
+            ? "border-red-200 hover:border-red-300"
+            : isLowStock
+            ? "border-orange-200 hover:border-orange-300"
+            : "border-gray-200 hover:border-green-300"
+        }`}
+      >
         <div className="relative aspect-square">
           {product.image ? (
             <Image
@@ -104,15 +113,21 @@ const ProductCard = ({ product, isLoading = false }: ProductCardProps) => {
             />
           )}
           <div className="absolute top-2 right-2">
-            <div
-              className={`w-3 h-3 ${
-                isLowStock
-                  ? "bg-amber-500"
-                  : isInStock
-                  ? "bg-emerald-500"
-                  : "bg-gray-400"
+            <span
+              className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ${
+                isOutOfStock
+                  ? "bg-red-600"
+                  : isLowStock
+                  ? "bg-orange-500"
+                  : "bg-green-600"
               }`}
-            />
+            >
+              {isOutOfStock
+                ? "Out of Stock"
+                : isLowStock
+                ? "Low Stock"
+                : "In Stock"}
+            </span>
           </div>
         </div>
         <div className="p-4">

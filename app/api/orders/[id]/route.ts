@@ -35,3 +35,36 @@ export async function GET(
     );
   }
 }
+
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await dbConnect();
+    const userId = await getUserIdFromRequest(req);
+    const body = await req.json();
+
+    const orderId = new mongoose.Types.ObjectId(params.id);
+    const order = await Order.findOne({
+      _id: orderId,
+      createdBy: userId,
+    });
+
+    if (!order) {
+      return NextResponse.json({ message: "Order not found" }, { status: 404 });
+    }
+
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, body, {
+      new: true,
+    });
+
+    return NextResponse.json(updatedOrder);
+  } catch (error: any) {
+    console.error("Single order fetch error:", error);
+    return NextResponse.json(
+      { message: "Failed to fetch order" },
+      { status: 500 }
+    );
+  }
+}
