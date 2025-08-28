@@ -58,7 +58,7 @@ export default function LoginForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
+
     // Real-time validation
     if (touched[name as keyof typeof touched]) {
       const error = validateField(name, value);
@@ -69,49 +69,50 @@ export default function LoginForm() {
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setTouched((prev) => ({ ...prev, [name]: true }));
-    
+
     const error = validateField(name, value);
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     // Validate all fields before submission
     const newErrors = {
       email: validateField("email", formData.email),
       password: validateField("password", formData.password),
     };
-    
+
     setErrors(newErrors);
     setTouched({ email: true, password: true });
-    
-    if (Object.values(newErrors).some(error => error !== "")) {
+
+    if (Object.values(newErrors).some((error) => error !== "")) {
       toast.error("Please fix the errors before submitting");
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
       const response = await axios.post("/api/auth/signin", formData);
       console.log("Login response:", response);
-      
+
       // Store user data in localStorage
       if (response.data.user) {
-        localStorage.setItem('userEmail', response.data.user.email);
-        localStorage.setItem('userName', response.data.user.name);
+        localStorage.setItem("userEmail", response.data.user.email);
+        localStorage.setItem("userName", response.data.user.name);
       }
-      
+
       toast.success("Login successful!");
       // Add a small delay to ensure cookie is set
       setTimeout(() => {
         router.push("/dashboard");
       }, 100);
     } catch (error: any) {
-      console.error("Login error:", error);
       if (error.response) {
-        toast.error(error.response.data.message || "Login failed. Please try again.");
+        toast.error(
+          error.response.data.message || "Login failed. Please try again."
+        );
       } else {
         toast.error("Network error. Please try again.");
       }
@@ -121,17 +122,23 @@ export default function LoginForm() {
   };
 
   const getInputClassName = (fieldName: string) => {
-    const hasError = errors[fieldName as keyof typeof errors] && touched[fieldName as keyof typeof touched];
-    const baseClasses = "border-0 border-b rounded-none bg-transparent px-0 py-3 focus-visible:ring-0 placeholder:text-gray-500 transition-colors";
-    
+    const hasError =
+      errors[fieldName as keyof typeof errors] &&
+      touched[fieldName as keyof typeof touched];
+    const baseClasses =
+      "border-0 border-b rounded-none bg-transparent px-0 py-3 focus-visible:ring-0 placeholder:text-gray-500 transition-colors";
+
     if (hasError) {
       return `${baseClasses} border-red-500 focus-visible:border-red-600 text-red-900 placeholder-red-400`;
     }
-    
-    if (touched[fieldName as keyof typeof touched] && !errors[fieldName as keyof typeof errors]) {
+
+    if (
+      touched[fieldName as keyof typeof touched] &&
+      !errors[fieldName as keyof typeof errors]
+    ) {
       return `${baseClasses} border-green-500 focus-visible:border-green-600`;
     }
-    
+
     return `${baseClasses} border-gray-200 focus-visible:border-b-2 focus-visible:border-primary`;
   };
 
@@ -139,7 +146,9 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit}>
       <Card className="w-[420px] bg-card/90 backdrop-blur-sm rounded-sm shadow-md border-2 border-gray-200">
         <CardHeader className="space-y-3 px-8 pt-8 pb-2">
-          <CardTitle className="text-2xl font-medium">Welcome back 👋</CardTitle>
+          <CardTitle className="text-2xl font-medium">
+            Welcome back 👋
+          </CardTitle>
           <CardDescription className="text-sm text-muted-foreground">
             Sign in to your account
           </CardDescription>
@@ -174,7 +183,9 @@ export default function LoginForm() {
               onChange={handleChange}
               onBlur={handleBlur}
               className={getInputClassName("password")}
-              aria-invalid={errors.password && touched.password ? "true" : "false"}
+              aria-invalid={
+                errors.password && touched.password ? "true" : "false"
+              }
               aria-describedby="password-error"
             />
             {errors.password && touched.password && (
@@ -187,7 +198,10 @@ export default function LoginForm() {
             type="submit"
             size="lg"
             className="w-full rounded-sm bg-primary hover:bg-primary/90 transition-colors mt-4"
-            disabled={isSubmitting || Object.values(errors).some(error => error !== "")}
+            disabled={
+              isSubmitting ||
+              Object.values(errors).some((error) => error !== "")
+            }
           >
             {isSubmitting ? "Signing in..." : "Sign in"}
           </Button>

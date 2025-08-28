@@ -17,7 +17,6 @@ export async function GET(req: NextRequest) {
       user: { id: user._id, name: user.name, email: user.email },
     });
   } catch (error: any) {
-    console.error("Profile fetch error:", error);
     return NextResponse.json(
       { message: "Internal server error", error: error.message },
       { status: 500 }

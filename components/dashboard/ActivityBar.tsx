@@ -79,6 +79,11 @@ export function ActivityBar({
     }
   };
 
+  const handleAddOrder = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    // Add Handle Order Functionality
+  };
+
   const handleSignOut = () => {
     if (onSignOut) {
       onSignOut();
@@ -136,6 +141,12 @@ export function ActivityBar({
               </div>
             </div>
           )}
+          {/* Add Order Button */}
+          <Button onClick={handleAddProduct} size="sm" variant="outline">
+            <Plus className="mr-1.5 h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Add New Order</span>
+          </Button>
+
           {/* Add Product Button */}
           <Button
             onClick={handleAddProduct}

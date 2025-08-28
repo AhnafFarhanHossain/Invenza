@@ -12,10 +12,15 @@ export async function POST(req: NextRequest) {
     const { name, email, password } = await req.json();
 
     const existingUser = await User.findOne({ email });
-    if (existingUser) return NextResponse.json({ message: "User exists" }, { status: 400 });
+    if (existingUser)
+      return NextResponse.json({ message: "User exists" }, { status: 400 });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({ name, email, password: hashedPassword });
+    const newUser = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
 
     // Generate JWT with jose (Edge-compatible)
     const secret = new TextEncoder().encode(JWT_SECRET);
@@ -25,10 +30,13 @@ export async function POST(req: NextRequest) {
       .sign(secret);
 
     // Create the response
-    const response = NextResponse.json({ 
-      user: { id: newUser._id, name: newUser.name, email: newUser.email },
-      message: "User created" 
-    }, { status: 201 });
+    const response = NextResponse.json(
+      {
+        user: { id: newUser._id, name: newUser.name, email: newUser.email },
+        message: "User created",
+      },
+      { status: 201 }
+    );
 
     // Set JWT in HTTP-only cookie
     response.cookies.set("token", token, {
@@ -41,7 +49,6 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (error: any) {
-    console.error("Register error:", error);
     return NextResponse.json(
       { message: "Internal server error", error: error.message },
       { status: 500 }
