@@ -1,5 +1,5 @@
 import { dbConnect } from "@/lib/db/db";
-import User from "@/models/User";
+import User from "@/models/user.model";
 import { getUserIdFromRequest } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 

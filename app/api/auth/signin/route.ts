@@ -1,6 +1,6 @@
 // pages/api/auth/signin/route.ts
 import { dbConnect } from "@/lib/db/db";
-import User from "@/models/User";
+import User from "@/models/user.model";
 import bcrypt from "bcryptjs";
 import { SignJWT } from "jose";
 import { NextRequest, NextResponse } from "next/server";
@@ -15,7 +15,6 @@ export async function POST(req: NextRequest) {
     const user = await User.findOne({ email });
     if (!user)
       return NextResponse.json({ message: "User not found" }, { status: 404 });
-    
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)

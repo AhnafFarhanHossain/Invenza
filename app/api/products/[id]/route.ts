@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/db/db";
 import { getUserIdFromRequest } from "@/lib/auth";
-import Product from "@/models/Product";
+import Product from "@/models/product.model";
 
 export async function GET(
   req: NextRequest,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/db/db";
-import Order from "@/models/Order";
+import Order from "@/models/order.model";
 import { getUserIdFromRequest } from "@/lib/auth";
 import mongoose from "mongoose";
 

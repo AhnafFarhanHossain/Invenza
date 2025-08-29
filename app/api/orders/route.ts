@@ -1,10 +1,9 @@
 import { NextResponse, NextRequest } from "next/server";
 import { dbConnect } from "@/lib/db/db";
-import Product from "@/models/Product";
-import Order from "@/models/Order";
+import Product from "@/models/product.model";
+import Order from "@/models/order.model";
 import { getUserIdFromRequest } from "@/lib/auth";
 import mongoose from "mongoose";
-import Orders from "@/app/dashboard/(pages)/orders/page";
 
 export async function POST(req: NextRequest) {
   try {
