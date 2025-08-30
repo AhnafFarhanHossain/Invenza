@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { base64ToObjectUrl } from "@/lib/image-utils";
@@ -73,7 +72,6 @@ const ProductCard = ({ product, isLoading = false }: ProductCardProps) => {
 
   if (!product) return null;
 
-  const isInStock = product.quantity > 0;
   const isLowStock = product.quantity <= product.reorderLevel;
   const isOutOfStock = product.quantity === 0;
 

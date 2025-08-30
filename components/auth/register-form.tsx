@@ -46,7 +46,8 @@ export default function RegisterForm() {
         } else if (value.trim().length > 50) {
           error = "Name must be less than 50 characters";
         } else if (!/^[a-zA-Z\s'-]+$/.test(value)) {
-          error = "Name can only contain letters, spaces, hyphens, and apostrophes";
+          error =
+            "Name can only contain letters, spaces, hyphens, and apostrophes";
         }
         break;
       case "email":
@@ -72,7 +73,8 @@ export default function RegisterForm() {
         } else if (!/(?=.*\d)/.test(value)) {
           error = "Password must contain at least one number";
         } else if (!/(?=.*[@$!%*?&])/.test(value)) {
-          error = "Password must contain at least one special character (@$!%*?&)";
+          error =
+            "Password must contain at least one special character (@$!%*?&)";
         }
         break;
     }
@@ -83,7 +85,7 @@ export default function RegisterForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
+
     // Real-time validation
     if (touched[name as keyof typeof touched]) {
       const error = validateField(name, value);
@@ -94,49 +96,53 @@ export default function RegisterForm() {
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setTouched((prev) => ({ ...prev, [name]: true }));
-    
+
     const error = validateField(name, value);
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     // Validate all fields before submission
     const newErrors = {
       name: validateField("name", formData.name),
       email: validateField("email", formData.email),
       password: validateField("password", formData.password),
     };
-    
+
     setErrors(newErrors);
     setTouched({ name: true, email: true, password: true });
-    
-    if (Object.values(newErrors).some(error => error !== "")) {
+
+    if (Object.values(newErrors).some((error) => error !== "")) {
       toast.error("Please fix the errors before submitting");
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
       const response = await axios.post("/api/auth/register", formData);
-      
+
       // Store user data in localStorage
       if (response.data.user) {
-        localStorage.setItem('userEmail', response.data.user.email);
-        localStorage.setItem('userName', response.data.user.name);
+        localStorage.setItem("userEmail", response.data.user.email);
+        localStorage.setItem("userName", response.data.user.name);
       }
-      
+
       toast.success("Registration successful!");
       // Redirect to dashboard after successful registration
       setTimeout(() => {
         router.push("/dashboard");
       }, 100);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Registration error:", error);
       if (error.response) {
-        toast.error(error.response.data.message || "Registration failed. Please try again.");
+        toast.error(
+          error.response.data.message ||
+            "Registration failed. Please try again."
+        );
       } else {
         toast.error("Network error. Please try again.");
       }
@@ -146,17 +152,23 @@ export default function RegisterForm() {
   };
 
   const getInputClassName = (fieldName: string) => {
-    const hasError = errors[fieldName as keyof typeof errors] && touched[fieldName as keyof typeof touched];
-    const baseClasses = "border-0 border-b rounded-none bg-transparent px-0 py-3 focus-visible:ring-0 placeholder:text-gray-500 transition-colors";
-    
+    const hasError =
+      errors[fieldName as keyof typeof errors] &&
+      touched[fieldName as keyof typeof touched];
+    const baseClasses =
+      "border-0 border-b rounded-none bg-transparent px-0 py-3 focus-visible:ring-0 placeholder:text-gray-500 transition-colors";
+
     if (hasError) {
       return `${baseClasses} border-red-500 focus-visible:border-red-600 text-red-900 placeholder-red-400`;
     }
-    
-    if (touched[fieldName as keyof typeof touched] && !errors[fieldName as keyof typeof errors]) {
+
+    if (
+      touched[fieldName as keyof typeof touched] &&
+      !errors[fieldName as keyof typeof errors]
+    ) {
       return `${baseClasses} border-green-500 focus-visible:border-green-600`;
     }
-    
+
     return `${baseClasses} border-gray-200 focus-visible:border-b-2 focus-visible:border-primary`;
   };
 
@@ -219,7 +231,9 @@ export default function RegisterForm() {
               onChange={handleChange}
               onBlur={handleBlur}
               className={getInputClassName("password")}
-              aria-invalid={errors.password && touched.password ? "true" : "false"}
+              aria-invalid={
+                errors.password && touched.password ? "true" : "false"
+              }
               aria-describedby="password-error"
             />
             {errors.password && touched.password && (
@@ -237,7 +251,10 @@ export default function RegisterForm() {
             type="submit"
             size="lg"
             className="w-full rounded-sm bg-primary hover:bg-primary/90 transition-colors mt-4"
-            disabled={isSubmitting || Object.values(errors).some(error => error !== "")}
+            disabled={
+              isSubmitting ||
+              Object.values(errors).some((error) => error !== "")
+            }
           >
             {isSubmitting ? "Creating account..." : "Create account"}
           </Button>

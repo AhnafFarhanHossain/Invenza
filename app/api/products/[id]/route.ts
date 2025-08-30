@@ -21,6 +21,7 @@ export async function GET(
         { status: 404 }
       );
     return NextResponse.json({ product });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error("Error fetching product:", error);
     return NextResponse.json(
@@ -50,6 +51,7 @@ export async function PATCH(
         { status: 404 }
       );
     return NextResponse.json({ product });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error("Error updating product:", err);
     return NextResponse.json(
@@ -59,15 +61,26 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     await dbConnect();
     const { id } = await params;
     const userId = await getUserIdFromRequest(req);
-    const product = await Product.findOneAndDelete({ _id: id, createdBy: userId });
-    if (!product) return NextResponse.json({ message: "Not found" }, { status: 404 });
+    const product = await Product.findOneAndDelete({
+      _id: id,
+      createdBy: userId,
+    });
+    if (!product)
+      return NextResponse.json({ message: "Not found" }, { status: 404 });
     return NextResponse.json({ success: true });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    return NextResponse.json({ message: err.message || "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { message: err.message || "Unauthorized" },
+      { status: 401 }
+    );
   }
 }

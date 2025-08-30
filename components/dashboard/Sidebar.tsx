@@ -10,7 +10,6 @@ import {
   ChevronDown,
   Home,
   LogOut,
-  Menu,
   Package,
   PlusSquare,
   Settings,
@@ -23,8 +22,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -93,10 +91,12 @@ const navigationItems = [
 interface DashboardSidebarProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  onLogout?: () => void;
 }
 
-export function DashboardSidebar({ isOpen, onOpenChange, onLogout }: DashboardSidebarProps) {
+export function DashboardSidebar({
+  isOpen,
+  onOpenChange,
+}: DashboardSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -110,7 +110,7 @@ export function DashboardSidebar({ isOpen, onOpenChange, onLogout }: DashboardSi
     return pathname === url;
   };
 
-  const hasActiveChild = (items: any[]) => {
+  const hasActiveChild = (items: { url: string }[]) => {
     return items?.some((item) => pathname === item.url);
   };
 
@@ -121,7 +121,6 @@ export function DashboardSidebar({ isOpen, onOpenChange, onLogout }: DashboardSi
   return (
     <>
       <Sheet open={isOpen} onOpenChange={onOpenChange}>
-
         <SheetContent
           side="left"
           className="w-[260px] bg-white p-0 transition-transform duration-300 ease-in-out font-mono"

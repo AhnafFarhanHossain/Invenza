@@ -117,6 +117,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ product: newProduct }, { status: 201 });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error("Error creating product:", err);
 

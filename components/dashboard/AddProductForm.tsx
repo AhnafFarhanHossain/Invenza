@@ -3,7 +3,6 @@
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Package, X, Upload } from "lucide-react";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -12,7 +11,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { fileToBase64, isValidImageType, isValidImageSize } from "@/lib/image-utils";
+import {
+  fileToBase64,
+  isValidImageType,
+  isValidImageSize,
+} from "@/lib/image-utils";
 import {
   Select,
   SelectContent,
@@ -126,7 +129,8 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
         console.log("Sending product data:", data);
         const res = await axios.post("/api/products", data);
         console.log("Product created successfully:", res.data);
-      } catch(err: any) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
         console.error("Failed to create product:", err);
         if (err.response) {
           console.error("Error response:", err.response.data);
@@ -136,7 +140,9 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
             router.push("/auth/signin");
             return;
           }
-          alert(`Error: ${err.response.data.message || 'Failed to create product'}`);
+          alert(
+            `Error: ${err.response.data.message || "Failed to create product"}`
+          );
         } else {
           alert("Network error: Failed to create product");
         }
@@ -146,6 +152,7 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
       // Optional: reset form & go back to list
       reset();
       router.push("/dashboard/products");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       alert(err.message || "Something went wrong");
     }
@@ -181,13 +188,13 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
     try {
       // Convert to base64
       const base64 = await fileToBase64(file);
-      
+
       // Set the base64 string in form state
       setValue("image", base64);
-      
+
       // Set preview URL
       setImagePreview(base64);
-    } catch (error) {
+    } catch {
       setImageError("Failed to process image file");
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
@@ -489,7 +496,7 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
               <Label className="font-mono text-xs font-medium text-black">
                 Upload Image
               </Label>
-              
+
               {/* Hidden file input */}
               <input
                 type="file"
@@ -498,7 +505,7 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
                 accept="image/*"
                 className="hidden"
               />
-              
+
               {/* Upload button */}
               <Button
                 type="button"
@@ -509,13 +516,13 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
                 <Upload className="mr-2 h-4 w-4" />
                 Click to upload image
               </Button>
-              
+
               {imageError && (
                 <p className="font-mono text-[10px] text-red-600 font-medium">
                   {imageError}
                 </p>
               )}
-              
+
               <p className="font-mono text-[10px] text-gray-500">
                 Supported formats: JPEG, PNG, GIF, WEBP (Max 5MB)
               </p>
@@ -524,6 +531,7 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
             {/* Image preview */}
             {(imagePreview || imageUrl) && (
               <div className="relative w-32">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={imagePreview || imageUrl}
                   alt="Preview"

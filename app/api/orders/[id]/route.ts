@@ -27,6 +27,7 @@ export async function GET(
     }
 
     return NextResponse.json(order);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error("Single order fetch error:", error);
     return NextResponse.json(
@@ -60,6 +61,7 @@ export async function PATCH(
     });
 
     return NextResponse.json(updatedOrder);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error("Single order fetch error:", error);
     return NextResponse.json(

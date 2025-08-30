@@ -14,7 +14,7 @@ import { Eye, FileText } from "lucide-react";
 import Link from "next/link";
 
 // Define the type for an order
-interface Order {
+export interface Order {
   _id: string;
   orderNumber: string;
   customerName: string;

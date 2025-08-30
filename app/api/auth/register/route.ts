@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
     });
 
     return response;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return NextResponse.json(
       { message: "Internal server error", error: error.message },

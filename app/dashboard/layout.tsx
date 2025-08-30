@@ -27,11 +27,11 @@ export default function DashboardLayout({
     try {
       await axios.post("/api/auth/logout");
       // Clear user data from localStorage
-      localStorage.removeItem('userEmail');
-      localStorage.removeItem('userName');
+      localStorage.removeItem("userEmail");
+      localStorage.removeItem("userName");
       router.push("/auth/signin");
       toast.success("Logged out successfully");
-    } catch (error) {
+    } catch {
       toast.error("Failed to logout");
     }
   };

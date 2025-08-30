@@ -108,6 +108,7 @@ export default function LoginForm() {
       setTimeout(() => {
         router.push("/dashboard");
       }, 100);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response) {
         toast.error(
@@ -206,7 +207,7 @@ export default function LoginForm() {
             {isSubmitting ? "Signing in..." : "Sign in"}
           </Button>
           <p className="text-center text-xs text-muted-foreground">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               href="/auth/register"
               className="underline underline-offset-4"

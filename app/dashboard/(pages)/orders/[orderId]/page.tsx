@@ -1,16 +1,8 @@
 "use client";
 
 import axios, { isAxiosError } from "axios";
-import { notFound, useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import OrderItemsList from "@/components/dashboard/OrderDetails";
 
 interface Order {
@@ -35,23 +27,21 @@ interface Order {
 
 const SingleOrdersPage = () => {
   const params = useParams();
+  const router = useRouter();
   const orderId = Array.isArray(params.orderId)
     ? params.orderId[0]
     : params.orderId;
-  const router = useRouter();
-
-  // If orderId is missing, navigate to 404 on client
-  if (!orderId) {
-    // In Client Components prefer a redirect over notFound()
-    router.replace("/404");
-    return null;
-  }
 
   const [order, setOrder] = useState<Order | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!orderId) {
+      router.replace("/404");
+      return;
+    }
+
     let active = true;
     (async () => {
       setLoading(true);
@@ -78,7 +68,7 @@ const SingleOrdersPage = () => {
     return () => {
       active = false;
     };
-  }, [orderId]);
+  }, [orderId, router]);
 
   if (loading) {
     return (
@@ -106,14 +96,6 @@ interface OrderDetailsProps {
 }
 
 const OrderDetails = ({ order }: OrderDetailsProps) => {
-  const statusVariantMap = {
-    pending: "outline",
-    processing: "secondary",
-    shipped: "default",
-    delivered: "default",
-    cancelled: "destructive",
-  } as const;
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",

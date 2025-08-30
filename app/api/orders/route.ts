@@ -5,6 +5,13 @@ import Order from "@/models/order.model";
 import { getUserIdFromRequest } from "@/lib/auth";
 import mongoose from "mongoose";
 
+type OrderItem = {
+  product: mongoose.Types.ObjectId;
+  name: string;
+  quantity: number;
+  price: number;
+};
+
 export async function POST(req: NextRequest) {
   try {
     await dbConnect();
@@ -24,7 +31,7 @@ export async function POST(req: NextRequest) {
     }
 
     let totalAmount = 0;
-    const orderItems: any[] = [];
+    const orderItems: OrderItem[] = [];
 
     for (const item of items) {
       const { productId, quantity } = item;
@@ -91,6 +98,7 @@ export async function POST(req: NextRequest) {
     await savedOrder.populate("items.product", "name image");
 
     return NextResponse.json({ order: savedOrder }, { status: 201 });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return NextResponse.json(
       {
@@ -111,6 +119,7 @@ export async function GET(req: NextRequest) {
       .sort({ createdAt: -1 })
       .populate("items.product", "name image");
     return NextResponse.json(orders, { status: 200 });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     return NextResponse.json(
       {

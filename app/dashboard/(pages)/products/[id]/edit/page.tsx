@@ -53,6 +53,7 @@ export default function ProductEditPage() {
     fetchProduct();
   }, [id]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = async (data: any) => {
     try {
       await axios.patch(`/api/products/${id}`, data);

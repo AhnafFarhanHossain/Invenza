@@ -6,12 +6,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import OrdersTable from "@/components/dashboard/OrdersTable";
+import OrdersTable, { Order } from "@/components/dashboard/OrdersTable";
 import { useEffect, useState } from "react";
 
 // This is a Client Component that fetches data
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchOrders = async () => {

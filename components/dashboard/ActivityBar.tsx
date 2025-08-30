@@ -79,11 +79,6 @@ export function ActivityBar({
     }
   };
 
-  const handleAddOrder = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    // Add Handle Order Functionality
-  };
-
   const handleSignOut = () => {
     if (onSignOut) {
       onSignOut();

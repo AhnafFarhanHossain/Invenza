@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       user: { id: user._id, name: user.name, email: user.email },
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return NextResponse.json(
       { message: "Internal server error", error: error.message },

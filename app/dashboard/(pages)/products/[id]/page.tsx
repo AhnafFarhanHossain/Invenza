@@ -7,15 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { base64ToObjectUrl } from "@/lib/image-utils";
-import {
-  ArrowLeft,
-  Edit,
-  Trash2,
-  Package,
-  DollarSign,
-  Calendar,
-  Hash,
-} from "lucide-react";
+import { ArrowLeft, Edit, Trash2, Package, Calendar, Hash } from "lucide-react";
 import { format } from "date-fns";
 import Link from "next/link";
 
@@ -84,14 +76,16 @@ const SingleProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
           try {
             const url = base64ToObjectUrl(data.product.image);
             setImageObjectUrl(url);
-          } catch (error) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } catch (error: any) {
             console.error("Error converting base64 image:", error);
             setImageObjectUrl(null);
           }
         } else {
           setImageObjectUrl(null);
         }
-      } catch (err) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
         setError(err instanceof Error ? err.message : "Failed to load product");
       } finally {
         setLoading(false);
@@ -116,7 +110,8 @@ const SingleProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
       }
 
       router.push("/dashboard/products");
-    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       alert(err instanceof Error ? err.message : "Failed to delete product");
     }
   };
@@ -124,7 +119,6 @@ const SingleProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const getStockStatus = () => {
     if (!product) return null;
 
-    const isInStock = product.quantity > 0;
     const isLowStock = product.quantity <= product.reorderLevel;
     const isOutOfStock = product.quantity === 0;
 
@@ -342,6 +336,7 @@ const SingleProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">Status</span>
                 <Badge
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   variant={stockStatus?.color as any}
                   className="font-medium"
                 >
@@ -422,7 +417,6 @@ const SingleProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
           </div>
         </div>
       </div>
-      
     </div>
   );
 };

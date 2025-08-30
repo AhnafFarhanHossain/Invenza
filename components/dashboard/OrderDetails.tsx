@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { base64ToObjectUrl } from "@/lib/image-utils";
 
@@ -27,16 +26,17 @@ export default function OrderItemsList({ items }: OrderItemsListProps) {
   const isDataImage = (src?: string) => !!src && src.startsWith("data:image/");
   const looksLikeUrl = (src?: string) =>
     !!src && /^(https?:\/\/|\/|\.\/|\.\.\/)/i.test(src);
-  const looksLikeRawBase64 = (src?: string) =>
-    !!src &&
-    !looksLikeUrl(src) &&
-    /^[A-Za-z0-9+/=]+$/.test(src) &&
-    src.length > 100;
-
-  const toDataUrl = (src: string) =>
-    isDataImage(src) ? src : `data:image/png;base64,${src}`;
 
   useEffect(() => {
+    const looksLikeRawBase64 = (src?: string) =>
+      !!src &&
+      !looksLikeUrl(src) &&
+      /^[A-Za-z0-9+/=]+$/.test(src) &&
+      src.length > 100;
+
+    const toDataUrl = (src: string) =>
+      isDataImage(src) ? src : `data:image/png;base64,${src}`;
+
     const nextMap: Record<string, string> = {};
     const toRevoke: string[] = [];
 
@@ -82,7 +82,7 @@ export default function OrderItemsList({ items }: OrderItemsListProps) {
 
   return (
     <div className="space-y-4">
-      {items.map((item, index) => (
+      {items.map((item) => (
         <div
           key={item._id}
           className="flex items-center gap-4 p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-colors duration-200"
@@ -92,10 +92,13 @@ export default function OrderItemsList({ items }: OrderItemsListProps) {
             {item?.product && imageSrcMap[item._id] ? (
               <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-100 border border-slate-200">
                 {imageSrcMap[item._id].startsWith("blob:") ? (
-                  <img
+                  <Image
                     src={imageSrcMap[item._id]}
                     alt={item.product?.name ?? "Product image"}
+                    width={64}
+                    height={64}
                     className="w-full h-full object-cover"
+                    unoptimized
                   />
                 ) : (
                   <Image
