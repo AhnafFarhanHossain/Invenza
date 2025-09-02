@@ -23,6 +23,10 @@ export default function DashboardLayout({
     router.push("/dashboard/products/new");
   };
 
+  const handleAddOrder = () => {
+    router.push("/dashboard/orders/new");
+  };
+
   const handleSignOut = async () => {
     try {
       await axios.post("/api/auth/logout");
@@ -47,6 +51,7 @@ export default function DashboardLayout({
           onSidebarToggle={handleSidebarToggle}
           onAddProduct={handleAddProduct}
           onSignOut={handleSignOut}
+          onAddOrder={handleAddOrder}
         />
         <main className="mt-14 flex-1 p-6">{children}</main>
       </div>

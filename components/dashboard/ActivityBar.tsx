@@ -18,12 +18,14 @@ import { usePathname } from "next/navigation";
 interface ActivityBarProps {
   onSidebarToggle: () => void;
   onAddProduct?: () => void;
+  onAddOrder?: () => void;
   onSignOut?: () => void;
 }
 
 export function ActivityBar({
   onSidebarToggle,
   onAddProduct,
+  onAddOrder,
   onSignOut,
 }: ActivityBarProps) {
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -76,6 +78,14 @@ export function ActivityBar({
       onAddProduct();
     } else {
       console.log("Add product clicked");
+    }
+  };
+
+  const handleAddOrder = () => {
+    if (onAddOrder) {
+      onAddOrder();
+    } else {
+      console.log("Add order clicked");
     }
   };
 
@@ -137,7 +147,7 @@ export function ActivityBar({
             </div>
           )}
           {/* Add Order Button */}
-          <Button onClick={handleAddProduct} size="sm" variant="outline">
+          <Button onClick={handleAddOrder} size="sm" variant="outline">
             <Plus className="mr-1.5 h-3.5 w-3.5" />
             <span className="hidden sm:inline">Add New Order</span>
           </Button>

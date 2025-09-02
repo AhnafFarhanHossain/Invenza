@@ -309,7 +309,7 @@ const SingleProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
                   <Package className="w-4 h-4 text-gray-400" />
                   <span className="text-gray-600">Category:</span>
                   <span className="text-gray-900">
-                    {product.category || "Uncategorized"}
+                    {product.category || "Unspecified"}
                   </span>
                 </div>
 
