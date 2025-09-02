@@ -74,7 +74,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
 
   if (orders.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center rounded-xl border border-border/60 bg-gradient-to-b from-background to-muted/30">
+      <div className="flex flex-col items-center justify-center py-16 text-center rounded-xl border border-gray-200 bg-gradient-to-b from-background to-muted/30">
         <FileText className="h-12 w-12 text-muted-foreground mb-4" />
         <h3 className="text-xl font-semibold tracking-tight mb-2">
           No orders yet
