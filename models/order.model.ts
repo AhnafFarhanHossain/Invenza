@@ -12,7 +12,7 @@ export interface IOrder extends Document {
     price: number; // Snapshot of the price at time of order
   }[];
   totalAmount: number;
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  status: "pending" | "completed" | "cancelled";
   createdBy: mongoose.Schema.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
@@ -20,11 +20,15 @@ export interface IOrder extends Document {
 
 const OrderSchema: Schema = new Schema(
   {
-    orderNumber: { 
-      type: String, 
+    orderNumber: {
+      type: String,
       unique: true,
       sparse: true,
-      default: () => `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
+      default: () =>
+        `ORD-${Date.now()}-${Math.random()
+          .toString(36)
+          .substr(2, 9)
+          .toUpperCase()}`,
     },
     customerName: { type: String, required: true },
     customerEmail: { type: String, required: true },

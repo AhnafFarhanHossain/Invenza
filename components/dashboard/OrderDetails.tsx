@@ -81,11 +81,11 @@ export default function OrderItemsList({ items }: OrderItemsListProps) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {items.map((item) => (
         <div
           key={item._id}
-          className="flex items-center gap-4 p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-colors duration-200"
+          className="flex items-center gap-4 p-4 rounded-lg bg-white border border-slate-200 hover:border-slate-300 transition-colors duration-200"
         >
           {/* Product Image */}
           <div className="relative flex-shrink-0">
@@ -118,7 +118,7 @@ export default function OrderItemsList({ items }: OrderItemsListProps) {
             )}
 
             {/* Quantity Badge */}
-            <div className="absolute -top-2 -right-2 w-6 h-6 bg-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-sm">
+            <div className="absolute -top-2 -right-2 w-6 h-6 bg-slate-900 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-sm">
               {item.quantity}
             </div>
           </div>
@@ -135,7 +135,7 @@ export default function OrderItemsList({ items }: OrderItemsListProps) {
 
           {/* Price Information */}
           <div className="text-right flex-shrink-0">
-            <div className="text-lg font-bold text-slate-900">
+            <div className="text-lg font-semibold text-slate-900">
               {formatCurrency(item.price * item.quantity)}
             </div>
             <div className="text-xs text-slate-500">
@@ -151,7 +151,7 @@ export default function OrderItemsList({ items }: OrderItemsListProps) {
           <span className="text-slate-600">
             Total for {items.length} item{items.length !== 1 ? "s" : ""}
           </span>
-          <span className="text-xl font-bold text-orange-600">
+          <span className="text-xl font-bold text-slate-900">
             {formatCurrency(
               items.reduce((sum, item) => sum + item.price * item.quantity, 0)
             )}

@@ -44,28 +44,33 @@ export async function PATCH(
   try {
     await dbConnect();
     const userId = await getUserIdFromRequest(req);
-    const body = await req.json();
+    const { status } = await req.json();
+
+    const validStatuses = ["pending", "completed", "cancelled"];
+    if (!validStatuses.includes(status)) {
+      return NextResponse.json({ message: "Invalid Status" }, { status: 400 });
+    }
 
     const orderId = new mongoose.Types.ObjectId(params.id);
-    const order = await Order.findOne({
-      _id: orderId,
-      createdBy: userId,
-    });
 
-    if (!order) {
+    const updatedOrder = await Order.findOneAndUpdate(
+      {
+        _id: orderId,
+        createdBy: userId,
+      },
+      { $set: { status: status } },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
       return NextResponse.json({ message: "Order not found" }, { status: 404 });
     }
 
-    const updatedOrder = await Order.findByIdAndUpdate(orderId, body, {
-      new: true,
-    });
-
-    return NextResponse.json(updatedOrder);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return NextResponse.json({ order: updatedOrder });
   } catch (error: any) {
-    console.error("Single order fetch error:", error);
+    console.error("Order update error:", error);
     return NextResponse.json(
-      { message: "Failed to fetch order" },
+      { message: "Failed to update order" + error.message },
       { status: 500 }
     );
   }
