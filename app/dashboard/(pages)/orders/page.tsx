@@ -44,15 +44,17 @@ export default function OrdersPage() {
 
   if (loading) {
     return (
-      <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+      <div className="flex-1 space-y-4 p-4 sm:p-6 md:p-8 pt-6">
         <div className="flex items-center justify-between space-y-2">
-          <h2 className="text-3xl font-bold tracking-tight">Orders</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
+            Orders
+          </h2>
         </div>
 
         <Card className="border-gray-200">
-          <CardHeader>
-            <CardTitle>Order History</CardTitle>
-            <CardDescription>
+          <CardHeader className="px-4 py-4 sm:px-6 sm:py-6">
+            <CardTitle className="text-xl sm:text-2xl">Order History</CardTitle>
+            <CardDescription className="text-sm sm:text-base">
               View all orders and their current status.
             </CardDescription>
           </CardHeader>
@@ -67,19 +69,15 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+    <div className="flex-1 space-y-4 p-4 sm:p-6 md:p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Orders</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
+          Orders
+        </h2>
       </div>
 
       <Card className="border-gray-200">
-        <CardHeader>
-          <CardTitle>Order History</CardTitle>
-          <CardDescription>
-            View all orders and their current status.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+        <CardContent className="p-0 sm:p-6">
           <OrdersTable orders={orders} />
         </CardContent>
       </Card>

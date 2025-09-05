@@ -24,8 +24,8 @@ const CustomerPage = () => {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto mt-8">
-      <h1 className="font-bold text-4xl mb-8">Customers List</h1>
+    <div className="w-full px-4 sm:px-6 md:px-8 mt-4 sm:mt-6 md:mt-8">
+      <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-4 sm:mb-6 md:mb-8">Customers List</h1>
       <CustomersTable customers={customers} loading={loading} />
     </div>
   );

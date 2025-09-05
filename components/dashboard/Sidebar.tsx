@@ -26,6 +26,7 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { Button } from "../ui/button";
 
 // Navigation data structure
 const navigationItems = [
@@ -232,13 +233,15 @@ export function DashboardSidebar({
 
             {/* Logout Button */}
             <div className="border-t border-gray-100 p-3">
-              <button
+              <Button
                 onClick={handleLogout}
-                className="flex w-full items-center gap-2.5 rounded-sm bg-primary px-3 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-primary/80 cursor-pointer"
+                variant={"destructive"}
+                size={"default"}
+                className="w-full"
               >
                 <LogOut className="h-3.5 w-3.5" />
                 <span>Logout</span>
-              </button>
+              </Button>
             </div>
           </div>
         </SheetContent>

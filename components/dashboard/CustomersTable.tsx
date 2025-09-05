@@ -53,59 +53,63 @@ export default function CustomersTable({ customers, loading }: CustomersTablePro
   }
 
   return (
-    <div className="table-card max-w-6xl mx-auto">
-      <Table className="align-middle">
-        <TableHeader className="bg-neutral-100">
-          <TableRow className="bg-transparent border-none">
-            <TableHead className="px-4 py-3 text-[13px] font-medium text-muted-foreground">
-              Customer
-            </TableHead>
-            <TableHead className="px-4 py-3 text-[13px] font-medium text-muted-foreground">
-              Email
-            </TableHead>
-            <TableHead className="px-4 py-3 text-right text-[13px] font-medium text-muted-foreground">
-              Actions
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {customers.map((customer, index) => (
-            <TableRow
-              key={`${customer.customerEmail}-${index}`}
-              className="group odd:bg-transparent even:bg-muted/10 hover:bg-muted/20 transition-colors !border-b-0"
-            >
-              <TableCell className="px-4 py-3.5">
-                <div className="flex flex-col">
-                  <span className="font-medium leading-tight text-foreground/90">
-                    {customer.customerName}
-                  </span>
-                  <span className="text-xs text-muted-foreground leading-tight">
-                    Customer
-                  </span>
-                </div>
-              </TableCell>
-              <TableCell className="px-4 py-3.5 text-foreground/80">
-                {customer.customerEmail}
-              </TableCell>
-              <TableCell className="px-4 py-3.5 text-right">
-                <Button
-                  variant="link"
-                  size="sm"
-                  asChild
-                >
-                  <Link
-                    href={`/dashboard/customers/${encodeURIComponent(customer.customerEmail)}`}
-                    className="inline-flex items-center"
-                  >
-                    <Eye className="h-4 w-4 mr-2 opacity-80 group-hover:opacity-100 transition-opacity" />
-                    View
-                  </Link>
-                </Button>
-              </TableCell>
+    <div className="table-card overflow-x-auto">
+      <div className="min-w-[500px] sm:min-w-0">
+        <Table className="align-middle">
+          <TableHeader className="bg-neutral-100">
+            <TableRow className="bg-transparent border-none">
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-muted-foreground">
+                Customer
+              </TableHead>
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-muted-foreground">
+                Email
+              </TableHead>
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-right text-xs sm:text-[13px] font-medium text-muted-foreground">
+                Actions
+              </TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {customers.map((customer, index) => (
+              <TableRow
+                key={`${customer.customerEmail}-${index}`}
+                className="group odd:bg-transparent even:bg-muted/10 hover:bg-muted/20 transition-colors !border-b-0"
+              >
+                <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5">
+                  <div className="flex flex-col">
+                    <span className="font-medium text-sm sm:text-base leading-tight text-foreground/90">
+                      {customer.customerName}
+                    </span>
+                    <span className="text-xs text-muted-foreground leading-tight">
+                      Customer
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-xs sm:text-sm text-foreground/80 truncate max-w-[120px] sm:max-w-none">
+                  {customer.customerEmail}
+                </TableCell>
+                <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-right">
+                  <Button
+                    variant="link"
+                    size="sm"
+                    asChild
+                    className="text-xs sm:text-sm"
+                  >
+                    <Link
+                      href={`/dashboard/customers/${encodeURIComponent(customer.customerEmail)}`}
+                      className="inline-flex items-center"
+                    >
+                      <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 opacity-80 group-hover:opacity-100 transition-opacity" />
+                      <span className="hidden sm:inline">View</span>
+                      <span className="sm:hidden">👁</span>
+                    </Link>
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }

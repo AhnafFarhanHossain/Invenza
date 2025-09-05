@@ -4,7 +4,6 @@ import React from "react";
 import Image from "next/image";
 import { Bell, Menu, Plus, Search, User, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { usePathname } from "next/navigation";
+import SearchBar from "./SearchBar";
 
 interface ActivityBarProps {
   onSidebarToggle: () => void;
@@ -132,32 +132,16 @@ export function ActivityBar({
 
         {/* Right Section - Search Bar + Actions + Profile */}
         <div className="flex items-center gap-3">
-          {checkIfProductsPage() && (
-            <div className="flex-1 max-w-md">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
-                <Input
-                  type="text"
-                  placeholder="Search products"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="h-8 w-full rounded-md border-gray-200 bg-gray-50 pl-9 pr-4 font-mono text-xs placeholder:text-gray-400 focus:bg-white focus:border-orange-300 focus:ring-orange-200"
-                />
-              </div>
-            </div>
-          )}
+          {/* Search Bar */}
+          <SearchBar placeholder="Search Products..." />
           {/* Add Order Button */}
-          <Button onClick={handleAddOrder} size="sm" variant="outline">
+          <Button onClick={handleAddOrder} size="default" variant="outline">
             <Plus className="mr-1.5 h-3.5 w-3.5" />
             <span className="hidden sm:inline">Add New Order</span>
           </Button>
 
           {/* Add Product Button */}
-          <Button
-            onClick={handleAddProduct}
-            size="sm"
-            className="h-8 rounded-md bg-orange-500 px-3 font-mono text-xs font-medium text-white hover:bg-orange-600 transition-colors duration-200"
-          >
+          <Button onClick={handleAddProduct} size="default">
             <Plus className="mr-1.5 h-3.5 w-3.5" />
             <span className="hidden sm:inline">Add Product</span>
           </Button>

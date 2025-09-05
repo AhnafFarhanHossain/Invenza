@@ -93,86 +93,90 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
   }
 
   return (
-    <div className="table-card">
-      <Table className="align-middle">
-        <TableHeader className="bg-neutral-100">
-          <TableRow className="bg-transparent border-none">
-            <TableHead className="px-4 py-3 text-[13px] font-medium text-muted-foreground">
-              Order #
-            </TableHead>
-            <TableHead className="px-4 py-3 text-[13px] font-medium text-muted-foreground">
-              Customer
-            </TableHead>
-            <TableHead className="px-4 py-3 text-[13px] font-medium text-muted-foreground">
-              Date
-            </TableHead>
-            <TableHead className="px-4 py-3 text-right text-[13px] font-medium text-muted-foreground">
-              Amount
-            </TableHead>
-            <TableHead className="px-4 py-3 text-[13px] font-medium text-muted-foreground">
-              Status
-            </TableHead>
-            <TableHead className="px-4 py-3 text-right text-[13px] font-medium text-muted-foreground">
-              Actions
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {orders.map((order) => {
-            const displayOrderNumber =
-              order.orderNumber || `ORD-${order._id.slice(-6).toUpperCase()}`;
-            return (
-              <TableRow
-                key={order._id}
-                className="group odd:bg-transparent even:bg-muted/10 hover:bg-muted/20 transition-colors !border-b-0"
-              >
-                <TableCell className="px-4 py-3.5 font-mono text-[11px] font-semibold tracking-tight text-foreground/80">
-                  {displayOrderNumber}
-                </TableCell>
-                <TableCell className="px-4 py-3.5">
-                  <div className="flex flex-col">
-                    <span className="font-medium leading-tight text-foreground/90">
-                      {order.customerName}
-                    </span>
-                    <span className="text-xs text-muted-foreground leading-tight">
-                      {order.customerEmail}
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell className="px-4 py-3.5 text-foreground/80">
-                  {formatDate(order.createdAt)}
-                </TableCell>
-                <TableCell className="px-4 py-3.5 text-right font-medium text-foreground/90">
-                  {formatCurrency(order.totalAmount)}
-                </TableCell>
-                <TableCell className="px-4 py-3.5">
-                  <span
-                    className={statusClassMap[order.status] || "status-badge"}
-                  >
-                    {order.status.charAt(0).toUpperCase() +
-                      order.status.slice(1)}
-                  </span>
-                </TableCell>
-                <TableCell className="px-4 py-3.5 text-right">
-                  <Button
-                    variant="link"
-                    size="sm"
-                    asChild
-                  >
-                    <Link
-                      href={`/dashboard/orders/${order._id}`}
-                      className="inline-flex items-center"
+    <div className="table-card overflow-x-auto">
+      <div className="min-w-[600px] sm:min-w-0">
+        <Table className="align-middle">
+          <TableHeader className="bg-neutral-100">
+            <TableRow className="bg-transparent border-none">
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-muted-foreground">
+                Order #
+              </TableHead>
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-muted-foreground">
+                Customer
+              </TableHead>
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-muted-foreground">
+                Date
+              </TableHead>
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-right text-xs sm:text-[13px] font-medium text-muted-foreground">
+                Amount
+              </TableHead>
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-muted-foreground">
+                Status
+              </TableHead>
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-right text-xs sm:text-[13px] font-medium text-muted-foreground">
+                Actions
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {orders.map((order) => {
+              const displayOrderNumber =
+                order.orderNumber || `ORD-${order._id.slice(-6).toUpperCase()}`;
+              return (
+                <TableRow
+                  key={order._id}
+                  className="group odd:bg-transparent even:bg-muted/10 hover:bg-muted/20 transition-colors !border-b-0"
+                >
+                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 font-mono text-xs sm:text-[11px] font-semibold tracking-tight text-foreground/80">
+                    {displayOrderNumber}
+                  </TableCell>
+                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5">
+                    <div className="flex flex-col">
+                      <span className="font-medium text-sm sm:text-base leading-tight text-foreground/90">
+                        {order.customerName}
+                      </span>
+                      <span className="text-xs text-muted-foreground leading-tight truncate max-w-[120px] sm:max-w-none">
+                        {order.customerEmail}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-xs sm:text-sm text-foreground/80">
+                    {formatDate(order.createdAt)}
+                  </TableCell>
+                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-right text-sm sm:text-base font-medium text-foreground/90">
+                    {formatCurrency(order.totalAmount)}
+                  </TableCell>
+                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5">
+                    <span
+                      className={statusClassMap[order.status] || "status-badge"}
                     >
-                      <Eye className="h-4 w-4 mr-2 opacity-80 group-hover:opacity-100 transition-opacity" />
-                      View
-                    </Link>
-                  </Button>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+                      {order.status.charAt(0).toUpperCase() +
+                        order.status.slice(1)}
+                    </span>
+                  </TableCell>
+                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-right">
+                    <Button
+                      variant="link"
+                      size="sm"
+                      asChild
+                      className="text-xs sm:text-sm"
+                    >
+                      <Link
+                        href={`/dashboard/orders/${order._id}`}
+                        className="inline-flex items-center"
+                      >
+                        <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 opacity-80 group-hover:opacity-100 transition-opacity" />
+                        <span className="hidden sm:inline">View</span>
+                        <span className="sm:hidden">👁</span>
+                      </Link>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }
