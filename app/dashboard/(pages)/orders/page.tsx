@@ -52,12 +52,6 @@ export default function OrdersPage() {
         </div>
 
         <Card className="border-gray-200">
-          <CardHeader className="px-4 py-4 sm:px-6 sm:py-6">
-            <CardTitle className="text-xl sm:text-2xl">Order History</CardTitle>
-            <CardDescription className="text-sm sm:text-base">
-              View all orders and their current status.
-            </CardDescription>
-          </CardHeader>
           <CardContent>
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -69,15 +63,15 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="flex-1 space-y-4 p-4 sm:p-6 md:p-8 pt-6">
+    <div className="flex-1 space-y-4 p-4 sm:p-6 md:p-8 pt-6 shadow-none">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
           Orders
         </h2>
       </div>
 
-      <Card className="border-gray-200">
-        <CardContent className="p-0 sm:p-6">
+      <Card className="border-none shadow-none">
+        <CardContent>
           <OrdersTable orders={orders} />
         </CardContent>
       </Card>

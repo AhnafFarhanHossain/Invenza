@@ -57,11 +57,6 @@ const navigationItems = [
     icon: ShoppingCart,
   },
   {
-    title: "Inventory",
-    url: "/dashboard/inventory",
-    icon: Package,
-  },
-  {
     title: "Customers",
     url: "/dashboard/customers",
     icon: Users,

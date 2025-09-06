@@ -32,7 +32,7 @@ const SearchBar = ({ placeholder }: { placeholder: string }) => {
     const fetchData = async () => {
       setLoading(true);
       setError(null);
-      
+
       try {
         const response = await axios.get(`/api/search/?q=${searchTerm}`);
         setResultArray(response.data as SearchResultItem[]);
@@ -46,7 +46,7 @@ const SearchBar = ({ placeholder }: { placeholder: string }) => {
 
     // Set up debouncing with 300ms delay
     const handler = setTimeout(fetchData, 300);
-    
+
     // Clear timeout on cleanup
     return () => clearTimeout(handler);
   }, [searchTerm]);
@@ -86,13 +86,13 @@ const SearchBar = ({ placeholder }: { placeholder: string }) => {
           {!loading && resultArray.length > 0 && (
             <ul className="bg-white rounded-lg shadow-lg border border-gray-200 divide-y divide-gray-200">
               {resultArray.map((item) => (
-              <li 
-                key={item._id} 
-                className="px-4 py-2 hover:bg-gray-50 cursor-pointer transition-colors"
-                onClick={() => router.push(`/dashboard/products/${item._id}`)}
-              >
-                {item.name}
-              </li>
+                <li
+                  key={item._id}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer transition-colors"
+                  onClick={() => router.push(`/dashboard/products/${item._id}`)}
+                >
+                  {item.name}
+                </li>
               ))}
             </ul>
           )}

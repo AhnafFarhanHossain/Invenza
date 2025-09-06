@@ -2,7 +2,16 @@
 
 import React from "react";
 import Image from "next/image";
-import { Bell, Menu, Plus, Search, User, LogOut, Settings } from "lucide-react";
+import {
+  Bell,
+  Menu,
+  Plus,
+  Search,
+  User,
+  LogOut,
+  Settings,
+  Calendar,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -132,6 +141,17 @@ export function ActivityBar({
 
         {/* Right Section - Search Bar + Actions + Profile */}
         <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Calendar className="w-4 h-4" />
+            <span>
+              {new Date().toLocaleDateString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </span>
+          </div>
           {/* Search Bar */}
           <SearchBar placeholder="Search Products..." />
           {/* Add Order Button */}

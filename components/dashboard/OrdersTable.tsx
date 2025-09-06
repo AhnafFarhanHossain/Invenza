@@ -74,7 +74,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
 
   if (orders.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center rounded-xl border border-gray-200 bg-gradient-to-b from-background to-muted/30">
+      <div className="flex flex-col items-center justify-center py-16 text-center rounded-xl border border-gray-200/60 bg-white">
         <FileText className="h-12 w-12 text-muted-foreground mb-4" />
         <h3 className="text-xl font-semibold tracking-tight mb-2">
           No orders yet
@@ -84,7 +84,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
         </p>
         <Button
           asChild
-          className="bg-[var(--primary)] text-white hover:opacity-90 transition-opacity"
+          className="bg-primary text-white hover:bg-primary/90 transition-colors border border-primary/20"
         >
           <Link href="/dashboard/orders/new">+ Create Your First Order</Link>
         </Button>
@@ -93,27 +93,27 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
   }
 
   return (
-    <div className="table-card overflow-x-auto">
+    <div className="bg-white rounded-xl border border-gray-200/60 overflow-hidden shadow-none">
       <div className="min-w-[600px] sm:min-w-0">
         <Table className="align-middle">
-          <TableHeader className="bg-neutral-100">
-            <TableRow className="bg-transparent border-none">
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-muted-foreground">
+          <TableHeader className="bg-gray-50/60">
+            <TableRow className="bg-transparent border-b border-gray-200/40">
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-gray-700">
                 Order #
               </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-muted-foreground">
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-gray-700">
                 Customer
               </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-muted-foreground">
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-gray-700">
                 Date
               </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-right text-xs sm:text-[13px] font-medium text-muted-foreground">
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-right text-xs sm:text-[13px] font-medium text-gray-700">
                 Amount
               </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-muted-foreground">
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-gray-700">
                 Status
               </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-right text-xs sm:text-[13px] font-medium text-muted-foreground">
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-right text-xs sm:text-[13px] font-medium text-gray-700">
                 Actions
               </TableHead>
             </TableRow>
@@ -125,14 +125,14 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
               return (
                 <TableRow
                   key={order._id}
-                  className="group odd:bg-transparent even:bg-muted/10 hover:bg-muted/20 transition-colors !border-b-0"
+                  className="group hover:bg-gray-50/60 transition-colors border-b border-gray-200/30"
                 >
-                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 font-mono text-xs sm:text-[11px] font-semibold tracking-tight text-foreground/80">
+                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 font-mono text-xs sm:text-[11px] font-semibold tracking-tight text-gray-900">
                     {displayOrderNumber}
                   </TableCell>
                   <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5">
                     <div className="flex flex-col">
-                      <span className="font-medium text-sm sm:text-base leading-tight text-foreground/90">
+                      <span className="font-medium text-sm sm:text-base leading-tight text-gray-900">
                         {order.customerName}
                       </span>
                       <span className="text-xs text-muted-foreground leading-tight truncate max-w-[120px] sm:max-w-none">
@@ -140,10 +140,10 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-xs sm:text-sm text-foreground/80">
+                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-xs sm:text-sm text-gray-700">
                     {formatDate(order.createdAt)}
                   </TableCell>
-                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-right text-sm sm:text-base font-medium text-foreground/90">
+                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-right text-sm sm:text-base font-medium text-gray-900">
                     {formatCurrency(order.totalAmount)}
                   </TableCell>
                   <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5">
@@ -159,7 +159,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                       variant="link"
                       size="sm"
                       asChild
-                      className="text-xs sm:text-sm"
+                      className="text-xs sm:text-sm text-primary hover:text-primary/80"
                     >
                       <Link
                         href={`/dashboard/orders/${order._id}`}
