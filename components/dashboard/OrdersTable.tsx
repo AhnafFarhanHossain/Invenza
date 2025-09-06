@@ -10,7 +10,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Eye, FileText } from "lucide-react";
+import { StatusBadge } from "@/components/dashboard/StatusBadge";
+import { useRouter } from "next/navigation";
+import { Eye, FileText, Package } from "lucide-react";
 import Link from "next/link";
 
 // Define the type for an order
@@ -55,6 +57,8 @@ const statusClassMap: Record<string, string> = {
 };
 
 export default function OrdersTable({ orders }: OrdersTableProps) {
+  const router = useRouter();
+
   // Format date to be more readable
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -62,6 +66,21 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
       month: "short",
       day: "numeric",
     });
+  };
+
+  // Map order status to StatusBadge compatible status
+  const mapToStatusBadgeStatus = (status: Order["status"]): "pending" | "completed" | "cancelled" => {
+    switch (status) {
+      case "processing":
+      case "shipped":
+        return "pending";
+      case "delivered":
+        return "completed";
+      case "cancelled":
+        return "cancelled";
+      default:
+        return status;
+    }
   };
 
   // Format currency
@@ -93,44 +112,56 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200/60 overflow-hidden shadow-none">
-      <div className="min-w-[600px] sm:min-w-0">
-        <Table className="align-middle">
-          <TableHeader className="bg-gray-50/60">
-            <TableRow className="bg-transparent border-b border-gray-200/40">
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-gray-700">
-                Order #
-              </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-gray-700">
-                Customer
-              </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-gray-700">
-                Date
-              </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-right text-xs sm:text-[13px] font-medium text-gray-700">
-                Amount
-              </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-gray-700">
-                Status
-              </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-right text-xs sm:text-[13px] font-medium text-gray-700">
-                Actions
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {orders.map((order) => {
-              const displayOrderNumber =
-                order.orderNumber || `ORD-${order._id.slice(-6).toUpperCase()}`;
-              return (
-                <TableRow
-                  key={order._id}
-                  className="group hover:bg-gray-50/60 transition-colors border-b border-gray-200/30"
-                >
-                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 font-mono text-xs sm:text-[11px] font-semibold tracking-tight text-gray-900">
+    <div className="rounded-lg border border-gray-200/50">
+      <Table className="bg-gray-50">
+        <TableHeader>
+          <TableRow className="border-gray-200/50 bg-soft-gray hover:bg-soft-gray font-mono">
+            <TableHead className="font-bold text-dark-gray uppercase">
+              Order #
+            </TableHead>
+            <TableHead className="font-bold text-dark-gray uppercase">
+              Customer
+            </TableHead>
+            <TableHead className="font-bold text-dark-gray uppercase">
+              Date
+            </TableHead>
+            <TableHead className="font-bold text-dark-gray uppercase text-right">
+              Amount
+            </TableHead>
+            <TableHead className="font-bold text-dark-gray uppercase">
+              Status
+            </TableHead>
+            <TableHead className="font-bold text-dark-gray uppercase text-right">
+              Actions
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {orders.map((order) => {
+            const displayOrderNumber =
+              order.orderNumber || `ORD-${order._id.slice(-6).toUpperCase()}`;
+            return (
+              <TableRow
+                key={order._id}
+                className="cursor-pointer hover:bg-gray-50/80 transition-colors border-gray-200/30"
+                onClick={() => router.push(`/dashboard/orders/${order._id}`)}
+              >
+                <TableCell className="font-medium">
+                  <div className="flex items-center gap-2">
+                    <Package className="w-4 h-4 text-muted-foreground" />
                     {displayOrderNumber}
-                  </TableCell>
-                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5">
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200/50">
+                      <span className="text-xs font-medium text-gray-600">
+                        {order.customerName
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </span>
+                    </div>
                     <div className="flex flex-col">
                       <span className="font-medium text-sm sm:text-base leading-tight text-gray-900">
                         {order.customerName}
@@ -139,44 +170,36 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                         {order.customerEmail}
                       </span>
                     </div>
-                  </TableCell>
-                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-xs sm:text-sm text-gray-700">
-                    {formatDate(order.createdAt)}
-                  </TableCell>
-                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-right text-sm sm:text-base font-medium text-gray-900">
-                    {formatCurrency(order.totalAmount)}
-                  </TableCell>
-                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5">
-                    <span
-                      className={statusClassMap[order.status] || "status-badge"}
-                    >
-                      {order.status.charAt(0).toUpperCase() +
-                        order.status.slice(1)}
-                    </span>
-                  </TableCell>
-                  <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-right">
-                    <Button
-                      variant="link"
-                      size="sm"
-                      asChild
-                      className="text-xs sm:text-sm text-primary hover:text-primary/80"
-                    >
-                      <Link
-                        href={`/dashboard/orders/${order._id}`}
-                        className="inline-flex items-center"
-                      >
-                        <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 opacity-80 group-hover:opacity-100 transition-opacity" />
-                        <span className="hidden sm:inline">View</span>
-                        <span className="sm:hidden">👁</span>
-                      </Link>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </div>
+                  </div>
+                </TableCell>
+                <TableCell className="text-gray-700">
+                  {formatDate(order.createdAt)}
+                </TableCell>
+                <TableCell className="text-right font-medium">
+                  {formatCurrency(order.totalAmount)}
+                </TableCell>
+                <TableCell>
+                  <StatusBadge status={mapToStatusBadgeStatus(order.status)} />
+                </TableCell>
+                <TableCell className="text-right">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-primary hover:bg-primary/5 border border-transparent hover:border-primary/20"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      router.push(`/dashboard/orders/${order._id}`);
+                    }}
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    View
+                  </Button>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     </div>
   );
 }

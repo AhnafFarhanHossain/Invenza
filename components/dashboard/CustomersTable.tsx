@@ -62,18 +62,18 @@ export default function CustomersTable({
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200/60 overflow-hidden shadow-none">
+    <div className="bg-white border border-gray-200/60 overflow-hidden shadow-none">
       <div className="min-w-[500px] sm:min-w-0">
-        <Table className="align-middle">
-          <TableHeader className="bg-gray-50/60">
+        <Table className="align-middle bg-gray-50">
+          <TableHeader className="bg-soft-gray font-mono uppercase font-bold text-black">
             <TableRow className="bg-transparent border-b border-gray-200/40">
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-gray-700">
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-bold text-black">
                 Customer
               </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-medium text-gray-700">
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-bold text-black">
                 Email
               </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-right text-xs sm:text-[13px] font-medium text-gray-700">
+              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-right text-xs sm:text-[13px] font-bold text-black">
                 Actions
               </TableHead>
             </TableRow>

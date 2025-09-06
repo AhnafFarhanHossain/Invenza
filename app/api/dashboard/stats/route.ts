@@ -46,16 +46,14 @@ export async function GET(req: NextRequest) {
       .limit(5)
       .select("_id orderNumber customerName totalAmount status createdAt");
 
-    // Final Response
+    // Final Response - match dashboard interface
     const dashboardData = {
-      summary: {
-        totalRevenue: summaryResult[0]?.totalRevenue || 0,
-        totalOrders: summaryResult[0]?.totalOrders || 0,
-        totalCustomers: customerCount.length,
-        lowStockCount: lowStockProducts.length,
-      },
+      totalRevenue: summaryResult[0]?.totalRevenue || 0,
+      totalOrders: summaryResult[0]?.totalCompletedOrders || 0,
+      totalProducts: await Product.countDocuments({ createdBy: userId }),
+      totalCustomers: customerCount.length,
       recentOrders,
-      lowStockProducts,
+      lowStockProducts: lowStockProducts.map(p => ({ name: p.name, quantity: p.quantity })),
     };
 
     return NextResponse.json(dashboardData, { status: 200 });
