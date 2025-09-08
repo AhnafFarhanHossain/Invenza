@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 import {
   BarChart,
   Box,
@@ -11,18 +10,22 @@ import {
   Home,
   LogOut,
   Package,
+  PanelRightOpen,
   PlusSquare,
   Settings,
   ShoppingCart,
   User,
   Users,
+  X,
 } from "lucide-react";
+import Image from "next/image";
+
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent } from "@/components/ui/sheet";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -119,7 +122,7 @@ export function DashboardSidebar({
       <Sheet open={isOpen} onOpenChange={onOpenChange}>
         <SheetContent
           side="left"
-          className="w-[260px] bg-white p-0 transition-all duration-300 ease-in-out border-r border-gray-200"
+          className="w-[260px] bg-white p-0 transition-all duration-300 ease-in-out border-r border-gray-200 [&>button]:hidden"
         >
           {/* Navigation */}
           <div className="flex h-full flex-col bg-white">
@@ -228,6 +231,7 @@ export function DashboardSidebar({
 
             <div className="p-4 border-b border-gray-200">
               <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3">
                 <div className="flex h-8 w-8 items-center justify-center bg-orange-500">
                   <Image
                     src="/invenza-icon.png"
@@ -243,6 +247,10 @@ export function DashboardSidebar({
                   </span>
                   <span className="text-xs text-gray-500">Dashboard</span>
                 </div>
+              </div>
+              <SheetClose className="flex items-center justify-center w-10 h-10 hover:bg-gray-100 ml-auto cursor-pointer border border-gray-300 transition-colors duration-200">
+                <PanelRightOpen className="h-5 w-5 text-gray-600" />
+              </SheetClose>
               </div>
             </div>
 

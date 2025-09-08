@@ -14,6 +14,8 @@ interface DashboardStats {
   totalProducts: number;
   totalCustomers: number;
   totalRevenue: number;
+  todayRevenue: number;
+  todayOrders: number;
   recentOrders: Array<{
     _id: string;
     orderNumber: string;
@@ -57,9 +59,13 @@ export default function DashboardPage() {
           <SummaryCardSkeleton />
           <SummaryCardSkeleton />
         </div>
-        <div className="grid gap-6 md:grid-cols-[65%_35%]">
-          <RecentOrdersTableSkeleton />
-          <LowStockProductsSkeleton />
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <RecentOrdersTableSkeleton />
+          </div>
+          <div className="lg:col-span-1">
+            <LowStockProductsSkeleton />
+          </div>
         </div>
       </div>
     );
@@ -78,13 +84,14 @@ export default function DashboardPage() {
 
   return (
     <div className="p-6 space-y-6">
+      {/* Main Metrics - 4 cards in horizontal row */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <SummaryCard
           title="Total Revenue"
           value={`$${stats.totalRevenue.toFixed(2)}`}
           icon={<TrendingUp className="w-5 h-5 text-white" />}
           description="All time revenue"
-          className="bg-gradient-to-tr from-black via-orange-800 to-amber-600 border-2 border-gray-200 text-white"
+          className="bg-gradient-to-tr from-black via-orange-900 to-amber-700 border-2 border-gray-200 text-white"
           titleColor="text-white"
         />
         <SummaryCard
@@ -113,9 +120,49 @@ export default function DashboardPage() {
         />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-[65%_35%]">
-        <RecentOrdersTable orders={stats.recentOrders} />
-        <LowStockProducts products={stats.lowStockProducts} />
+      {/* Today's Stats - Sharp Minimal Design with Invenza Colors */}
+      <div className="bg-light-base border border-[var(--soft-gray)] rounded-none p-4">
+        <h3 className="text-sm font-semibold text-[var(--black)] mb-4 flex items-center gap-2 tracking-wide">
+          <TrendingUp className="w-4 h-4 text-[var(--primary)]" />
+          TODAY'S PERFORMANCE
+        </h3>
+        <div className="grid gap-4 md:grid-cols-2 border border-soft-gray">
+          <div className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-medium text-[var(--muted-orange)] tracking-wide">REVENUE</p>
+                <p className="text-xl font-bold text-[var(--black)] font-mono mt-1">
+                  ${stats.todayRevenue.toFixed(2)}
+                </p>
+              </div>
+              <div className="w-8 h-8 bg-[var(--primary)] flex items-center justify-center">
+                <TrendingUp className="w-4 h-4 text-[var(--light-base)]" />
+              </div>
+            </div>
+          </div>
+          <div className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-medium text-[var(--muted-orange)] tracking-wide">ORDERS</p>
+                <p className="text-xl font-bold text-[var(--black)] font-mono mt-1">
+                  {stats.todayOrders}
+                </p>
+              </div>
+              <div className="w-8 h-8 bg-[var(--primary)] flex items-center justify-center">
+                <ShoppingCart className="w-4 h-4 text-[var(--light-base)]" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <RecentOrdersTable orders={stats.recentOrders} />
+        </div>
+        <div className="lg:col-span-1">
+          <LowStockProducts products={stats.lowStockProducts} />
+        </div>
       </div>
     </div>
   );

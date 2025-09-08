@@ -15,14 +15,51 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
+    const today = new Date();
+    const startOfToday = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+    const endOfToday = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() + 1
+    );
+
     // Fetch all stats in aggregation from Orders
     const summaryResult = await Order.aggregate([
       { $match: { createdBy: mongoUserId, status: "completed" } },
       {
-        $group: {
-          _id: null,
-          totalRevenue: { $sum: "$totalAmount" },
-          totalCompletedOrders: { $sum: 1 },
+        $facet: {
+          // All-time stats
+          allTime: [
+            {
+              $group: {
+                _id: null,
+                totalRevenue: { $sum: "$totalAmount" },
+                totalCompletedOrders: { $sum: 1 },
+              },
+            },
+          ],
+          // Today's stats
+          today: [
+            {
+              $match: {
+                createdAt: {
+                  $gte: startOfToday,
+                  $lt: endOfToday,
+                },
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                todayRevenue: { $sum: "$totalAmount" },
+                todayOrders: { $sum: 1 },
+              },
+            },
+          ],
         },
       },
     ]);
@@ -46,14 +83,22 @@ export async function GET(req: NextRequest) {
       .limit(5)
       .select("_id orderNumber customerName totalAmount status createdAt");
 
+    const allTimeStats = summaryResult[0]?.allTime[0];
+    const todayStats = summaryResult[0]?.today[0];
+
     // Final Response - match dashboard interface
     const dashboardData = {
-      totalRevenue: summaryResult[0]?.totalRevenue || 0,
-      totalOrders: summaryResult[0]?.totalCompletedOrders || 0,
+      totalRevenue: allTimeStats?.totalRevenue || 0,
+      totalOrders: allTimeStats?.totalCompletedOrders || 0,
+      todayRevenue: todayStats?.todayRevenue || 0,
+      todayOrders: todayStats?.todayOrders || 0,
       totalProducts: await Product.countDocuments({ createdBy: userId }),
       totalCustomers: customerCount.length,
       recentOrders,
-      lowStockProducts: lowStockProducts.map(p => ({ name: p.name, quantity: p.quantity })),
+      lowStockProducts: lowStockProducts.map((p) => ({
+        name: p.name,
+        quantity: p.quantity,
+      })),
     };
 
     return NextResponse.json(dashboardData, { status: 200 });
