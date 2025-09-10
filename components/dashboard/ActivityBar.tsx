@@ -107,7 +107,7 @@ export function ActivityBar({
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-30 border-b border-gray-200 bg-white shadow-sm">
+    <div className="fixed top-0 left-0 right-0 z-30 border-b border-gray-200 bg-neutral-100 shadow-sm">
       <div className="flex h-14 items-center justify-between px-4">
         {/* Left Section - Menu + Logo + Title */}
         <div className="flex items-center gap-4">

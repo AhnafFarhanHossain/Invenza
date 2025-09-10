@@ -29,7 +29,7 @@ export const SummaryCard = ({
   const hasWhiteBackground = className?.includes("bg-white");
 
   return (
-    <Card className={`bg-white shadow-none rounded-none ${className}`}>
+    <Card className={`shadow-none rounded-none ${className}`}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
         <CardTitle
           className={`text-sm tracking-tight font-medium uppercase ${

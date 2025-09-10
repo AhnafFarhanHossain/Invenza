@@ -54,11 +54,16 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="p-6 space-y-6">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
           <SummaryCardSkeleton />
           <SummaryCardSkeleton />
           <SummaryCardSkeleton />
           <SummaryCardSkeleton />
+          <SummaryCardSkeleton />
+        </div>
+        <div className="grid grid-cols-2 h-24 gap-4">
+          <div className="px-6 py-3 bg-white border border-soft-gray col-span-1"></div>
+          <div className="px-6 py-3 bg-white border border-soft-gray col-span-1"></div>
         </div>
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
@@ -89,10 +94,10 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
         <SummaryCard
           title="Total Revenue"
-          value={`${stats.totalRevenue.toFixed(2)}`}
+          value={`$${stats.totalRevenue.toFixed(2)}`}
           icon={<TrendingUp className="w-5 h-5" />}
           description="All time revenue"
-          className="bg-gradient-to-tr from-black via-orange-900 to-amber-700 border border-soft-gray text-white"
+          className="bg-gradient-to-tr from-black via-orange-900 to-amber-700 border-2 border-soft-gray text-white rounded-sm"
           iconBgColor="bg-white/10"
           iconColor="text-white"
         />
@@ -101,7 +106,7 @@ export default function DashboardPage() {
           value={stats.totalOrders}
           icon={<ShoppingCart className="w-5 h-5" />}
           description="All time orders"
-          className="border border-soft-gray bg-transparent"
+          className="border-2 border-soft-gray bg-white rounded-sm"
           iconBgColor="bg-blue-100"
           iconColor="text-blue-700"
         />
@@ -110,7 +115,7 @@ export default function DashboardPage() {
           value={stats.totalProducts}
           icon={<Package className="w-5 h-5" />}
           description="Active products"
-          className="border border-soft-gray bg-transparent"
+          className="border-2 border-soft-gray bg-white rounded-sm"
           iconBgColor="bg-yellow-100"
           iconColor="text-yellow-700"
         />
@@ -119,7 +124,7 @@ export default function DashboardPage() {
           value={stats.totalCustomers}
           icon={<Users className="w-5 h-5" />}
           description="Registered customers"
-          className="border border-soft-gray bg-transparent"
+          className="border-2 border-soft-gray bg-white rounded-sm"
           iconBgColor="bg-indigo-100"
           iconColor="text-indigo-700"
         />
@@ -128,52 +133,45 @@ export default function DashboardPage() {
           value={stats.pendingOrders}
           icon={<Clock className="w-5 h-5" />}
           description="Pending orders"
-          className="border border-soft-gray bg-transparent"
+          className="border-2 border-soft-gray bg-white rounded-sm"
           iconBgColor="bg-red-100"
           iconColor="text-red-700"
         />
       </div>
 
       {/* Today's Stats - Sharp Minimal Design with Invenza Colors */}
-      <div className="bg-light-base border border-[var(--soft-gray)] rounded-none p-6">
-        <h3 className="text-sm font-semibold text-[var(--black)] mb-6 flex items-center gap-2 tracking-wide uppercase">
-          <TrendingUp className="w-4 h-4 text-[var(--primary)]" />
-          Today's Performance
-        </h3>
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="p-5 border border-[var(--soft-gray)] bg-white/50 rounded-none">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-[var(--muted-orange)] tracking-wider uppercase">
-                  Revenue
-                </p>
-                <p className="text-2xl font-medium text-[var(--black)] font-mono mt-2">
-                  ${stats.todayRevenue.toFixed(2)}
-                </p>
-              </div>
-              <div className="w-10 h-10 bg-[var(--primary)] flex items-center justify-center rounded-none">
-                <TrendingUp className="w-5 h-5 text-[var(--light-base)]" />
-              </div>
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="p-5 border-2 border-[var(--soft-gray)] bg-white rounded-sm">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 bg-[var(--primary)] flex items-center justify-center rounded-none">
+              <TrendingUp className="w-5 h-5 text-[var(--light-base)]" />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-[var(--muted-orange)] tracking-wider uppercase">
+                Today's Revenue
+              </p>
+              <p className="text-2xl font-medium text-[var(--black)] font-mono mt-2">
+                ${stats.todayRevenue.toFixed(2)}
+              </p>
             </div>
           </div>
-          <div className="p-5 border border-[var(--soft-gray)] bg-white/50 rounded-none">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-[var(--muted-orange)] tracking-wider uppercase">
-                  Orders
-                </p>
-                <p className="text-2xl font-medium text-[var(--black)] font-mono mt-2">
-                  {stats.todayOrders}
-                </p>
-              </div>
-              <div className="w-10 h-10 bg-[var(--primary)] flex items-center justify-center rounded-none">
-                <ShoppingCart className="w-5 h-5 text-[var(--light-base)]" />
-              </div>
+        </div>
+        <div className="p-5 border-2 border-[var(--soft-gray)] bg-white rounded-sm">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 bg-[var(--primary)] flex items-center justify-center rounded-none">
+              <ShoppingCart className="w-5 h-5 text-[var(--light-base)]" />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-[var(--muted-orange)] tracking-wider uppercase">
+                Today's Orders
+              </p>
+              <p className="text-2xl font-medium text-[var(--black)] font-mono mt-2">
+                {stats.todayOrders}
+              </p>
             </div>
           </div>
         </div>
       </div>
-
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <RecentOrdersTable orders={stats.recentOrders} />

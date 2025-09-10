@@ -61,6 +61,7 @@ export async function GET(req: NextRequest) {
           today: [
             {
               $match: {
+                status: "completed",
                 createdAt: {
                   $gte: startOfToday,
                   $lt: endOfToday,

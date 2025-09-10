@@ -35,7 +35,7 @@ export const RecentOrdersTable = ({ orders }: RecentOrdersTableProps) => {
   };
 
   return (
-    <Card className="border border-gray-200 bg-white shadow-none rounded-none">
+    <Card className="border-2 border-gray-200 bg-white shadow-none rounded-sm">
       <CardHeader className="flex flex-row items-center justify-between pb-4">
         <div className="flex items-center gap-2">
           <ShoppingCart className="w-5 h-5 text-gray-600" />
