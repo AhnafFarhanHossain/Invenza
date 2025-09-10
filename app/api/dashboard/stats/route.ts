@@ -29,16 +29,31 @@ export async function GET(req: NextRequest) {
 
     // Fetch all stats in aggregation from Orders
     const summaryResult = await Order.aggregate([
-      { $match: { createdBy: mongoUserId, status: "completed" } },
+      { $match: { createdBy: mongoUserId } },
       {
         $facet: {
-          // All-time stats
+          // All-time stats for completed orders only
           allTime: [
+            {
+              $match: { status: "completed" }
+            },
             {
               $group: {
                 _id: null,
                 totalRevenue: { $sum: "$totalAmount" },
                 totalCompletedOrders: { $sum: 1 },
+              },
+            },
+          ],
+          // Pending Orders Count
+          pendingOrders: [
+            {
+              $match: { status: "pending" }, // Filter for pending orders
+            },
+            {
+              $group: {
+                _id: null,
+                totalPendingOrders: { $sum: 1 },
               },
             },
           ],
@@ -85,6 +100,7 @@ export async function GET(req: NextRequest) {
 
     const allTimeStats = summaryResult[0]?.allTime[0];
     const todayStats = summaryResult[0]?.today[0];
+    const pendingOrdersStats = summaryResult[0]?.pendingOrders[0];
 
     // Final Response - match dashboard interface
     const dashboardData = {
@@ -92,6 +108,7 @@ export async function GET(req: NextRequest) {
       totalOrders: allTimeStats?.totalCompletedOrders || 0,
       todayRevenue: todayStats?.todayRevenue || 0,
       todayOrders: todayStats?.todayOrders || 0,
+      pendingOrders: pendingOrdersStats?.totalPendingOrders || 0,
       totalProducts: await Product.countDocuments({ createdBy: userId }),
       totalCustomers: customerCount.length,
       recentOrders,

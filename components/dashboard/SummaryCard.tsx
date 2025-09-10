@@ -10,7 +10,8 @@ interface SummaryCardProps {
   icon: React.ReactNode;
   trend?: { value: string; positive: boolean };
   className?: string;
-  titleColor?: string;
+  iconBgColor?: string;
+  iconColor?: string;
 }
 
 export const SummaryCard = ({
@@ -20,7 +21,8 @@ export const SummaryCard = ({
   icon,
   trend,
   className,
-  titleColor,
+  iconBgColor,
+  iconColor,
 }: SummaryCardProps) => {
   const isDarkGradient =
     className?.includes("900") || className?.includes("bg-gradient");
@@ -30,19 +32,27 @@ export const SummaryCard = ({
     <Card className={`bg-white shadow-none rounded-none ${className}`}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
         <CardTitle
-          className={`text-sm font-medium ${
-            titleColor || "text-muted-foreground"
+          className={`text-sm tracking-tight font-medium uppercase ${
+            isDarkGradient ? "text-white" : "text-muted-foreground"
           }`}
         >
           {title}
         </CardTitle>
         <div
           className={`p-2 rounded-none ${
-            hasWhiteBackground
-              ? "bg-gray-100 text-gray-700"
+            iconBgColor ||
+            (hasWhiteBackground
+              ? "bg-gray-100"
               : isDarkGradient
-              ? "bg-white/10 text-white"
-              : "bg-gray-50 text-gray-600"
+              ? "bg-white/10"
+              : "bg-gray-50")
+          } ${
+            iconColor ||
+            (hasWhiteBackground
+              ? "text-gray-700"
+              : isDarkGradient
+              ? "text-white"
+              : "text-gray-600")
           }`}
         >
           {icon}
@@ -50,7 +60,7 @@ export const SummaryCard = ({
       </CardHeader>
       <CardContent className="pt-0">
         <div
-          className={`text-4xl font-bold font-mono ${
+          className={`text-4xl font-mono ${
             hasWhiteBackground
               ? "text-gray-900"
               : isDarkGradient

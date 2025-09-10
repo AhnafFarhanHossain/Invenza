@@ -47,7 +47,7 @@ const OrderSchema: Schema = new Schema(
     totalAmount: { type: Number, required: true, min: 0 },
     status: {
       type: String,
-      enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
+      enum: ["pending", "completed", "cancelled"],
       default: "pending",
     },
     createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },

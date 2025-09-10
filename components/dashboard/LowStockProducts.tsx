@@ -23,11 +23,11 @@ export const LowStockProducts = ({ products }: LowStockProductsProps) => {
   };
 
   return (
-    <Card className="border-2 border-gray-200 bg-white shadow-none rounded-none">
+    <Card className="border border-gray-200 bg-orange-50 shadow-none rounded-none">
       <CardHeader className="flex flex-row items-center justify-between pb-4">
         <div className="flex items-center gap-2">
           <AlertTriangle className="w-5 h-5 text-amber-600" />
-          <CardTitle className="text-gray-900">Low Stock Alert</CardTitle>
+          <CardTitle className="text-gray-900 uppercase">Low Stock Alert</CardTitle>
         </div>
         <Button
           variant="ghost"

@@ -141,14 +141,14 @@ export function ActivityBar({
 
         {/* Right Section - Search Bar + Actions + Profile */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Calendar className="w-4 h-4" />
+          <div className="flex items-center gap-2 px-3 py-1 rounded-md bg-gray-50 border border-gray-200 text-sm text-gray-700 font-medium">
+            <Calendar className="w-4 h-4 text-gray-500" />
             <span>
               {new Date().toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
+                weekday: "short",
+                month: "short",
                 day: "numeric",
+                year: "numeric",
               })}
             </span>
           </div>
@@ -205,11 +205,11 @@ export function ActivityBar({
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-xs cursor-pointer">
-                <User className="mr-2 h-3.5 w-3.5" />
+                <User className="mr-2 h-3.5 w-3.5 hover:text-white" />
                 Profile
               </DropdownMenuItem>
               <DropdownMenuItem className="text-xs cursor-pointer">
-                <Settings className="mr-2 h-3.5 w-3.5" />
+                <Settings className="mr-2 h-3.5 w-3.5 hover:text-white" />
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -217,7 +217,7 @@ export function ActivityBar({
                 onClick={handleSignOut}
                 className="text-xs text-red-600 focus:text-red-600 cursor-pointer"
               >
-                <LogOut className="mr-2 h-3.5 w-3.5" />
+                <LogOut className="mr-2 h-3.5 w-3.5 hover:text-white" />
                 Sign Out
               </DropdownMenuItem>
             </DropdownMenuContent>
