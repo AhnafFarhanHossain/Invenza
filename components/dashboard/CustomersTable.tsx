@@ -62,64 +62,113 @@ export default function CustomersTable({
   }
 
   return (
-    <div className="bg-white border border-gray-200/60 overflow-hidden shadow-none">
-      <div className="min-w-[500px] sm:min-w-0">
-        <Table className="align-middle bg-gray-50">
-          <TableHeader className="bg-soft-gray font-mono uppercase font-bold text-black">
-            <TableRow className="bg-transparent border-b border-gray-200/40">
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-bold text-black">
-                Customer
-              </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-[13px] font-bold text-black">
-                Email
-              </TableHead>
-              <TableHead className="px-3 py-2 sm:px-4 sm:py-3 text-right text-xs sm:text-[13px] font-bold text-black">
-                Actions
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {customers.map((customer, index) => (
-              <TableRow
-                key={`${customer.customerEmail}-${index}`}
-                className="group hover:bg-gray-50/60 transition-colors border-b border-gray-200/30"
+    <div className="w-full">
+      {/* Mobile Card Layout */}
+      <div className="block md:hidden space-y-4">
+        {customers.map((customer, index) => (
+          <div
+            key={`${customer.customerEmail}-${index}`}
+            className="bg-white border border-gray-200/60 rounded-lg p-4 hover:bg-gray-50/60 transition-colors"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200/50 flex-shrink-0">
+                  <span className="text-sm font-medium text-gray-600">
+                    {customer.customerName
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </span>
+                </div>
+                <div className="flex flex-col flex-1 min-w-0">
+                  <span className="font-medium text-sm leading-tight text-gray-900">
+                    {customer.customerName}
+                  </span>
+                  <span className="text-xs text-muted-foreground leading-tight truncate">
+                    {customer.customerEmail}
+                  </span>
+                </div>
+              </div>
+              <Button
+                variant="link"
+                size="sm"
+                asChild
+                className="text-sm text-primary hover:text-primary/80 flex-shrink-0"
               >
-                <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5">
-                  <div className="flex flex-col">
-                    <span className="font-medium text-sm sm:text-base leading-tight text-gray-900">
-                      {customer.customerName}
-                    </span>
-                    <span className="text-xs text-muted-foreground leading-tight">
-                      Customer
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-xs sm:text-sm text-gray-700 truncate max-w-[120px] sm:max-w-none">
-                  {customer.customerEmail}
-                </TableCell>
-                <TableCell className="px-3 py-2.5 sm:px-4 sm:py-3.5 text-right">
-                  <Button
-                    variant="link"
-                    size="sm"
-                    asChild
-                    className="text-xs sm:text-sm text-primary hover:text-primary/80"
-                  >
-                    <Link
-                      href={`/dashboard/customers/${encodeURIComponent(
-                        customer.customerEmail
-                      )}`}
-                      className="inline-flex items-center"
-                    >
-                      <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 opacity-80 group-hover:opacity-100 transition-opacity" />
-                      <span className="hidden sm:inline">View</span>
-                      <span className="sm:hidden">👁</span>
-                    </Link>
-                  </Button>
-                </TableCell>
+                <Link
+                  href={`/dashboard/customers/${encodeURIComponent(
+                    customer.customerEmail
+                  )}`}
+                  className="inline-flex items-center"
+                >
+                  <Eye className="w-4 h-4 mr-1" />
+                  <span>View</span>
+                </Link>
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Table Layout */}
+      <div className="hidden md:block bg-white border border-gray-200/60 overflow-hidden shadow-none">
+        <div className="overflow-x-auto">
+          <Table className="align-middle bg-gray-50 min-w-[600px]">
+            <TableHeader className="bg-soft-gray font-mono uppercase font-bold text-black">
+              <TableRow className="bg-transparent border-b border-gray-200/40">
+                <TableHead className="px-4 py-3 text-sm font-bold text-black">
+                  Customer
+                </TableHead>
+                <TableHead className="px-4 py-3 text-sm font-bold text-black">
+                  Email
+                </TableHead>
+                <TableHead className="px-4 py-3 text-right text-sm font-bold text-black">
+                  Actions
+                </TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {customers.map((customer, index) => (
+                <TableRow
+                  key={`${customer.customerEmail}-${index}`}
+                  className="group hover:bg-gray-50/60 transition-colors border-b border-gray-200/30"
+                >
+                  <TableCell className="px-4 py-3.5">
+                    <div className="flex flex-col">
+                      <span className="font-medium text-sm leading-tight text-gray-900">
+                        {customer.customerName}
+                      </span>
+                      <span className="text-xs text-muted-foreground leading-tight">
+                        Customer
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="px-4 py-3.5 text-sm text-gray-700">
+                    {customer.customerEmail}
+                  </TableCell>
+                  <TableCell className="px-4 py-3.5 text-right">
+                    <Button
+                      variant="link"
+                      size="sm"
+                      asChild
+                      className="text-sm text-primary hover:text-primary/80"
+                    >
+                      <Link
+                        href={`/dashboard/customers/${encodeURIComponent(
+                          customer.customerEmail
+                        )}`}
+                        className="inline-flex items-center"
+                      >
+                        <Eye className="w-4 h-4 mr-2" />
+                        <span>View</span>
+                      </Link>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   );

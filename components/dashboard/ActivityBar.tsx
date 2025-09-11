@@ -11,6 +11,8 @@ import {
   LogOut,
   Settings,
   Calendar,
+  ClipboardList,
+  Package,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -107,7 +109,7 @@ export function ActivityBar({
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-30 border-b border-gray-200 bg-neutral-100 shadow-sm">
+    <div className="fixed top-0 left-0 right-0 z-30 border-b border-gray-200 bg-neutral-100 shadow-sm w-full">
       <div className="flex h-14 items-center justify-between px-4">
         {/* Left Section - Menu + Logo + Title */}
         <div className="flex items-center gap-4">
@@ -120,7 +122,7 @@ export function ActivityBar({
             <Menu className="h-4 w-4 text-gray-700" />
           </Button>
 
-          <div className="flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-2">
             <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/40">
               <Image
                 src="/invenza-icon.png"
@@ -141,7 +143,7 @@ export function ActivityBar({
 
         {/* Right Section - Search Bar + Actions + Profile */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1 rounded-md bg-gray-50 border border-gray-200 text-sm text-gray-700 font-medium">
+          <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-md bg-gray-50 border border-gray-200 text-sm text-gray-700 font-medium">
             <Calendar className="w-4 h-4 text-gray-500" />
             <span>
               {new Date().toLocaleDateString("en-US", {
@@ -154,16 +156,16 @@ export function ActivityBar({
           </div>
           {/* Search Bar */}
           <SearchBar placeholder="Search Products..." />
-          {/* Add Order Button */}
+          {/* Add Order Button - clipboard icon provides clear visual cue */}
           <Button onClick={handleAddOrder} size="default" variant="outline">
-            <Plus className="mr-1.5 h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Add New Order</span>
+            <ClipboardList className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline ml-1.5">Add New Order</span>
           </Button>
 
-          {/* Add Product Button */}
+          {/* Add Product Button - package icon provides clear visual cue */}
           <Button onClick={handleAddProduct} size="default">
-            <Plus className="mr-1.5 h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Add Product</span>
+            <Package className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline ml-1.5">Add Product</span>
           </Button>
 
           {/* Notifications */}

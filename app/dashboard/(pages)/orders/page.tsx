@@ -44,37 +44,27 @@ export default function OrdersPage() {
 
   if (loading) {
     return (
-      <div className="flex-1 space-y-4 p-4 sm:p-6 md:p-8 pt-6">
-        <div className="flex items-center justify-between space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-            Orders
-          </h2>
+      <div className="p-4 space-y-4">
+        <h1 className="text-2xl font-light text-black tracking-wide mb-4">
+          Orders
+        </h1>
+        <div className="border border-gray-200 bg-white p-4 rounded-none">
+          <div className="flex items-center justify-center py-8">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div>
+          </div>
         </div>
-
-        <Card className="border-gray-200">
-          <CardContent>
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 space-y-4 p-4 sm:p-6 md:p-8 pt-6 shadow-none">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-          Orders
-        </h2>
+    <div className="p-4 space-y-4 w-full">
+      <h1 className="text-2xl font-light text-black tracking-wide mb-4">
+        Orders
+      </h1>
+      <div className="bg-white rounded-none">
+        <OrdersTable orders={orders} />
       </div>
-
-      <Card className="border-none shadow-none">
-        <CardContent>
-          <OrdersTable orders={orders} />
-        </CardContent>
-      </Card>
     </div>
   );
 }

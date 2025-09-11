@@ -63,7 +63,7 @@ const Products = () => {
 
   return (
     <div className="w-full">
-      <h1 className="text-4xl font-bold mb-8">All Products</h1>
+      <h1 className="text-2xl font-light text-black tracking-wide mb-4">All Products</h1>
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 animate-pulse">
           {Array.from({ length: 10 }).map((_, index) => (

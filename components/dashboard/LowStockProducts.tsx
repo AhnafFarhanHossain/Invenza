@@ -23,45 +23,47 @@ export const LowStockProducts = ({ products }: LowStockProductsProps) => {
   };
 
   return (
-    <Card className="border-2 border-orange-200 bg-orange-100 shadow-none rounded-sm">
-      <CardHeader className="flex flex-row items-center justify-between pb-4">
+    <Card className="border border-gray-200 bg-white shadow-none rounded-none">
+      <CardHeader className="flex flex-row items-center justify-between pb-3">
         <div className="flex items-center gap-2">
-          <AlertTriangle className="w-5 h-5 text-amber-600" />
-          <CardTitle className="text-gray-900 uppercase">Low Stock Alert</CardTitle>
+          <div className="w-8 h-8 bg-gray-100 flex items-center justify-center rounded-none">
+            <AlertTriangle className="w-4 h-4 text-gray-700" />
+          </div>
+          <CardTitle className="text-black font-light uppercase tracking-wider text-xs sm:text-sm">Low Stock Alert</CardTitle>
         </div>
         <Button
           variant="ghost"
           size="sm"
-          className="text-primary hover:bg-primary/5 border border-transparent hover:border-primary/20"
+          className="text-gray-600 hover:bg-gray-50 border border-transparent hover:border-gray-200 rounded-none text-xs font-light"
           onClick={handleViewAllProducts}
         >
-          <Eye className="w-4 h-4 mr-2" />
+          <Eye className="w-3 h-3 mr-1" />
           View All
         </Button>
       </CardHeader>
       <CardContent className="pt-0">
         {products.length > 0 ? (
-          <div className="space-y-3">
+          <div className="space-y-1">
             {products.map((product, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-3 rounded-lg border border-gray-200/50 hover:bg-gray-50/50 transition-colors"
+                className="flex items-center justify-between p-2 border border-gray-200 hover:bg-gray-50 transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-amber-100/50 flex items-center justify-center border border-amber-200/50">
-                    <Package className="w-5 h-5 text-amber-600" />
+                <div className="flex items-center gap-2 truncate max-w-[70%]">
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-none bg-gray-100 flex items-center justify-center">
+                    <Package className="w-3 h-3 text-gray-600" />
                   </div>
-                  <div>
-                    <p className="font-medium text-gray-900">{product.name}</p>
-                    <p className="text-sm text-muted-foreground">
+                  <div className="truncate">
+                    <p className="font-light text-black text-xs sm:text-sm truncate">{product.name}</p>
+                    <p className="text-xs text-gray-500 font-light truncate">
                       Stock running low
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
                   <Badge
-                    variant="destructive"
-                    className="bg-rose-100/40 text-rose-900/80 dark:bg-rose-500/15 dark:text-rose-100/90"
+                    variant="secondary"
+                    className="bg-gray-100 text-gray-700 border border-gray-300 rounded-none font-light text-xs"
                   >
                     {product.quantity} left
                   </Badge>
@@ -70,10 +72,10 @@ export const LowStockProducts = ({ products }: LowStockProductsProps) => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 text-muted-foreground">
-            <AlertTriangle className="w-12 h-12 mx-auto mb-4 text-muted-foreground/20" />
-            <p className="text-lg font-medium">All stocked up!</p>
-            <p className="text-sm">No low stock items to show</p>
+          <div className="text-center py-8 text-gray-500">
+            <AlertTriangle className="w-10 h-10 mx-auto mb-3 text-gray-300" />
+            <p className="text-base font-light text-gray-700">All stocked up!</p>
+            <p className="text-xs text-gray-500">No low stock items to show</p>
           </div>
         )}
       </CardContent>

@@ -69,7 +69,9 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
   };
 
   // Map order status to StatusBadge compatible status
-  const mapToStatusBadgeStatus = (status: Order["status"]): "pending" | "completed" | "cancelled" => {
+  const mapToStatusBadgeStatus = (
+    status: Order["status"]
+  ): "pending" | "completed" | "cancelled" => {
     switch (status) {
       case "processing":
       case "shipped":
@@ -112,94 +114,204 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
   }
 
   return (
-    <div className="rounded-lg border border-gray-200/50">
-      <Table className="bg-gray-50">
-        <TableHeader>
-          <TableRow className="border-gray-200/50 bg-soft-gray hover:bg-soft-gray font-mono">
-            <TableHead className="font-bold text-dark-gray uppercase">
-              Order #
-            </TableHead>
-            <TableHead className="font-bold text-dark-gray uppercase">
-              Customer
-            </TableHead>
-            <TableHead className="font-bold text-dark-gray uppercase">
-              Date
-            </TableHead>
-            <TableHead className="font-bold text-dark-gray uppercase text-right">
-              Amount
-            </TableHead>
-            <TableHead className="font-bold text-dark-gray uppercase">
-              Status
-            </TableHead>
-            <TableHead className="font-bold text-dark-gray uppercase text-right">
-              Actions
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {orders.map((order) => {
-            const displayOrderNumber =
-              order.orderNumber || `ORD-${order._id.slice(-6).toUpperCase()}`;
-            return (
-              <TableRow
-                key={order._id}
-                className="cursor-pointer hover:bg-gray-50/80 transition-colors border-gray-200/30"
-                onClick={() => router.push(`/dashboard/orders/${order._id}`)}
-              >
-                <TableCell className="font-medium">
-                  <div className="flex items-center gap-2">
-                    <Package className="w-4 h-4 text-muted-foreground" />
-                    {displayOrderNumber}
+    <div className="w-full">
+      {/* Mobile Card Layout */}
+      <div className="block md:hidden space-y-4">
+        {orders.map((order) => {
+          const displayOrderNumber =
+            order.orderNumber || `ORD-${order._id.slice(-6).toUpperCase()}`;
+          return (
+            <div
+              key={order._id}
+              className="bg-white border border-gray-200/60 rounded-lg p-5 cursor-pointer hover:bg-gray-50/50 transition-colors"
+              onClick={() => router.push(`/dashboard/orders/${order._id}`)}
+            >
+              {/* Header Section - Order Number & Status */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <Package className="w-5 h-5 text-gray-400" />
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium mb-0.5">
+                      Order Number
+                    </p>
+                    <p className="font-semibold text-gray-900">
+                      {displayOrderNumber}
+                    </p>
                   </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200/50">
-                      <span className="text-xs font-medium text-gray-600">
-                        {order.customerName
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-medium text-sm sm:text-base leading-tight text-gray-900">
-                        {order.customerName}
-                      </span>
-                      <span className="text-xs text-muted-foreground leading-tight truncate max-w-[120px] sm:max-w-none">
-                        {order.customerEmail}
-                      </span>
-                    </div>
+                </div>
+                <StatusBadge status={mapToStatusBadgeStatus(order.status)} />
+              </div>
+
+              {/* Customer Section */}
+              <div className="mb-4">
+                <p className="text-xs text-gray-500 font-medium mb-2">
+                  Customer
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200/50">
+                    <span className="text-gray-600 font-medium text-sm">
+                      {order.customerName
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </span>
                   </div>
-                </TableCell>
-                <TableCell className="text-gray-700">
-                  {formatDate(order.createdAt)}
-                </TableCell>
-                <TableCell className="text-right font-medium">
-                  {formatCurrency(order.totalAmount)}
-                </TableCell>
-                <TableCell>
-                  <StatusBadge status={mapToStatusBadgeStatus(order.status)} />
-                </TableCell>
-                <TableCell className="text-right">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-primary hover:bg-primary/5 border border-transparent hover:border-primary/20"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      router.push(`/dashboard/orders/${order._id}`);
-                    }}
-                  >
-                    <Eye className="w-4 h-4 mr-2" />
-                    View
-                  </Button>
-                </TableCell>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-gray-900 leading-tight">
+                      {order.customerName}
+                    </p>
+                    <p className="text-sm text-gray-600 truncate">
+                      {order.customerEmail}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Order Details Section */}
+              <div className="border-t border-gray-100 pt-4 mb-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium mb-1">
+                      Total Amount
+                    </p>
+                    <p className="font-semibold text-gray-900">
+                      {formatCurrency(order.totalAmount)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium mb-1">
+                      Order Date
+                    </p>
+                    <p className="font-medium text-gray-700">
+                      {formatDate(order.createdAt)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Section */}
+              <div className="flex justify-center border-t border-gray-100 pt-3">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-primary hover:bg-primary/5 border border-transparent hover:border-primary/20"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(`/dashboard/orders/${order._id}`);
+                  }}
+                >
+                  <Eye className="w-4 h-4 mr-2" />
+                  View Details
+                </Button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Desktop Table Layout */}
+      <div className="hidden md:block rounded-lg overflow-auto">
+        <div className="overflow-x-auto">
+          <Table className="bg-gray-50 min-w-[800px]">
+            <TableHeader>
+              <TableRow className="border-gray-200/50 bg-soft-gray hover:bg-soft-gray font-mono">
+                <TableHead className="font-bold text-dark-gray uppercase py-2">
+                  Order #
+                </TableHead>
+                <TableHead className="font-bold text-dark-gray uppercase py-2">
+                  Customer
+                </TableHead>
+                <TableHead className="font-bold text-dark-gray uppercase py-2">
+                  Date
+                </TableHead>
+                <TableHead className="font-bold text-dark-gray uppercase text-right py-2">
+                  Amount
+                </TableHead>
+                <TableHead className="font-bold text-dark-gray uppercase py-2">
+                  Status
+                </TableHead>
+                <TableHead className="font-bold text-dark-gray uppercase text-right py-2">
+                  Actions
+                </TableHead>
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+            </TableHeader>
+            <TableBody>
+              {orders.map((order) => {
+                const displayOrderNumber =
+                  order.orderNumber ||
+                  `ORD-${order._id.slice(-6).toUpperCase()}`;
+                return (
+                  <TableRow
+                    key={order._id}
+                    className="cursor-pointer hover:bg-gray-50/80 transition-colors border-gray-200/30"
+                    onClick={() =>
+                      router.push(`/dashboard/orders/${order._id}`)
+                    }
+                  >
+                    <TableCell className="font-medium py-2">
+                      <div className="flex items-center gap-2">
+                        <Package className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-sm lg:text-base">
+                          {displayOrderNumber}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200/50">
+                          <span className="text-xs font-medium text-gray-600">
+                            {order.customerName
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
+                          </span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-medium text-sm lg:text-base leading-tight text-gray-900">
+                            {order.customerName}
+                          </span>
+                          <span className="text-xs text-muted-foreground leading-tight truncate max-w-[150px] lg:max-w-[200px]">
+                            {order.customerEmail}
+                          </span>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-gray-700 py-2">
+                      <span className="text-sm">
+                        {formatDate(order.createdAt)}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right font-medium py-2">
+                      <span className="text-sm">
+                        {formatCurrency(order.totalAmount)}
+                      </span>
+                    </TableCell>
+                    <TableCell className="py-2">
+                      <StatusBadge
+                        status={mapToStatusBadgeStatus(order.status)}
+                      />
+                    </TableCell>
+                    <TableCell className="text-right py-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-primary hover:bg-primary/5 border border-transparent hover:border-primary/20"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/dashboard/orders/${order._id}`);
+                        }}
+                      >
+                        <Eye className="w-4 h-4 mr-2" />
+                        <span className="text-sm">View</span>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     </div>
   );
 }

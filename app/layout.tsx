@@ -28,7 +28,10 @@ export default function RootLayout({
   return (
     <>
       <html lang="en" className={`${play.variable} ${geistMono.variable} h-full`}>
-        <body className="antialiased bg-neutral-50">
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        </head>
+        <body className="antialiased bg-neutral-50 overflow-x-hidden">
           {children}
           <Toaster />
         </body>

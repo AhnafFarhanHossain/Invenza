@@ -35,38 +35,41 @@ export const RecentOrdersTable = ({ orders }: RecentOrdersTableProps) => {
   };
 
   return (
-    <Card className="border-2 border-gray-200 bg-white shadow-none rounded-sm">
-      <CardHeader className="flex flex-row items-center justify-between pb-4">
+    <Card className="border border-gray-200 bg-white shadow-none rounded-none">
+      <CardHeader className="flex flex-row items-center justify-between pb-3">
         <div className="flex items-center gap-2">
-          <ShoppingCart className="w-5 h-5 text-gray-600" />
-          <CardTitle className="text-gray-900 uppercase">Recent Orders</CardTitle>
+          <div className="w-8 h-8 bg-gray-100 flex items-center justify-center rounded-none">
+            <ShoppingCart className="w-4 h-4 text-gray-700" />
+          </div>
+          <CardTitle className="text-black font-light uppercase tracking-wider text-xs sm:text-sm">Recent Orders</CardTitle>
         </div>
         <Button
           variant="ghost"
           size="sm"
-          className="text-primary hover:bg-primary/5 border border-transparent hover:border-primary/20"
+          className="text-gray-600 hover:bg-gray-50 border border-transparent hover:border-gray-200 rounded-none text-xs font-light"
           onClick={handleViewAllOrders}
         >
-          <Eye className="w-4 h-4 mr-2" />
+          <Eye className="w-3 h-3 mr-1" />
           View All
         </Button>
       </CardHeader>
       <CardContent className="pt-0">
         {orders.length > 0 ? (
-          <div className="rounded-lg border border-gray-200/50">
-            <Table className="bg-gray-50">
+          <div className="border border-gray-200 overflow-hidden">
+            <div className="overflow-x-auto">
+              <Table className="bg-white min-w-[500px]">
               <TableHeader>
-                <TableRow className="border-gray-200/50 bg-soft-gray hover:bg-soft-gray font-mono">
-                  <TableHead className="font-bold text-dark-gray uppercase">
+                <TableRow className="border-b border-gray-200 bg-gray-50 hover:bg-gray-50">
+                  <TableHead className="font-light text-black uppercase text-[10px] sm:text-[11px] tracking-wider py-1.5">
                     Order
                   </TableHead>
-                  <TableHead className="font-bold text-dark-gray uppercase">
+                  <TableHead className="font-light text-black uppercase text-[10px] sm:text-[11px] tracking-wider py-1.5">
                     Customer
                   </TableHead>
-                  <TableHead className="font-bold text-dark-gray uppercase">
+                  <TableHead className="font-light text-black uppercase text-[10px] sm:text-[11px] tracking-wider py-1.5">
                     Status
                   </TableHead>
-                  <TableHead className="font-bold text-dark-gray uppercase text-right">
+                  <TableHead className="font-light text-black uppercase text-[10px] sm:text-[11px] tracking-wider text-right py-1.5">
                     Amount
                   </TableHead>
                 </TableRow>
@@ -75,46 +78,47 @@ export const RecentOrdersTable = ({ orders }: RecentOrdersTableProps) => {
                 {orders.map((order) => (
                   <TableRow
                     key={order.orderNumber}
-                    className="cursor-pointer hover:bg-gray-50/80 transition-colors border-gray-200/30"
+                    className="cursor-pointer hover:bg-gray-50 transition-colors border-b border-gray-100"
                     onClick={() =>
                       router.push(`/dashboard/orders/${order._id}`)
                     }
                   >
-                    <TableCell className="font-medium">
-                      <div className="flex items-center gap-2">
-                        <Package className="w-4 h-4 text-muted-foreground" />
-                        {order.orderNumber}
+                    <TableCell className="font-light text-black py-1.5">
+                      <div className="flex items-center gap-1">
+                        <Package className="w-3 h-3 text-gray-600" />
+                        <span className="text-xs sm:text-sm">{order.orderNumber}</span>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-black py-1.5">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200/50">
-                          <span className="text-xs font-medium text-gray-600">
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-none bg-gray-100 flex items-center justify-center">
+                          <span className="text-[9px] sm:text-[10px] font-light text-gray-700">
                             {order.customerName
                               .split(" ")
                               .map((n) => n[0])
                               .join("")}
                           </span>
                         </div>
-                        {order.customerName}
+                        <span className="font-light text-xs sm:text-sm truncate max-w-[100px]">{order.customerName}</span>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="py-1.5">
                       <StatusBadge status={order.status} />
                     </TableCell>
-                    <TableCell className="text-right font-medium">
+                    <TableCell className="text-right font-light text-black font-mono text-xs sm:text-sm py-1.5">
                       ${order.totalAmount.toFixed(2)}
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </div>
           </div>
         ) : (
-          <div className="text-center py-12 text-muted-foreground">
-            <ShoppingCart className="w-12 h-12 mx-auto mb-4 text-muted-foreground/20" />
-            <p className="text-lg font-medium">No recent orders</p>
-            <p className="text-sm">Orders will appear here once created</p>
+          <div className="text-center py-8 text-gray-500">
+            <ShoppingCart className="w-10 h-10 mx-auto mb-3 text-gray-300" />
+            <p className="text-base font-light text-gray-700">No recent orders</p>
+            <p className="text-xs text-gray-500">Orders will appear here once created</p>
           </div>
         )}
       </CardContent>

@@ -89,90 +89,92 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Main Metrics - 4 cards in horizontal row */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+    <div className="p-2 md:p-4 space-y-3">
+      {/* Main Metrics - Responsive cards */}
+      <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         <SummaryCard
           title="Total Revenue"
           value={`$${stats.totalRevenue.toFixed(2)}`}
-          icon={<TrendingUp className="w-5 h-5" />}
+          icon={<TrendingUp className="w-4 h-4" />}
           description="All time revenue"
-          className="bg-gradient-to-tr from-black via-orange-900 to-amber-700 border-2 border-soft-gray text-white rounded-sm"
-          iconBgColor="bg-white/10"
+          className="border border-gray-200 bg-gradient-to-br from-[#cc4400] via-[#ff6b00] to-[#ff8533] rounded-none text-white xl:col-span-1"
+          iconBgColor="bg-white/20"
           iconColor="text-white"
         />
         <SummaryCard
           title="Total Orders"
           value={stats.totalOrders}
-          icon={<ShoppingCart className="w-5 h-5" />}
+          icon={<ShoppingCart className="w-4 h-4" />}
           description="All time orders"
-          className="border-2 border-soft-gray bg-white rounded-sm"
-          iconBgColor="bg-blue-100"
-          iconColor="text-blue-700"
+          className="border border-gray-200 bg-white rounded-none"
+          iconBgColor="bg-blue-50"
+          iconColor="text-blue-600"
         />
         <SummaryCard
           title="Total Products"
           value={stats.totalProducts}
-          icon={<Package className="w-5 h-5" />}
+          icon={<Package className="w-4 h-4" />}
           description="Active products"
-          className="border-2 border-soft-gray bg-white rounded-sm"
-          iconBgColor="bg-yellow-100"
-          iconColor="text-yellow-700"
+          className="border border-gray-200 bg-white rounded-none"
+          iconBgColor="bg-purple-50"
+          iconColor="text-purple-600"
         />
         <SummaryCard
           title="Total Customers"
           value={stats.totalCustomers}
-          icon={<Users className="w-5 h-5" />}
+          icon={<Users className="w-4 h-4" />}
           description="Registered customers"
-          className="border-2 border-soft-gray bg-white rounded-sm"
-          iconBgColor="bg-indigo-100"
-          iconColor="text-indigo-700"
+          className="border border-gray-200 bg-white rounded-none lg:col-span-1 xl:col-span-1"
+          iconBgColor="bg-indigo-50"
+          iconColor="text-indigo-600"
         />
         <SummaryCard
           title="Pending Orders"
           value={stats.pendingOrders}
-          icon={<Clock className="w-5 h-5" />}
+          icon={<Clock className="w-4 h-4" />}
           description="Pending orders"
-          className="border-2 border-soft-gray bg-white rounded-sm"
-          iconBgColor="bg-red-100"
-          iconColor="text-red-700"
+          className="border border-gray-200 bg-white rounded-none sm:col-span-2 lg:col-span-1 xl:col-span-1"
+          iconBgColor="bg-amber-50"
+          iconColor="text-amber-600"
         />
       </div>
 
-      {/* Today's Stats - Sharp Minimal Design with Invenza Colors */}
-      <div className="grid gap-6 md:grid-cols-2">
-        <div className="p-5 border-2 border-[var(--soft-gray)] bg-white rounded-sm">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-[var(--primary)] flex items-center justify-center rounded-none">
-              <TrendingUp className="w-5 h-5 text-[var(--light-base)]" />
+      {/* Today's Stats - Responsive layout */}
+      <div className="grid gap-2 grid-cols-1 sm:grid-cols-2">
+        <div className="p-3 sm:p-4 border border-gray-200 bg-white rounded-none">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-emerald-50 flex items-center justify-center rounded-none">
+              <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
             </div>
             <div>
-              <p className="text-xs font-medium text-[var(--muted-orange)] tracking-wider uppercase">
+              <p className="text-[10px] sm:text-xs font-light text-gray-500 tracking-wider uppercase">
                 Today's Revenue
               </p>
-              <p className="text-2xl font-medium text-[var(--black)] font-mono mt-2">
+              <p className="text-lg sm:text-xl font-light text-black font-mono mt-0.5 sm:mt-1">
                 ${stats.todayRevenue.toFixed(2)}
               </p>
             </div>
           </div>
         </div>
-        <div className="p-5 border-2 border-[var(--soft-gray)] bg-white rounded-sm">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-[var(--primary)] flex items-center justify-center rounded-none">
-              <ShoppingCart className="w-5 h-5 text-[var(--light-base)]" />
+        <div className="p-3 sm:p-4 border border-gray-200 bg-white rounded-none">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-50 flex items-center justify-center rounded-none">
+              <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" />
             </div>
             <div>
-              <p className="text-xs font-medium text-[var(--muted-orange)] tracking-wider uppercase">
+              <p className="text-[10px] sm:text-xs font-light text-gray-500 tracking-wider uppercase">
                 Today's Orders
               </p>
-              <p className="text-2xl font-medium text-[var(--black)] font-mono mt-2">
+              <p className="text-lg sm:text-xl font-light text-black font-mono mt-0.5 sm:mt-1">
                 {stats.todayOrders}
               </p>
             </div>
           </div>
         </div>
       </div>
-      <div className="grid gap-6 lg:grid-cols-3">
+      
+      {/* Recent Orders and Low Stock - Responsive layout */}
+      <div className="grid gap-2 grid-cols-1 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <RecentOrdersTable orders={stats.recentOrders} />
         </div>

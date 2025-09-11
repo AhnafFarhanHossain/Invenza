@@ -26,33 +26,33 @@ export const SummaryCard = ({
 }: SummaryCardProps) => {
   const isDarkGradient =
     className?.includes("900") || className?.includes("bg-gradient");
-  const hasWhiteBackground = className?.includes("bg-white");
+  const hasLightBackground = className?.includes("bg-[var(--light-base)]");
 
   return (
-    <Card className={`shadow-none rounded-none ${className}`}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+    <Card className={`shadow-none rounded-none border border-gray-200 ${className}`}>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 sm:pb-2">
         <CardTitle
-          className={`text-sm tracking-tight font-medium uppercase ${
-            isDarkGradient ? "text-white" : "text-muted-foreground"
+          className={`text-[10px] sm:text-xs font-light uppercase tracking-wider ${
+            isDarkGradient ? "text-gray-200" : "text-gray-600"
           }`}
         >
           {title}
         </CardTitle>
         <div
-          className={`p-2 rounded-none ${
+          className={`p-1 sm:p-2 rounded-none ${
             iconBgColor ||
-            (hasWhiteBackground
+            (hasLightBackground
               ? "bg-gray-100"
               : isDarkGradient
               ? "bg-white/10"
-              : "bg-gray-50")
+              : "bg-gray-100")
           } ${
             iconColor ||
-            (hasWhiteBackground
-              ? "text-gray-700"
+            (hasLightBackground
+              ? "text-gray-800"
               : isDarkGradient
-              ? "text-white"
-              : "text-gray-600")
+              ? "text-gray-200"
+              : "text-gray-800")
           }`}
         >
           {icon}
@@ -60,25 +60,25 @@ export const SummaryCard = ({
       </CardHeader>
       <CardContent className="pt-0">
         <div
-          className={`text-4xl font-mono ${
-            hasWhiteBackground
-              ? "text-gray-900"
+          className={`text-2xl sm:text-4xl font-light font-mono tracking-tight ${
+            hasLightBackground
+              ? "text-black"
               : isDarkGradient
               ? "text-white"
-              : "text-gray-900"
+              : "text-black"
           }`}
         >
           {value}
         </div>
         {description && (
-          <div className="flex items-center gap-2 mt-1">
+          <div className="flex items-center gap-1 mt-1">
             <p
-              className={`text-xs ${
-                hasWhiteBackground
-                  ? "text-gray-600"
+              className={`text-[11px] font-light ${
+                hasLightBackground
+                  ? "text-gray-500"
                   : isDarkGradient
-                  ? "text-white/80"
-                  : "text-muted-foreground"
+                  ? "text-gray-300"
+                  : "text-gray-500"
               }`}
             >
               {description}
