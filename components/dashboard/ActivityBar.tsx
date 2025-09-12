@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { usePathname } from "next/navigation";
-import SearchBar from "./SearchBar";
+import SearchBar from "./ProductsSearchBar";
 
 interface ActivityBarProps {
   onSidebarToggle: () => void;
@@ -143,14 +143,20 @@ export function ActivityBar({
 
         {/* Right Section - Search Bar + Actions + Profile */}
         <div className="flex items-center gap-3">
-          <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-md bg-gray-50 border border-gray-200 text-sm text-gray-700 font-medium">
-            <Calendar className="w-4 h-4 text-gray-500" />
+          <div 
+            className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-md bg-gray-50 border border-gray-200 text-xs text-gray-700 font-mono whitespace-nowrap min-w-[85px] shrink-0"
+            title={new Date().toLocaleDateString("en-US", {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+          >
+            <Calendar className="w-3.5 h-3.5 text-gray-500" />
             <span>
               {new Date().toLocaleDateString("en-US", {
-                weekday: "short",
                 month: "short",
                 day: "numeric",
-                year: "numeric",
               })}
             </span>
           </div>
