@@ -1,6 +1,6 @@
 "use client";
 
-import { SimpleDateRangePicker } from "@/components/dashboard/DateRangePicker";
+import { DateRangePicker } from "@/components/dashboard/DateRangePicker";
 import React from "react";
 
 const Reports = () => {
@@ -56,7 +56,7 @@ const Reports = () => {
     <div className="p-4 space-y-4">
       <h1 className="text-2xl font-medium mb-8">Reports</h1>
 
-      <SimpleDateRangePicker onDateChange={handleDateRangeChange} />
+      <DateRangePicker onDateChange={handleDateRangeChange} />
 
       {/* Display the current date range */}
       {dateRange && (
