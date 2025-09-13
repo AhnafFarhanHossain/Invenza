@@ -15,89 +15,86 @@ export async function GET(req: NextRequest) {
 
     const mongoUserId = new mongoose.Types.ObjectId(userId);
 
-    // Search Params
+    // Get query params
     const { searchParams } = new URL(req.url);
     const startDateParam = searchParams.get("startDate");
     const endDateParam = searchParams.get("endDate");
-    const limit = parseInt(searchParams.get("limit") || "20");
 
-    // Set up date range
+    // Validate and parse dates
     const endDate = endDateParam ? new Date(endDateParam) : new Date();
-    const startDate = startDateParam ? new Date(startDateParam) : new Date();
-
-    // Only apply default if no start date is provided
+    const startDate = startDateParam 
+      ? new Date(startDateParam) 
+      : new Date(endDate);
+    
+    // Apply default if no start date provided (30 days before endDate)
     if (!startDateParam) {
       startDate.setDate(endDate.getDate() - 30);
     }
 
-    // Set time to start and end of day in UTC to avoid timezone issues
-    startDate.setUTCHours(0, 0, 0, 0);
-    endDate.setUTCHours(23, 59, 59, 999);
+    // Set time to start and end of day in UTC
+    const adjustedStartDate = new Date(startDate);
+    adjustedStartDate.setUTCHours(0, 0, 0, 0);
+    const adjustedEndDate = new Date(endDate);
+    adjustedEndDate.setUTCHours(23, 59, 59, 999);
 
-    // Base filter
+    // Base filter with adjusted dates
     const baseFilter = {
       createdBy: mongoUserId,
       status: "completed",
-      createdAt: { $gte: startDate, $lte: endDate },
+      createdAt: { $gte: adjustedStartDate, $lte: adjustedEndDate },
     };
 
-    const productsData = await Order.aggregate([
-      {
-        $match: baseFilter,
-      },
-      {
-        $unwind: "$items",
-      },
+    // Aggregate daily sales data
+    const dailySales = await Order.aggregate([
+      { $match: baseFilter },
       {
         $group: {
-          _id: "$items.product",
-          productName: { $first: "$items.name" },
-          totalQuantitySold: { $sum: "$items.quantity" },
-          totalRevenue: {
-            $sum: { $multiply: ["$items.quantity", "$items.price"] },
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
           },
-          averagePrice: { $avg: "$items.price" },
+          totalRevenue: { $sum: "$totalAmount" },
+          orderCount: { $sum: 1 },
         },
       },
       {
-        $sort: { totalRevenue: -1 },
+        $project: {
+          date: "$_id",
+          totalRevenue: 1,
+          orderCount: 1,
+          averageOrderValue: { $divide: ["$totalRevenue", "$orderCount"] },
+        },
       },
-      {
-        $limit: limit,
-      },
+      { $sort: { date: 1 } },
     ]);
 
-    // Format Response
+    // Calculate totals
+    const totalRevenue = dailySales.reduce(
+      (sum, day) => sum + day.totalRevenue,
+      0
+    );
+    const totalOrders = dailySales.reduce(
+      (sum, day) => sum + day.orderCount,
+      0
+    );
+
+    // Format response
     const response = {
       success: true,
-      report: "products",
-      dateRange: { start: startDate, end: endDate },
+      report: "sales",
+      dateRange: { start: adjustedStartDate, end: adjustedEndDate },
       summary: {
-        totalProducts: productsData.length,
-        totalRevenue: productsData.reduce(
-          (sum, product) => sum + product.totalRevenue,
-          0
-        ),
-        totalItemsSold: productsData.reduce(
-          (sum, product) => sum + product.totalQuantitySold,
-          0
-        ),
+        totalRevenue,
+        totalOrders,
         period: `${startDate.toDateString()} to ${endDate.toDateString()}`,
       },
-      data: productsData.map((product) => ({
-        productId: product._id,
-        name: product.productName,
-        quantitySold: product.totalQuantitySold,
-        totalRevenue: product.totalRevenue,
-        averagePrice: Math.round(product.averagePrice * 100) / 100,
-      })),
+      data: dailySales,
     };
 
     return NextResponse.json(response);
   } catch (error: any) {
-    console.error("Products report error:", error);
+    console.error("Sales report error:", error);
     return NextResponse.json(
-      { message: "Failed to generate products report", error: error.message },
+      { message: "Failed to generate sales report", error: error.message },
       { status: 500 }
     );
   }

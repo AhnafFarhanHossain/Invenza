@@ -24,14 +24,25 @@ export function DateRangePicker({ onDateChange }: DateRangePickerProps) {
   const handleFromSelect = (date: Date | undefined) => {
     if (!date) return;
     setFromDate(date);
-    if (toDate && date > toDate) setToDate(undefined);
+    if (toDate) {
+      if (date > toDate) {
+        setToDate(undefined);
+      } else {
+        // Both dates are valid - call change handler and close picker
+        onDateChange({ from: date, to: toDate });
+        setIsRangePickerOpen(false);
+      }
+    }
   };
 
   const handleToSelect = (date: Date | undefined) => {
     if (!date) return;
     setToDate(date);
-    setIsRangePickerOpen(false);
-    if (fromDate) onDateChange({ from: fromDate, to: date });
+    // Close popover if we have both dates
+    if (fromDate) {
+      onDateChange({ from: fromDate, to: date });
+      setIsRangePickerOpen(false);
+    }
   };
 
   const clearSelection = () => {
