@@ -4,8 +4,8 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SalesReport from "@/components/dashboard/SalesReport";
+import ProductsReport from "@/components/dashboard/ProductReport";
 import { DateRangePicker } from "@/components/dashboard/DateRangePicker";
-import { Button } from "@/components/ui/button";
 
 export default function ReportsPage() {
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date } | null>({
@@ -15,6 +15,10 @@ export default function ReportsPage() {
 
   // Adapter to convert to SalesReport expected format
   const salesReportDateRange = dateRange
+    ? { start: dateRange.from, end: dateRange.to }
+    : null;
+
+  const productsReportDateRange = dateRange
     ? { start: dateRange.from, end: dateRange.to }
     : null;
 
@@ -31,19 +35,19 @@ export default function ReportsPage() {
           <TabsList className="bg-white p-0 flex border-b border-gray-200 rounded-none">
             <TabsTrigger
               value="sales"
-              className="relative p-3 border-r border-gray-200 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-[inset_0_-2px_0_0_#ff6b00] data-[state=active]:border-b-0 transition-all duration-200 ease-in-out border-t-0"
+              className="relative p-3 border-r border-gray-200 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-[inset_0_-2px_0_0_#ff6b00] data-[state=active]:border-b-0 transition-all duration-200 ease-in-out border-t-0 cursor-pointer hover:bg-gray-100"
             >
               Sales Report
             </TabsTrigger>
             <TabsTrigger
               value="products"
-              className="relative p-3 border-r border-gray-200 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-[inset_0_-2px_0_0_#ff6b00] data-[state=active]:border-b-0 transition-all duration-200 ease-in-out border-t-0"
+              className="relative p-3 border-r border-gray-200 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-[inset_0_-2px_0_0_#ff6b00] data-[state=active]:border-b-0 transition-all duration-200 ease-in-out border-t-0 cursor-pointer hover:bg-gray-100"
             >
               Products Report
             </TabsTrigger>
             <TabsTrigger
               value="customers"
-              className="relative p-3 border-r border-gray-200 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-[inset_0_-2px_0_0_#ff6b00] data-[state=active]:border-b-0 transition-all duration-200 ease-in-out border-t-0"
+              className="relative p-3 border-r border-gray-200 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-[inset_0_-2px_0_0_#ff6b00] data-[state=active]:border-b-0 transition-all duration-200 ease-in-out border-t-0 cursor-pointer hover:bg-gray-100"
             >
               Customers Report
             </TabsTrigger>
@@ -55,7 +59,9 @@ export default function ReportsPage() {
             )}
           </TabsContent>
           <TabsContent value="products" className="p-4">
-            {/* <ProductsReport dateRange={dateRange} /> */}
+            {productsReportDateRange && (
+              <ProductsReport dateRange={productsReportDateRange} />
+            )}
           </TabsContent>
           <TabsContent value="customers" className="p-4">
             {/* <CustomersReport dateRange={dateRange} /> */}
