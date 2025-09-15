@@ -101,7 +101,10 @@ const ProductReport = ({ dateRange }: ProductReportProps) => {
         {/* Summary Cards Skeleton */}
         <div className="grid gap-3 md:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="bg-white border border-gray-200 rounded-none p-4">
+            <Card
+              key={i}
+              className="bg-white border border-gray-200 rounded-none p-4"
+            >
               <div className="space-y-3">
                 <Skeleton className="h-4 w-24 bg-gray-200" />
                 <Skeleton className="h-6 w-16 bg-gray-200" />
@@ -116,17 +119,19 @@ const ProductReport = ({ dateRange }: ProductReportProps) => {
             <Skeleton className="h-5 w-24 bg-gray-200" />
             <Skeleton className="h-4 w-32 bg-gray-200" />
           </div>
-          
+
           <div className="space-y-3">
             {/* Table Header */}
             <div className="grid grid-cols-4 gap-4">
-              {['Product', 'Qty Sold', 'Revenue', 'Avg. Price'].map((header) => (
-                <div key={header}>
-                  <Skeleton className="h-4 w-full bg-gray-200" />
-                </div>
-              ))}
+              {["Product", "Qty Sold", "Revenue", "Avg. Price"].map(
+                (header) => (
+                  <div key={header}>
+                    <Skeleton className="h-4 w-full bg-gray-200" />
+                  </div>
+                )
+              )}
             </div>
-            
+
             {/* Table Rows */}
             {[...Array(5)].map((_, i) => (
               <div key={i} className="grid grid-cols-4 gap-4">
@@ -250,17 +255,26 @@ const ProductReport = ({ dateRange }: ProductReportProps) => {
         <h3 className="text-lg font-light">Product Performance</h3>
         <div className="space-y-3">
           {data.data.map((product) => (
-            <Card key={product.productId} className="border border-gray-200 rounded-none p-4">
+            <Card
+              key={product.productId}
+              className="border border-gray-200 rounded-none p-4"
+            >
               <div className="grid grid-cols-2 gap-3">
                 <div className="font-light">Product</div>
-                <div className="font-light max-w-xs truncate">{product.name}</div>
-                
+                <div className="font-light max-w-xs truncate">
+                  {product.name}
+                </div>
+
                 <div className="font-light">Quantity Sold</div>
-                <div className="font-mono font-light">{product.quantitySold.toLocaleString()}</div>
-                
+                <div className="font-mono font-light">
+                  {product.quantitySold.toLocaleString()}
+                </div>
+
                 <div className="font-light">Revenue</div>
-                <div className="font-mono font-light">${product.revenue.toLocaleString()}</div>
-                
+                <div className="font-mono font-light">
+                  ${product.revenue.toLocaleString()}
+                </div>
+
                 <div className="font-light">Avg. Price</div>
                 <div className="font-mono font-light">
                   $
