@@ -3,7 +3,7 @@ import { dbConnect } from "@/lib/db/db";
 import mongoose from "mongoose";
 import { getUserIdFromRequest } from "@/lib/auth";
 import Order from "@/models/order.model";
-import getSortStage from "@/utils/getSortStage";
+import getSortStageForCustomers from "@/utils/setSortStageForCustomers";
 
 export async function GET(req: NextRequest) {
   try {
@@ -92,7 +92,7 @@ export async function GET(req: NextRequest) {
           },
         },
       },
-      { $sort: getSortStage({ sortBy }) },
+      { $sort: getSortStageForCustomers({ sortBy }) },
       { $limit: limit },
       {
         $project: {

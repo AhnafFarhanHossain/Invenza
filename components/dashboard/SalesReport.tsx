@@ -65,7 +65,10 @@ export default function SalesReport({ dateRange }: SalesReportProps) {
         {/* Summary Cards Skeleton */}
         <div className="grid gap-3 md:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="bg-white border border-gray-200 rounded-none p-4">
+            <Card
+              key={i}
+              className="bg-white border border-gray-200 rounded-none p-4"
+            >
               <div className="space-y-3">
                 <Skeleton className="h-4 w-24 bg-gray-200" />
                 <Skeleton className="h-6 w-16 bg-gray-200" />
@@ -80,17 +83,17 @@ export default function SalesReport({ dateRange }: SalesReportProps) {
             <Skeleton className="h-5 w-24 bg-gray-200" />
             <Skeleton className="h-4 w-32 bg-gray-200" />
           </div>
-          
+
           <div className="space-y-3">
             {/* Table Header */}
             <div className="grid grid-cols-4 gap-4">
-              {['Date', 'Revenue', 'Orders', 'Avg. Order'].map((header) => (
+              {["Date", "Revenue", "Orders", "Avg. Order"].map((header) => (
                 <div key={header}>
                   <Skeleton className="h-4 w-full bg-gray-200" />
                 </div>
               ))}
             </div>
-            
+
             {/* Table Rows */}
             {[...Array(5)].map((_, i) => (
               <div key={i} className="grid grid-cols-4 gap-4">
@@ -134,7 +137,7 @@ export default function SalesReport({ dateRange }: SalesReportProps) {
   return (
     <div className="space-y-4">
       {/* Summary Cards */}
-      <div className="grid gap-3 md:grid-cols-3">
+      <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {/* Revenue Card - Gradient Background */}
         <div className="bg-gradient-to-br from-[#cc4400] via-[#ff6b00] to-[#ff8533] p-4 border border-gray-200 rounded-none">
           <div className="text-xs font-light tracking-wider text-white/90">
@@ -160,7 +163,7 @@ export default function SalesReport({ dateRange }: SalesReportProps) {
           <div className="text-xs font-light tracking-wider text-gray-500">
             AVG. ORDER VALUE
           </div>
-          <div className="text-2极狐xl font-mono font-light mt-1">
+          <div className="text-2xl font-mono font-light mt-1">
             $
             {data.summary.totalOrders > 0
               ? (
@@ -183,8 +186,8 @@ export default function SalesReport({ dateRange }: SalesReportProps) {
           </span>
         </div>
 
-        <div className="overflow-x-auto min-w-full">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="border-b border-gray-200">
                 <th className="p-3 text-left text-xs font-light tracking-wider uppercase">
@@ -235,17 +238,24 @@ export default function SalesReport({ dateRange }: SalesReportProps) {
         <h3 className="text-lg font-light">Daily Sales Data</h3>
         <div className="space-y-3">
           {data.data.map((day) => (
-            <Card key={day.date} className="border border-gray-200 rounded-none p-4">
+            <Card
+              key={day.date}
+              className="border border-gray-200 rounded-none p-4"
+            >
               <div className="grid grid-cols-2 gap-3">
                 <div className="font-light">Date</div>
-                <div className="font-light">{new Date(day.date).toLocaleDateString()}</div>
-                
+                <div className="font-light">
+                  {new Date(day.date).toLocaleDateString()}
+                </div>
+
                 <div className="font-light">Revenue</div>
-                <div className="font-mono font-light">${day.totalRevenue.toLocaleString()}</div>
-                
+                <div className="font-mono font-light">
+                  ${day.totalRevenue.toLocaleString()}
+                </div>
+
                 <div className="font-light">Orders</div>
                 <div className="font-mono font-light">{day.orderCount}</div>
-                
+
                 <div className="font-light">Avg. Order</div>
                 <div className="font-mono font-light">
                   $

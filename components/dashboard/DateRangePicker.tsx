@@ -58,25 +58,30 @@ export function DateRangePicker({ onDateChange }: DateRangePickerProps) {
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="w-full max-w-[240px] justify-between font-light rounded-none border border-gray-200 px-3"
+              className="w-full max-w-[280px] sm:max-w-[240px] justify-between font-light rounded-none border border-gray-200 px-3"
             >
-              <span>
-                {fromDate 
-                  ? toDate 
-                    ? `${format(fromDate, "MMM dd")} - ${format(toDate, "MMM dd")}`
+              <span className="truncate">
+                {fromDate
+                  ? toDate
+                    ? `${format(fromDate, "MMM dd")} - ${format(
+                        toDate,
+                        "MMM dd"
+                      )}`
                     : format(fromDate, "MMM dd, yyyy")
                   : "Select date range"}
               </span>
-              <CalendarIcon className="ml-2 h-4 w-4 text-gray-500" />
+              <CalendarIcon className="ml-2 h-4 w-4 text-gray-500 flex-shrink-0" />
             </Button>
           </PopoverTrigger>
-          
-          <PopoverContent 
-            className="w-auto p-0 bg-white border border-gray-200 rounded-none"
+
+          <PopoverContent
+            className="w-auto p-0 bg-white border border-gray-200 rounded-none max-w-[calc(100vw-3rem)]"
             align="start"
+            side="bottom"
+            sideOffset={4}
           >
-            <div className="flex">
-              <div className="border-r border-gray-100">
+            <div className="flex flex-col sm:flex-row overflow-hidden">
+              <div className="border-b sm:border-b-0 sm:border-r border-gray-100">
                 <div className="p-2 text-xs font-light text-gray-500 tracking-wider border-b border-gray-100">
                   FROM
                 </div>
@@ -87,7 +92,7 @@ export function DateRangePicker({ onDateChange }: DateRangePickerProps) {
                   className="p-2"
                 />
               </div>
-              
+
               <div>
                 <div className="p-2 text-xs font-light text-gray-500 tracking-wider border-b border-gray-100">
                   TO
@@ -101,19 +106,22 @@ export function DateRangePicker({ onDateChange }: DateRangePickerProps) {
                 />
               </div>
             </div>
-            
+
             {(fromDate || toDate) && (
               <div className="flex justify-between items-center p-3 border-t border-gray-100">
                 <div className="text-sm font-mono">
-                  {fromDate && toDate 
-                    ? `${format(fromDate, "MMM dd")} - ${format(toDate, "MMM dd")}` 
-                    : fromDate 
-                      ? `From ${format(fromDate, "MMM dd")}`
-                      : ""}
+                  {fromDate && toDate
+                    ? `${format(fromDate, "MMM dd")} - ${format(
+                        toDate,
+                        "MMM dd"
+                      )}`
+                    : fromDate
+                    ? `From ${format(fromDate, "MMM dd")}`
+                    : ""}
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={clearSelection}
                   className="text-xs font-light hover:bg-orange-50 hover:text-orange-600"
                 >
