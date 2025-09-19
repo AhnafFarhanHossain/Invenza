@@ -1,5 +1,5 @@
 import { dbConnect } from "@/lib/db/db";
-import User from "@/models/User";
+import User from "@/models/user.model";
 import { getUserIdFromRequest } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,8 +16,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       user: { id: user._id, name: user.name, email: user.email },
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.error("Profile fetch error:", error);
     return NextResponse.json(
       { message: "Internal server error", error: error.message },
       { status: 500 }

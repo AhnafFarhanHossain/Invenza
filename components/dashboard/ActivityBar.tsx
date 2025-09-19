@@ -2,9 +2,19 @@
 
 import React from "react";
 import Image from "next/image";
-import { Bell, Menu, Plus, Search, User, LogOut, Settings, X } from "lucide-react";
+import {
+  Bell,
+  Menu,
+  Plus,
+  Search,
+  User,
+  LogOut,
+  Settings,
+  Calendar,
+  ClipboardList,
+  Package,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,16 +26,19 @@ import { Badge } from "@/components/ui/badge";
 import { usePathname } from "next/navigation";
 import { useSearch } from "@/lib/context/SearchContext";
 import { useGlobalShortcuts } from "@/hooks/useKeyboardShortcuts";
+import SearchBar from "./ProductsSearchBar";
 
 interface ActivityBarProps {
   onSidebarToggle: () => void;
   onAddProduct?: () => void;
+  onAddOrder?: () => void;
   onSignOut?: () => void;
 }
 
 export function ActivityBar({
   onSidebarToggle,
   onAddProduct,
+  onAddOrder,
   onSignOut,
 }: ActivityBarProps) {
   const [userEmail, setUserEmail] = React.useState<string>("");
@@ -99,6 +112,14 @@ export function ActivityBar({
     }
   };
 
+  const handleAddOrder = () => {
+    if (onAddOrder) {
+      onAddOrder();
+    } else {
+      console.log("Add order clicked");
+    }
+  };
+
   const handleSignOut = () => {
     if (onSignOut) {
       onSignOut();
@@ -108,7 +129,7 @@ export function ActivityBar({
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-30 border-b border-gray-200 bg-white shadow-sm">
+    <div className="fixed top-0 left-0 right-0 z-30 border-b border-gray-200 bg-neutral-100 shadow-sm w-full">
       <div className="flex h-14 items-center justify-between px-4">
         {/* Left Section - Menu + Logo + Title */}
         <div className="flex items-center gap-4">
@@ -122,7 +143,7 @@ export function ActivityBar({
             <Menu className="h-4 w-4 text-gray-700" />
           </Button>
 
-          <div className="flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-2">
             <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/40">
               <Image
                 src="/invenza-icon.png"
@@ -181,9 +202,35 @@ export function ActivityBar({
             onClick={handleAddProduct}
             size="sm"
             className="h-8 rounded-md bg-orange-500 px-3 font-mono text-xs font-medium text-white hover:bg-orange-600 transition-colors duration-200"
+          <div 
+            className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-md bg-gray-50 border border-gray-200 text-xs text-gray-700 font-mono whitespace-nowrap min-w-[85px] shrink-0"
+            title={new Date().toLocaleDateString("en-US", {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
           >
-            <Plus className="mr-1.5 h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Add Product</span>
+            <Calendar className="w-3.5 h-3.5 text-gray-500" />
+            <span>
+              {new Date().toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              })}
+            </span>
+          </div>
+          {/* Search Bar */}
+          <SearchBar placeholder="Search Products..." />
+          {/* Add Order Button - clipboard icon provides clear visual cue */}
+          <Button onClick={handleAddOrder} size="default" variant="outline">
+            <ClipboardList className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline ml-1.5">Add New Order</span>
+          </Button>
+
+          {/* Add Product Button - package icon provides clear visual cue */}
+          <Button onClick={handleAddProduct} size="default">
+            <Package className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline ml-1.5">Add Product</span>
           </Button>
 
           {/* Notifications */}
@@ -235,11 +282,11 @@ export function ActivityBar({
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-xs cursor-pointer">
-                <User className="mr-2 h-3.5 w-3.5" />
+                <User className="mr-2 h-3.5 w-3.5 hover:text-white" />
                 Profile
               </DropdownMenuItem>
               <DropdownMenuItem className="text-xs cursor-pointer">
-                <Settings className="mr-2 h-3.5 w-3.5" />
+                <Settings className="mr-2 h-3.5 w-3.5 hover:text-white" />
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -247,7 +294,7 @@ export function ActivityBar({
                 onClick={handleSignOut}
                 className="text-xs text-red-600 focus:text-red-600 cursor-pointer"
               >
-                <LogOut className="mr-2 h-3.5 w-3.5" />
+                <LogOut className="mr-2 h-3.5 w-3.5 hover:text-white" />
                 Sign Out
               </DropdownMenuItem>
             </DropdownMenuContent>

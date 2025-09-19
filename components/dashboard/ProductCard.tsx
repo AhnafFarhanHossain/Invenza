@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { base64ToObjectUrl } from "@/lib/image-utils";
 import Link from "next/link";
@@ -74,6 +75,7 @@ const ProductCard = ({ product, isLoading = false, searchQuery = "" }: ProductCa
     }
     setImageLoading(true);
   }, [product?.image]);
+
   if (isLoading) {
     return (
       <div className="bg-white border border-gray-200 transition-all duration-200">
@@ -98,11 +100,15 @@ const ProductCard = ({ product, isLoading = false, searchQuery = "" }: ProductCa
   const isLowStock = product.quantity <= product.reorderLevel;
 
   return (
-    <Link href={`/dashboard/products/${product._id}`} aria-label={`View details for ${product.name}`}>
-      <div 
-        className="bg-white border border-gray-200 transition-all duration-200 hover:border-gray-300 focus-within:ring-2 focus-within:ring-orange-200 focus-within:border-orange-300"
-        role="gridcell"
-        tabIndex={0}
+    <Link href={`/dashboard/products/${product._id}`}>
+      <div
+        className={`bg-white border-2 transition-all duration-200 hover:shadow-md ${
+          isOutOfStock
+            ? "border-red-200 hover:border-red-300"
+            : isLowStock
+            ? "border-orange-200 hover:border-orange-300"
+            : "border-gray-200 hover:border-green-300"
+        }`}
       >
         <div className="relative aspect-square">
           {imageLoading && (
@@ -144,7 +150,6 @@ const ProductCard = ({ product, isLoading = false, searchQuery = "" }: ProductCa
                   ? "bg-emerald-500"
                   : "bg-gray-400"
               }`}
-            />
           </div>
         </div>
         <div className="p-4">

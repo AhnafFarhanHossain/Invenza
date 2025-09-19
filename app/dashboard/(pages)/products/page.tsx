@@ -83,7 +83,7 @@ const Products = () => {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold">All Products</h1>
+        <h1 className="text-2xl font-light text-black tracking-wide mb-4">All Products</h1>
         {searchQuery && (
           <div className="text-sm text-gray-600">
             {loading ? (

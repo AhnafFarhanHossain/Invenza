@@ -24,16 +24,20 @@ export default function DashboardLayout({
     router.push("/dashboard/products/new");
   };
 
+  const handleAddOrder = () => {
+    router.push("/dashboard/orders/new");
+  };
+
   const handleSignOut = async () => {
     try {
       await axios.post("/api/auth/logout");
       // Clear user data from localStorage
-      localStorage.removeItem('userEmail');
-      localStorage.removeItem('userName');
+      localStorage.removeItem("userEmail");
+      localStorage.removeItem("userName");
       router.push("/auth/signin");
       toast.success("Logged out successfully");
-    } catch (err) {
-      console.error("Logout failed:", err);
+    } catch(err: any) {
+      console.error("Error logging out", err);
       toast.error("Failed to logout");
     }
   };

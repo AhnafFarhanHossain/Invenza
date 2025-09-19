@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Invenza",
+  title: "Invenza - Inventory & Order Management",
   description: "The Ultimate Inventory Management and Order Tracking App",
 };
 
@@ -28,7 +28,10 @@ export default function RootLayout({
   return (
     <>
       <html lang="en" className={`${play.variable} ${geistMono.variable} h-full`}>
-        <body className="antialiased">
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        </head>
+        <body className="antialiased bg-neutral-50 overflow-x-hidden">
           {children}
           <Toaster />
         </body>

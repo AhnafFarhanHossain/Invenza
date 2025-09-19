@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Boldonse&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -53,7 +54,6 @@ body {
   --color-muted-orange: var(--muted-orange);
   --color-black: var(--black);
 
-  
   --shadow-block: 5px 5px rgba(0, 0, 0, 1);
 }
 
@@ -166,10 +166,47 @@ body {
 
 /* Fade-in animation */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .animate-fade-in {
   animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Orders table card: minimal, airy, brand-tinted */
+.table-card {
+  @apply rounded-2xl border border-transparent bg-gradient-to-b from-background to-muted/10 shadow-none;
+}
+
+/* Subtle status pills with brand hues */
+.status-badge {
+  @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium tracking-wide border border-transparent select-none transition-colors;
+  background: color-mix(in oklab, var(--primary) 6%, transparent);
+  color: color-mix(in oklab, var(--foreground) 70%, transparent);
+}
+
+.dark .status-badge {
+  background: color-mix(in oklab, var(--primary) 10%, transparent);
+  color: color-mix(in oklab, white 85%, transparent);
+}
+
+.status-badge-pending {
+  @apply bg-amber-100/40 text-amber-900/80 dark:bg-amber-500/15 dark:text-amber-100/90;
+}
+.status-badge-processing {
+  @apply bg-blue-100/40 text-blue-900/80 dark:bg-blue-500/15 dark:text-blue-100/90;
+}
+.status-badge-completed {
+  @apply bg-emerald-100/40 text-emerald-900/80 dark:bg-emerald-500/15 dark:text-emerald-100/90;
+}
+.status-badge-shipped {
+  @apply bg-indigo-100/40 text-indigo-900/80 dark:bg-indigo-500/15 dark:text-indigo-100/90;
+}
+.status-badge-cancelled {
+  @apply bg-rose-100/40 text-rose-900/80 dark:bg-rose-500/15 dark:text-rose-100/90;
 }

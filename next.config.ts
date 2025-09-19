@@ -4,7 +4,32 @@ const nextConfig: NextConfig = {
   /* config options here */
   devIndicators: false,
   images: {
-    domains: ['placehold.co', 'images.unsplash.com', 'imgur.com', 'i.imgur.com', 'cloudinary.com', 'res.cloudinary.com'],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "imgur.com",
+      },
+      {
+        protocol: "https",
+        hostname: "i.imgur.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+    ],
   },
 };
 

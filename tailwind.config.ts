@@ -15,6 +15,7 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-bai-jamjuree)", "sans-serif"],
         mono: ["var(--font-space-mono)", "monospace"],
+        boldonse: ["Boldonse", "sans-serif"],
       },
     },
   },

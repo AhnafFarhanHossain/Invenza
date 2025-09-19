@@ -14,16 +14,18 @@ export async function getUserIdFromRequest(req: Request): Promise<string> {
   try {
     const { payload } = await jwtVerify(token, secret);
     // token created with { id: user._id } earlier — adapt if you use sub
-    if (!payload || (!payload.id && !payload.sub)) throw new Error("Invalid token payload");
+    if (!payload || (!payload.id && !payload.sub))
+      throw new Error("Invalid token payload");
     const userId = payload.id ?? payload.sub;
-    
+
     // Ensure we return a string
     return String(userId);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error("Token verification failed:", err.message);
-    if (err.name === 'JWSSignatureVerificationFailed') {
+    if (err.name === "JWSSignatureVerificationFailed") {
       throw new Error("Invalid token signature");
-    } else if (err.name === 'JWTExpired') {
+    } else if (err.name === "JWTExpired") {
       throw new Error("Token expired");
     } else {
       throw new Error("Unauthorized");
