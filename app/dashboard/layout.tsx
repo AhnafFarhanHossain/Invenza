@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { ActivityBar } from "@/components/dashboard/ActivityBar";
 import { DashboardSidebar } from "@/components/dashboard/Sidebar";
+import { SearchProvider } from "@/lib/context/SearchContext";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -35,26 +36,28 @@ export default function DashboardLayout({
       localStorage.removeItem("userName");
       router.push("/auth/signin");
       toast.success("Logged out successfully");
-    } catch {
+    } catch(err: any) {
+      console.error("Error logging out", err);
       toast.error("Failed to logout");
     }
   };
 
   return (
-    <div className="flex min-h-screen">
-      <DashboardSidebar
-        isOpen={isSidebarOpen}
-        onOpenChange={setIsSidebarOpen}
-      />
-      <div className="flex-1 flex flex-col">
-        <ActivityBar
-          onSidebarToggle={handleSidebarToggle}
-          onAddProduct={handleAddProduct}
-          onSignOut={handleSignOut}
-          onAddOrder={handleAddOrder}
+    <SearchProvider>
+      <div className="flex min-h-screen">
+        <DashboardSidebar
+          isOpen={isSidebarOpen}
+          onOpenChange={setIsSidebarOpen}
         />
-        <main className="mt-14 flex-1 p-6">{children}</main>
+        <div className="flex-1 flex flex-col">
+          <ActivityBar
+            onSidebarToggle={handleSidebarToggle}
+            onAddProduct={handleAddProduct}
+            onSignOut={handleSignOut}
+          />
+          <main className="mt-14 flex-1 p-6">{children}</main>
+        </div>
       </div>
-    </div>
+    </SearchProvider>
   );
 }
