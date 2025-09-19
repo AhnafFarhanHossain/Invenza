@@ -15,6 +15,7 @@ import {
   Package,
   X,
 } from "lucide-react";
+import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -29,6 +30,7 @@ import { useSearch } from "@/lib/context/SearchContext";
 import { useGlobalShortcuts } from "@/hooks/useKeyboardShortcuts";
 import SearchBar from "./ProductsSearchBar";
 import { Input } from "../ui/input";
+import NotificationsDropdown from "./NotificationDropdown";
 
 interface ActivityBarProps {
   onSidebarToggle: () => void;
@@ -167,15 +169,16 @@ export function ActivityBar({
         {/* Right Section - Search Bar + Actions + Profile */}
         <div className="flex items-center gap-3">
           {/* Add Order Button - clipboard icon provides clear visual cue */}
-          {checkIfProductsPage() && (
-            <div className="flex-1">
-              <SearchBar placeholder="Search Products..." />
+          <div className="flex items-center gap-2">
+            <div className="hidden sm:flex items-center text-sm text-gray-500 font-mono bg-gray-100 px-2.5 py-1.5 rounded-md border border-gray-200">
+              <Calendar className="h-3.5 w-3.5 mr-1.5 text-gray-500" />
+              {format(new Date(), "MMM d")}
             </div>
-          )}
-          <Button onClick={handleAddOrder} size="default" variant="outline">
-            <ClipboardList className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline ml-1.5">Add New Order</span>
-          </Button>
+            <Button onClick={handleAddOrder} size="default" variant="outline">
+              <ClipboardList className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline ml-1.5">Add New Order</span>
+            </Button>
+          </div>
 
           {/* Add Product Button - package icon provides clear visual cue */}
           <Button onClick={handleAddProduct} size="default">
@@ -183,7 +186,7 @@ export function ActivityBar({
             <span className="hidden sm:inline ml-1.5">Add Product</span>
           </Button>
 
-          {/* Notifications */}
+          {/* Notifications
           <Button
             variant="ghost"
             size="icon"
@@ -194,7 +197,9 @@ export function ActivityBar({
             <Badge className="absolute -right-1 -top-1 h-4 w-4 rounded-full bg-orange-500 p-0 text-[10px] font-mono text-white">
               3
             </Badge>
-          </Button>
+          </Button> */}
+
+          <NotificationsDropdown />
 
           {/* Profile Dropdown */}
           <DropdownMenu>

@@ -14,7 +14,7 @@ const ProfileBlock = () => {
 
   const [newUserEmail, setNewUserEmail] = React.useState("");
   const [newUserName, setNewUserName] = React.useState("");
-  
+
   const [isEditing, setIsEditing] = React.useState(false);
   const router = useRouter();
 
@@ -89,7 +89,7 @@ const ProfileBlock = () => {
         setUserName(newUserName);
         localStorage.setItem("userEmail", newUserEmail);
         localStorage.setItem("userName", newUserName);
-        
+
         setIsEditing(false);
         setNewUserName("");
         setNewUserEmail("");
@@ -111,7 +111,9 @@ const ProfileBlock = () => {
           {isEditing ? (
             <div className="space-y-3">
               <div>
-                <label className="block text-xs text-gray-500 mb-1 uppercase tracking-wider">Name</label>
+                <label className="block text-xs text-gray-500 mb-1 uppercase tracking-wider">
+                  Name
+                </label>
                 <input
                   type="text"
                   value={newUserName}
@@ -121,7 +123,9 @@ const ProfileBlock = () => {
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-500 mb-1 uppercase tracking-wider">Email</label>
+                <label className="block text-xs text-gray-500 mb-1 uppercase tracking-wider">
+                  Email
+                </label>
                 <input
                   type="email"
                   value={newUserEmail}
@@ -139,10 +143,10 @@ const ProfileBlock = () => {
           )}
         </div>
       </div>
-      
+
       <div className="flex items-center gap-2 w-full md:w-auto">
-        <Button 
-          variant={"destructive"} 
+        <Button
+          variant={"destructive"}
           onClick={() => handleSignOut()}
           className="w-full md:w-auto justify-start px-4 py-2 text-sm"
         >
@@ -151,14 +155,14 @@ const ProfileBlock = () => {
         </Button>
         {isEditing ? (
           <div className="flex gap-2">
-            <Button 
+            <Button
               onClick={saveProfile}
               className="flex-1 md:flex-none px-4 py-2 text-sm"
             >
               Save
             </Button>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={cancelEditing}
               className="flex-1 md:flex-none px-4 py-2 text-sm"
             >
@@ -166,8 +170,8 @@ const ProfileBlock = () => {
             </Button>
           </div>
         ) : (
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={startEditing}
             className="w-full md:w-auto px-4 py-2 text-sm"
           >
