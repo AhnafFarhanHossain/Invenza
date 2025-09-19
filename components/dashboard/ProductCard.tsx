@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { base64ToObjectUrl } from "@/lib/image-utils";
 import Link from "next/link";
-import Image from "next/image";
 
 interface Product {
   _id: string;
@@ -27,18 +26,22 @@ interface ProductCardProps {
   searchQuery?: string;
 }
 
-const ProductCard = ({ product, isLoading = false, searchQuery = "" }: ProductCardProps) => {
+const ProductCard = ({
+  product,
+  isLoading = false,
+  searchQuery = "",
+}: ProductCardProps) => {
   const [imageObjectUrl, setImageObjectUrl] = useState<string | null>(null);
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
 
   const highlightText = (text: string) => {
     if (!searchQuery || !text) return text;
-    
-    const regex = new RegExp(`(${searchQuery})`, 'gi');
+
+    const regex = new RegExp(`(${searchQuery})`, "gi");
     const parts = text.split(regex);
-    
-    return parts.map((part, index) => 
+
+    return parts.map((part, index) =>
       regex.test(part) ? (
         <mark key={index} className="bg-yellow-200 text-black px-0.5 rounded">
           {part}
@@ -98,6 +101,7 @@ const ProductCard = ({ product, isLoading = false, searchQuery = "" }: ProductCa
   if (!product) return null;
 
   const isLowStock = product.quantity <= product.reorderLevel;
+  const isOutOfStock = product.quantity <= 0;
 
   return (
     <Link href={`/dashboard/products/${product._id}`}>
@@ -150,6 +154,7 @@ const ProductCard = ({ product, isLoading = false, searchQuery = "" }: ProductCa
                   ? "bg-emerald-500"
                   : "bg-gray-400"
               }`}
+            ></div>
           </div>
         </div>
         <div className="p-4">
@@ -185,7 +190,7 @@ const ProductCard = ({ product, isLoading = false, searchQuery = "" }: ProductCa
 
             <div className="flex justify-between items-center pt-3 border-t border-gray-200">
               <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                {highlightText(product.category || "Uncategorized")}
+                {highlightText(product.category || "Not Categorized")}
               </span>
               <span className="text-xs text-gray-400 font-mono">
                 {highlightText(product.sku || "N/A")}

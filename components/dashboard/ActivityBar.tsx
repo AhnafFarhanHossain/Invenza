@@ -13,6 +13,7 @@ import {
   Calendar,
   ClipboardList,
   Package,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,6 +28,7 @@ import { usePathname } from "next/navigation";
 import { useSearch } from "@/lib/context/SearchContext";
 import { useGlobalShortcuts } from "@/hooks/useKeyboardShortcuts";
 import SearchBar from "./ProductsSearchBar";
+import { Input } from "../ui/input";
 
 interface ActivityBarProps {
   onSidebarToggle: () => void;
@@ -164,64 +166,12 @@ export function ActivityBar({
 
         {/* Right Section - Search Bar + Actions + Profile */}
         <div className="flex items-center gap-3">
+          {/* Add Order Button - clipboard icon provides clear visual cue */}
           {checkIfProductsPage() && (
-            <div className="flex-1 max-w-md">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
-                <Input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Search products by name, category, SKU... (Ctrl+K or /)"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="h-8 w-full rounded-md border-gray-200 bg-gray-50 pl-9 pr-8 font-mono text-xs placeholder:text-gray-400 focus:bg-white focus:border-orange-300 focus:ring-orange-200"
-                  aria-label="Search products"
-                  role="searchbox"
-                />
-                {searchQuery && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={clearSearch}
-                    className="absolute right-1 top-1/2 h-6 w-6 -translate-y-1/2 hover:bg-gray-200"
-                    aria-label="Clear search"
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                )}
-              </div>
-              {searchQuery && (
-                <div className="absolute mt-1 text-xs text-gray-500">
-                  Searching for &ldquo;{searchQuery}&rdquo;...
-                </div>
-              )}
+            <div className="flex-1">
+              <SearchBar placeholder="Search Products..." />
             </div>
           )}
-          {/* Add Product Button */}
-          <Button
-            onClick={handleAddProduct}
-            size="sm"
-            className="h-8 rounded-md bg-orange-500 px-3 font-mono text-xs font-medium text-white hover:bg-orange-600 transition-colors duration-200"
-          <div 
-            className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-md bg-gray-50 border border-gray-200 text-xs text-gray-700 font-mono whitespace-nowrap min-w-[85px] shrink-0"
-            title={new Date().toLocaleDateString("en-US", {
-              weekday: "short",
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          >
-            <Calendar className="w-3.5 h-3.5 text-gray-500" />
-            <span>
-              {new Date().toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-              })}
-            </span>
-          </div>
-          {/* Search Bar */}
-          <SearchBar placeholder="Search Products..." />
-          {/* Add Order Button - clipboard icon provides clear visual cue */}
           <Button onClick={handleAddOrder} size="default" variant="outline">
             <ClipboardList className="h-3.5 w-3.5" />
             <span className="hidden sm:inline ml-1.5">Add New Order</span>

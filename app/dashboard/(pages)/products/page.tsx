@@ -83,16 +83,7 @@ const Products = () => {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-light text-black tracking-wide mb-4">All Products</h1>
-        {searchQuery && (
-          <div className="text-sm text-gray-600">
-            {loading ? (
-              "Searching..."
-            ) : (
-              `Found ${filteredProducts.length} result${filteredProducts.length !== 1 ? 's' : ''} for &ldquo;${searchQuery}&rdquo;`
-            )}
-          </div>
-        )}
+        <h1 className="text-2xl font-light text-black tracking-wide">All Products</h1>
       </div>
       {loading ? (
         <div 

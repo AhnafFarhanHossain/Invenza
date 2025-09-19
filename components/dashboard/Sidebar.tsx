@@ -72,18 +72,7 @@ const navigationItems = [
   {
     title: "Settings",
     icon: Settings,
-    items: [
-      {
-        title: "Store Settings",
-        url: "/dashboard/settings/store",
-        icon: Settings,
-      },
-      {
-        title: "Profile",
-        url: "/dashboard/settings/profile",
-        icon: User,
-      },
-    ],
+    url: "/dashboard/settings",
   },
 ];
 

@@ -24,3 +24,27 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+export async function PATCH(req: NextRequest) {
+  try {
+    await dbConnect();
+    const userId = await getUserIdFromRequest(req);
+    const { newUserName, newUserEmail } = await req.json();
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    user.name = newUserName;
+    user.email = newUserEmail;
+    await user.save();
+
+    return NextResponse.json({ message: "Profile updated successfully" });
+  } catch (error: any) {
+    return NextResponse.json(
+      { message: "Internal server error", error: error.message },
+      { status: 500 }
+    );
+  }
+}
