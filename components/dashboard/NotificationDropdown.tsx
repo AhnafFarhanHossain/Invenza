@@ -1,7 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bell, Package, ShoppingCart } from "lucide-react";
+import { Bell, Package, ShoppingCart, Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -29,20 +40,22 @@ export default function NotificationsDropdown() {
       const markAllAsRead = async () => {
         try {
           // Get all unread notifications
-          const response = await fetch("/api/notifications?unreadOnly=true&limit=100");
+          const response = await fetch(
+            "/api/notifications?unreadOnly=true&limit=100"
+          );
           if (response.ok) {
             const data = await response.json();
             if (data.notifications && data.notifications.length > 0) {
               // Mark all as read
               await Promise.all(
-                data.notifications.map((n: Notification) => 
+                data.notifications.map((n: Notification) =>
                   fetch(`/api/notifications/${n._id}/read`, { method: "PATCH" })
                 )
               );
-              
+
               // Update local state to reflect read status
-              setNotifications(prevNotifications => 
-                prevNotifications.map(n => ({ ...n, read: true }))
+              setNotifications((prevNotifications) =>
+                prevNotifications.map((n) => ({ ...n, read: true }))
               );
             }
           }
@@ -50,10 +63,25 @@ export default function NotificationsDropdown() {
           console.error("Error marking notifications as read:", error);
         }
       };
-      
+
       markAllAsRead();
     }
   }, [open]);
+
+  const clearNotifications = async () => {
+    try {
+      const response = await fetch("/api/notifications", { method: "DELETE" });
+      if (response.ok) {
+        setNotifications([]);
+        toast.success("All notifications cleared");
+      } else {
+        toast.error("Failed to clear notifications");
+      }
+    } catch (error) {
+      console.error("Error clearing notifications:", error);
+      toast.error("Failed to clear notifications");
+    }
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -66,12 +94,14 @@ export default function NotificationsDropdown() {
   useEffect(() => {
     const fetchAndShowLatestNotification = async () => {
       try {
-        const response = await fetch("/api/notifications?unreadOnly=true&limit=1");
+        const response = await fetch(
+          "/api/notifications?unreadOnly=true&limit=1"
+        );
         if (response.ok) {
           const data = await response.json();
           if (data.notifications && data.notifications.length > 0) {
             const latestNotification = data.notifications[0];
-            
+
             // Only show toast if notification is unread
             if (!latestNotification.read) {
               // Map notification type to appropriate icon
@@ -89,7 +119,7 @@ export default function NotificationsDropdown() {
               // Show toast with notification content
               toast(
                 (t) => (
-                  <div 
+                  <div
                     className="flex items-start gap-3 p-2 cursor-pointer"
                     onClick={() => {
                       toast.dismiss(t.id);
@@ -99,8 +129,12 @@ export default function NotificationsDropdown() {
                       {getNotificationIcon(latestNotification.type)}
                     </div>
                     <div>
-                      <p className="text-sm font-light text-black">{latestNotification.title}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">{latestNotification.message}</p>
+                      <p className="text-sm font-light text-black">
+                        {latestNotification.title}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        {latestNotification.message}
+                      </p>
                     </div>
                   </div>
                 ),
@@ -125,10 +159,10 @@ export default function NotificationsDropdown() {
 
     // Check for latest notification every 30 seconds
     const intervalId = setInterval(fetchAndShowLatestNotification, 30000);
-    
+
     // Initial check when component mounts
     fetchAndShowLatestNotification();
-    
+
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
@@ -151,7 +185,36 @@ export default function NotificationsDropdown() {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 bg-white border border-gray-200 rounded-none shadow-lg" align="end">
+      <PopoverContent
+        className="w-80 bg-white border border-gray-200 rounded-none shadow-lg"
+        align="end"
+      >
+        <div className="flex justify-between items-center p-2 border-b border-gray-200">
+          <h3 className="text-sm font-medium">Notifications</h3>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="ghost" size="sm">
+                <Trash2 className="h-4 w-4 mr-2" />
+                Clear All
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-white border-2 border-soft-gray">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete all
+                  your notifications.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={clearNotifications}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
         <div className="p-2 space-y-1 max-h-80 overflow-auto">
           {notifications.length === 0 && (
             <p className="text-sm text-gray-500 text-center py-4 font-light tracking-wider">
@@ -166,7 +229,11 @@ export default function NotificationsDropdown() {
               } hover:bg-gray-50`}
             >
               <div className="flex items-start gap-3">
-                <div className={`p-1.5 rounded ${n.read ? "bg-orange-50" : "bg-[#ff6b00]/10"}`}>
+                <div
+                  className={`p-1.5 rounded ${
+                    n.read ? "bg-orange-50" : "bg-[#ff6b00]/10"
+                  }`}
+                >
                   {iconMap[n.type]}
                 </div>
                 <div className="flex-1 min-w-0">

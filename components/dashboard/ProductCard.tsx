@@ -108,9 +108,9 @@ const ProductCard = ({
       <div
         className={`bg-white border-2 transition-all duration-200 hover:shadow-md ${
           isOutOfStock
-            ? "border-red-200 hover:border-red-300"
+            ? "border-red-500 hover:border-red-600"
             : isLowStock
-            ? "border-orange-200 hover:border-orange-300"
+            ? "border-orange-300 hover:border-orange-400"
             : "border-gray-200 hover:border-green-300"
         }`}
       >
@@ -148,11 +148,11 @@ const ProductCard = ({
           <div className="absolute top-2 right-2">
             <div
               className={`w-3 h-3 rounded-full ${
-                isLowStock
-                  ? "bg-amber-500"
-                  : product.quantity > 0
-                  ? "bg-emerald-500"
-                  : "bg-gray-400"
+                                isOutOfStock
+                  ? "bg-red-500"
+                  : isLowStock
+                  ? "bg-orange-500"
+                  : "bg-emerald-500"
               }`}
             ></div>
           </div>

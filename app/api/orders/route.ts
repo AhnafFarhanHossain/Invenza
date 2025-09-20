@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
         );
       }
       // If product is not enough
-      if (product.quantity < quantity) {
+      if (product.quantity < quantity && product.quantity > 0) {
         return NextResponse.json(
           {
             message: `Insufficient stock for ${product.name}. Only ${product.quantity} available.`,
@@ -74,6 +74,14 @@ export async function POST(req: NextRequest) {
       // Calculate product after order
       const itemTotal = product.sellPrice * quantity;
       totalAmount += itemTotal;
+
+      // Check if out of stock and push notification
+      if (product.quantity === 0) {
+        await NotificationService.outOfStock(
+          userId,
+          product.name
+        );
+      }
 
       orderItems.push({
         product: productObjectId,

@@ -438,12 +438,12 @@ export function EditProductForm({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
     setValue,
     watch,
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
-    defaultValues: product,
+        defaultValues: product,
   });
 
   const onFormSubmit = useCallback(
@@ -532,8 +532,15 @@ export function EditProductForm({
           <p className="font-mono text-xs text-gray-600">
             Update product details in your inventory
           </p>
-        </div>
+                </div>
       </div>
+
+      {!isDirty && (
+        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+          <p className="font-bold">No changes made</p>
+          <p>You need to make changes to the product before you can update it.</p>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
         <BasicInfoSection
@@ -561,7 +568,7 @@ export function EditProductForm({
         <div className="flex gap-3 pt-4">
           <Button
             type="submit"
-            disabled={isSubmitting}
+            disabled={!isDirty || isSubmitting}
             className="flex-1 bg-orange-500 font-mono text-xs font-medium text-white hover:bg-orange-600 disabled:opacity-50"
           >
             {isSubmitting ? "Updating Product..." : "Update Product"}

@@ -52,12 +52,16 @@ export async function PATCH(
         { status: 404 }
       );
 
-    if (product.quantity < product.reorderLevel) {
+    if (product.quantity < product.reorderLevel && product.quantity > 0) {
       await NotificationService.lowStock(
         userId,
         product.name,
         product.quantity
       );
+    }
+
+    if (product.quantity === 0) {
+      await NotificationService.outOfStock(userId, product.name);
     }
     return NextResponse.json({ product });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

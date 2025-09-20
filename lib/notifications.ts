@@ -34,4 +34,14 @@ export class NotificationService {
       metadata: { customerName, amount },
     });
   }
+
+  static async outOfStock(userId: string, productName: string) {
+    return this.create({
+      userId,
+      type: "out_of_stock",
+      title: "Product Out of Stock: ",
+      message: `${productName} is out of stock`,
+      metadata: { productName },
+    });
+  }
 }

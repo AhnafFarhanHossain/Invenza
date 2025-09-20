@@ -31,3 +31,23 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    await dbConnect();
+    const userId = await getUserIdFromRequest(req);
+
+    if (!userId) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    await Notification.deleteMany({ userId });
+
+    return NextResponse.json({ message: "All notifications cleared" });
+  } catch (error: any) {
+    return NextResponse.json(
+      { message: "Error clearing notifications: " + error.message },
+      { status: 500 }
+    );
+  }
+}
