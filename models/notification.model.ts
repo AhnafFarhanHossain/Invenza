@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
-export type NotificationType =
-  | "low_stock"
-  | "new_order"
-  | "daily_report"
-  | "weekly_report";
+export type NotificationType = "low_stock" | "new_order";
 
 export interface INotification extends Document {
   userId: mongoose.Schema.Types.ObjectId;
@@ -25,7 +21,7 @@ const NotificationSchema = new mongoose.Schema<INotification>(
     },
     type: {
       type: String,
-      enum: ["low_stock", "new_order", "daily_report", "weekly_report"],
+      enum: ["low_stock", "new_order"],
       required: true,
     },
     title: { type: String, required: true },

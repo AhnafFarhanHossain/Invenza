@@ -186,19 +186,6 @@ export function ActivityBar({
             <span className="hidden sm:inline ml-1.5">Add Product</span>
           </Button>
 
-          {/* Notifications
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative h-8 w-8 rounded-md hover:bg-gray-100"
-            aria-label="Notifications"
-          >
-            <Bell className="h-4 w-4 text-gray-600" />
-            <Badge className="absolute -right-1 -top-1 h-4 w-4 rounded-full bg-orange-500 p-0 text-[10px] font-mono text-white">
-              3
-            </Badge>
-          </Button> */}
-
           <NotificationsDropdown />
 
           {/* Profile Dropdown */}

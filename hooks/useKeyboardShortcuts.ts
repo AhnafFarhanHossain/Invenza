@@ -13,7 +13,13 @@ interface KeyboardShortcut {
 export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[]) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      // Skip if event.key is undefined (can happen during autocomplete)
+      if (!event.key) return;
+      
       shortcuts.forEach(({ key, ctrlKey, shiftKey, altKey, metaKey, action, preventDefault = true }) => {
+        // Skip if key is undefined
+        if (!key) return;
+        
         const isMatch = (
           event.key.toLowerCase() === key.toLowerCase() &&
           !!event.ctrlKey === !!ctrlKey &&

@@ -4,6 +4,7 @@ import Product from "@/models/product.model";
 import Order from "@/models/order.model";
 import { getUserIdFromRequest } from "@/lib/auth";
 import mongoose from "mongoose";
+import { NotificationService } from "@/lib/notifications";
 
 type OrderItem = {
   product: mongoose.Types.ObjectId;
@@ -96,6 +97,12 @@ export async function POST(req: NextRequest) {
     const savedOrder = await newOrder.save();
 
     await savedOrder.populate("items.product", "name image");
+
+    await NotificationService.newOrder(
+      userId,
+      savedOrder.customerName,
+      savedOrder.totalAmount
+    );
 
     return NextResponse.json({ order: savedOrder }, { status: 201 });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

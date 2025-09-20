@@ -66,10 +66,28 @@ const AddOrderForm = () => {
 
   const addItemToOrder = () => {
     if (!selectedProduct || quantity <= 0) return;
+
+    // Check if the requested quantity exceeds available stock
+    if (quantity > selectedProduct.quantity) {
+      toast.error(
+        `Insufficient stock for ${selectedProduct.name}. Only ${selectedProduct.quantity} available.`
+      );
+      return;
+    }
+
     const existingItemIndex = orderItems.findIndex(
       (item) => item.productId === selectedProductId
     );
     if (existingItemIndex >= 0) {
+      // Check if adding more quantity would exceed available stock
+      const currentQuantity = orderItems[existingItemIndex].quantity;
+      if (currentQuantity + quantity > selectedProduct.quantity) {
+        toast.error(
+          `Adding ${quantity} more would exceed available stock for ${selectedProduct.name}. Only ${selectedProduct.quantity} available in total.`
+        );
+        return;
+      }
+
       const updatedItems = [...orderItems];
       updatedItems[existingItemIndex].quantity += quantity;
       setOrderItems(updatedItems);
@@ -110,13 +128,35 @@ const AddOrderForm = () => {
     try {
       setIsSubmitting(true);
       const response = await axios.post("/api/orders", requestBody);
+
       if (response.status === 201) {
         toast.success("Order created successfully!");
         router.push("/dashboard/orders");
+      } else if (response.status === 400) {
+        // Handle specific error messages from the API
+        const errorMessage =
+          response.data?.message || "Failed to create order.";
+        toast.error(errorMessage);
+      } else {
+        toast.error("Failed to create order.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating order:", error);
-      toast.error("Failed to create order.");
+
+      // Handle specific error messages from the API
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        const errorMessage =
+          error.response.data?.message || "Failed to create order.";
+        toast.error(errorMessage);
+      } else if (error.request) {
+        // The request was made but no response was received
+        toast.error("No response from server. Please try again.");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        toast.error("Failed to create order.");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -218,7 +258,7 @@ const AddOrderForm = () => {
                       value={product._id}
                       className="font-mono text-xs hover:bg-gray-100"
                     >
-                      {product.name} - ${product.sellPrice}
+                      {product.name} - ${product.sellPrice} (Stock: {product.quantity})
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -229,14 +269,26 @@ const AddOrderForm = () => {
                 htmlFor="quantity"
                 className="font-mono text-xs font-medium text-black"
               >
-                Quantity
+                Quantity (Available: {selectedProduct?.quantity || 0})
               </Label>
               <Input
                 id="quantity"
                 type="number"
                 min="1"
+                max={selectedProduct?.quantity || 999}
                 value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  // Don't allow quantity greater than available stock
+                  if (value > (selectedProduct?.quantity || 0)) {
+                    setQuantity(selectedProduct?.quantity || 0);
+                    toast.error(
+                      `Cannot exceed available stock of ${selectedProduct?.quantity || 0}`
+                    );
+                  } else {
+                    setQuantity(value);
+                  }
+                }}
                 className="font-mono text-xs placeholder:text-gray-500 bg-white border border-gray-300"
               />
             </div>

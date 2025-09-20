@@ -36,7 +36,7 @@ export default function DashboardLayout({
       localStorage.removeItem("userName");
       router.push("/auth/signin");
       toast.success("Logged out successfully");
-    } catch(err: any) {
+    } catch (err: any) {
       console.error("Error logging out", err);
       toast.error("Failed to logout");
     }
@@ -54,6 +54,7 @@ export default function DashboardLayout({
             onSidebarToggle={handleSidebarToggle}
             onAddProduct={handleAddProduct}
             onSignOut={handleSignOut}
+            onAddOrder={handleAddOrder}
           />
           <main className="mt-14 flex-1 p-6">{children}</main>
         </div>

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/db/db";
 import { getUserIdFromRequest } from "@/lib/auth";
 import Product from "@/models/product.model";
+import { NotificationService } from "@/lib/notifications";
 
 export async function GET(
   req: NextRequest,
@@ -50,6 +51,14 @@ export async function PATCH(
         { message: "Product not found" },
         { status: 404 }
       );
+
+    if (product.quantity < product.reorderLevel) {
+      await NotificationService.lowStock(
+        userId,
+        product.name,
+        product.quantity
+      );
+    }
     return NextResponse.json({ product });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {

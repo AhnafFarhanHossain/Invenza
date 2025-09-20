@@ -8,6 +8,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import toast from "react-hot-toast";
 
 interface Notification {
   _id: string;
@@ -22,6 +23,38 @@ export default function NotificationsDropdown() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [open, setOpen] = useState(false);
 
+  // Effect to mark all notifications as read when dropdown is opened
+  useEffect(() => {
+    if (open) {
+      const markAllAsRead = async () => {
+        try {
+          // Get all unread notifications
+          const response = await fetch("/api/notifications?unreadOnly=true&limit=100");
+          if (response.ok) {
+            const data = await response.json();
+            if (data.notifications && data.notifications.length > 0) {
+              // Mark all as read
+              await Promise.all(
+                data.notifications.map((n: Notification) => 
+                  fetch(`/api/notifications/${n._id}/read`, { method: "PATCH" })
+                )
+              );
+              
+              // Update local state to reflect read status
+              setNotifications(prevNotifications => 
+                prevNotifications.map(n => ({ ...n, read: true }))
+              );
+            }
+          }
+        } catch (error) {
+          console.error("Error marking notifications as read:", error);
+        }
+      };
+      
+      markAllAsRead();
+    }
+  }, [open]);
+
   useEffect(() => {
     if (!open) return;
     fetch("/api/notifications?limit=10")
@@ -29,12 +62,76 @@ export default function NotificationsDropdown() {
       .then((d) => setNotifications(d.notifications));
   }, [open]);
 
-  const markAsRead = async (id: string) => {
-    await fetch(`/api/notifications/${id}/read`, { method: "PATCH" });
-    setNotifications((prev) =>
-      prev.map((n) => (n._id === id ? { ...n, read: true } : n))
-    );
-  };
+  // Effect to show the latest notification as a toast when it's unread
+  useEffect(() => {
+    const fetchAndShowLatestNotification = async () => {
+      try {
+        const response = await fetch("/api/notifications?unreadOnly=true&limit=1");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.notifications && data.notifications.length > 0) {
+            const latestNotification = data.notifications[0];
+            
+            // Only show toast if notification is unread
+            if (!latestNotification.read) {
+              // Map notification type to appropriate icon
+              const getNotificationIcon = (type: string) => {
+                switch (type) {
+                  case "low_stock":
+                    return <Package className="h-4 w-4" />;
+                  case "new_order":
+                    return <ShoppingCart className="h-4 w-4" />;
+                  default:
+                    return null;
+                }
+              };
+
+              // Show toast with notification content
+              toast(
+                (t) => (
+                  <div 
+                    className="flex items-start gap-3 p-2 cursor-pointer"
+                    onClick={() => {
+                      toast.dismiss(t.id);
+                    }}
+                  >
+                    <div className="p-1.5 rounded bg-[#ff6b00]/10">
+                      {getNotificationIcon(latestNotification.type)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-light text-black">{latestNotification.title}</p>
+                      <p className="text-xs text-gray-500 mt-0.5">{latestNotification.message}</p>
+                    </div>
+                  </div>
+                ),
+                {
+                  duration: 5000,
+                  position: "top-right",
+                  style: {
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "0",
+                  },
+                  className: "font-mono",
+                }
+              );
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching latest notification:", error);
+      }
+    };
+
+    // Check for latest notification every 30 seconds
+    const intervalId = setInterval(fetchAndShowLatestNotification, 30000);
+    
+    // Initial check when component mounts
+    fetchAndShowLatestNotification();
+    
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
   const iconMap: Record<string, React.ReactNode> = {
@@ -67,7 +164,6 @@ export default function NotificationsDropdown() {
               className={`px-4 py-3 rounded-none border border-gray-200 cursor-pointer transition-colors ${
                 n.read ? "bg-gray-50" : "bg-white"
               } hover:bg-gray-50`}
-              onClick={() => markAsRead(n._id)}
             >
               <div className="flex items-start gap-3">
                 <div className={`p-1.5 rounded ${n.read ? "bg-orange-50" : "bg-[#ff6b00]/10"}`}>
