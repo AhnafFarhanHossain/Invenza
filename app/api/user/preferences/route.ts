@@ -45,6 +45,7 @@ export async function PATCH(req: NextRequest) {
     const { preferences } = body;
 
     const updatedUserPreferences = await User.findByIdAndUpdate(
+      
       mongoUserId,
       { preferences },
       { new: true, runValidators: true }
