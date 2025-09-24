@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 // Zod schema for validation
 const productSchema = z.object({
@@ -82,7 +83,7 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     setValue,
     watch,
     reset,
@@ -102,9 +103,10 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
     },
   });
 
-  // State for image preview
+  // State for image preview and submission
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageError, setImageError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Live preview from URL field
   const imageUrl = watch("image");
@@ -118,6 +120,8 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
 
   // Final submit handler
   const onFormSubmit = async (data: ProductFormData) => {
+    setIsSubmitting(true);
+    
     try {
       // If parent provided a custom handler, use it
       if (onSubmit) {
@@ -129,32 +133,37 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
         console.log("Sending product data:", data);
         const res = await axios.post("/api/products", data);
         console.log("Product created successfully:", res.data);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        
+        // Show success toast
+        toast.success("Product created successfully!");
+        
+        // Reset form and redirect
+        reset();
+        router.push("/dashboard/products");
       } catch (err: any) {
         console.error("Failed to create product:", err);
+        
+        // Show error toast
+        let errorMessage = "Failed to create product";
         if (err.response) {
           console.error("Error response:", err.response.data);
           // Handle authentication errors
           if (err.response.status === 401) {
-            alert("Your session has expired. Please log in again.");
+            toast.error("Your session has expired. Please log in again.");
             router.push("/auth/signin");
             return;
           }
-          alert(
-            `Error: ${err.response.data.message || "Failed to create product"}`
-          );
-        } else {
-          alert("Network error: Failed to create product");
+          errorMessage = err.response.data.message || errorMessage;
+        } else if (err.request) {
+          errorMessage = "Network error: Unable to connect to server";
         }
-        return; // Don't reset form or redirect on error
+        
+        toast.error(errorMessage);
       }
-
-      // Optional: reset form & go back to list
-      reset();
-      router.push("/dashboard/products");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      alert(err.message || "Something went wrong");
+      toast.error(err.message || "Something went wrong");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -559,7 +568,17 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
             disabled={isSubmitting}
             className="flex-1 bg-orange-500 font-mono text-xs font-medium text-white hover:bg-orange-600 disabled:opacity-50"
           >
-            {isSubmitting ? "Creating Product..." : "Create Product"}
+            {isSubmitting ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Creating Product...
+              </>
+            ) : (
+              "Create Product"
+            )}
           </Button>
           <Button
             type="button"

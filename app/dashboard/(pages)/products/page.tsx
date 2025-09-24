@@ -5,6 +5,7 @@ import { useSearch } from "@/lib/context/SearchContext";
 import { filterProducts } from "@/lib/utils/search";
 import { useDebounce } from "@/hooks/useDebounce";
 import { cachedFetch } from "@/lib/utils/cache";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface Product {
   _id: string;
@@ -26,13 +27,26 @@ const Products = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const { searchQuery } = useSearch();
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
+  // Extract unique categories from products
+  const categories = useMemo(() => {
+    const uniqueCategories = [...new Set(products.map(product => product.category).filter(Boolean))];
+    return uniqueCategories;
+  }, [products]);
+
   // Memoize filtered products for better performance
   const filteredProducts = useMemo(() => {
-    return filterProducts(products, debouncedSearchQuery);
-  }, [products, debouncedSearchQuery]);
+    let filtered = filterProducts(products, debouncedSearchQuery);
+    
+    if (selectedCategory !== "all") {
+      filtered = filtered.filter(product => product.category === selectedCategory);
+    }
+    
+    return filtered;
+  }, [products, debouncedSearchQuery, selectedCategory]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -82,8 +96,24 @@ const Products = () => {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
         <h1 className="text-2xl font-light text-black tracking-wide">All Products</h1>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-500">Filter by category:</span>
+          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <SelectTrigger className="w-40 bg-white border border-soft-gray">
+              <SelectValue placeholder="All Categories"/>
+            </SelectTrigger>
+            <SelectContent className="bg-white border border-soft-gray">
+              <SelectItem value="all">All Categories</SelectItem>
+              {categories.map((category) => (
+                <SelectItem key={category} value={category} className="cursor-pointer">
+                  {category}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       {loading ? (
         <div 

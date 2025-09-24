@@ -4,45 +4,48 @@ import { Badge } from "@/components/ui/badge";
 
 interface StatusBadgeProps {
   status: "completed" | "pending" | "cancelled";
+  priority?: "low" | "medium" | "high";
 }
 
-export const StatusBadge = ({ status }: StatusBadgeProps) => {
+export const StatusBadge = ({ status, priority = "low" }: StatusBadgeProps) => {
   const statusConfig = {
     completed: {
       variant: "default",
       label: "Completed",
-      className:
-        "bg-gray-100 text-gray-700 border border-gray-300 rounded-none font-light text-xs",
+      className: "bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-none font-light text-xs",
+      dotColor: "bg-emerald-600",
     },
     pending: {
       variant: "secondary",
       label: "Pending",
-      className:
-        "bg-gray-100 text-gray-700 border border-gray-300 rounded-none font-light text-xs",
+      className: "bg-amber-50 text-amber-700 border border-amber-200 rounded-none font-light text-xs",
+      dotColor: "bg-amber-500",
     },
     cancelled: {
       variant: "destructive",
       label: "Cancelled",
-      className:
-        "bg-gray-100 text-gray-700 border border-gray-300 rounded-none font-light text-xs",
+      className: "bg-red-50 text-red-700 border border-red-200 rounded-none font-light text-xs",
+      dotColor: "bg-red-600",
     },
   };
 
+  const priorityConfig = {
+    low: "",
+    medium: "ring-1 ring-offset-1 ring-amber-300",
+    high: "ring-2 ring-offset-1 ring-red-400",
+  };
+
   const config = statusConfig[status];
+  const priorityClass = priorityConfig[priority];
 
   return (
-    <Badge variant="secondary" className={config.className}>
-      <div className="flex items-center gap-1">
-        {status === "completed" && (
-          <div className="w-1.5 h-1.5 rounded-none bg-gray-600"></div>
-        )}
-        {status === "pending" && (
-          <div className="w-1.5 h-1.5 rounded-none bg-gray-400"></div>
-        )}
-        {status === "cancelled" && (
-          <div className="w-1.5 h-1.5 rounded-none bg-gray-800"></div>
-        )}
+    <Badge variant="secondary" className={`${config.className} ${priorityClass}`}>
+      <div className="flex items-center gap-1.5">
+        <div className={`w-1.5 h-1.5 rounded-none ${config.dotColor}`}></div>
         {config.label}
+        {priority === "high" && status === "pending" && (
+          <span className="ml-1 text-xs">!</span>
+        )}
       </div>
     </Badge>
   );

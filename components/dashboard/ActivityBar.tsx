@@ -28,9 +28,11 @@ import { Badge } from "@/components/ui/badge";
 import { usePathname } from "next/navigation";
 import { useSearch } from "@/lib/context/SearchContext";
 import { useGlobalShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import SearchBar from "./ProductsSearchBar";
 import { Input } from "../ui/input";
 import NotificationsDropdown from "./NotificationDropdown";
+import { useRouter } from "next/navigation";
 
 interface ActivityBarProps {
   onSidebarToggle: () => void;
@@ -49,11 +51,62 @@ export function ActivityBar({
   const [userName, setUserName] = React.useState<string>("");
   const [userLoading, setUserLoading] = React.useState(true);
   const pathname = usePathname();
+  const router = useRouter();
   const { searchQuery, setSearchQuery } = useSearch();
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
   // Enable keyboard shortcuts
   useGlobalShortcuts(searchInputRef);
+
+  // Add keyboard shortcuts for navigation
+  useKeyboardShortcuts([
+    {
+      key: 'n',
+      action: () => {
+        if (onAddProduct) {
+          onAddProduct();
+        } else {
+          router.push("/dashboard/products/new");
+        }
+      },
+    },
+    {
+      key: 'o',
+      action: () => {
+        if (onAddOrder) {
+          onAddOrder();
+        } else {
+          router.push("/dashboard/orders/new");
+        }
+      },
+    },
+    {
+      key: 'p',
+      action: () => {
+        router.push("/dashboard/products");
+      },
+    },
+    {
+      key: 'r',
+      action: () => {
+        router.push("/dashboard/reports");
+      },
+    },
+    {
+      key: 's',
+      action: () => {
+        router.push("/dashboard/settings");
+      },
+    },
+    {
+      key: 'Escape',
+      action: () => {
+        if (document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur();
+        }
+      },
+    },
+  ]);
 
   const checkIfProductsPage = () => {
     return pathname.endsWith("/products");
