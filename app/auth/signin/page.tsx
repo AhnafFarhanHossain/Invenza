@@ -4,8 +4,8 @@ import { MoveLeft } from "lucide-react";
 
 export default function SignInPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen p-2">
-      <div className="absolute top-2 left-2">
+    <div className="flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8 w-full font-sans">
+      <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
         <Link
           href="/"
           className="text-sm font-medium text-muted-foreground flex items-center gap-1.5 px-3 py-1.5 rounded-none hover:bg-soft-gray transition"
@@ -14,7 +14,9 @@ export default function SignInPage() {
           Go back
         </Link>
       </div>
-      <LoginForm />
+      <div className="w-full max-w-md">
+        <LoginForm />
+      </div>
     </div>
   );
 }

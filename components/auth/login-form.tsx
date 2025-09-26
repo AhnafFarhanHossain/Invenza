@@ -145,16 +145,16 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Card className="w-[420px] bg-card/90 backdrop-blur-sm rounded-sm shadow-md border-2 border-gray-200">
-        <CardHeader className="space-y-3 px-8 pt-8 pb-2">
-          <CardTitle className="text-2xl font-medium">
+      <Card className="w-full bg-card/90 backdrop-blur-sm rounded-sm shadow-md border-2 border-gray-200">
+        <CardHeader className="space-y-3 px-6 sm:px-8 pt-6 sm:pt-8 pb-2">
+          <CardTitle className="text-xl sm:text-2xl font-medium">
             Welcome back 👋
           </CardTitle>
           <CardDescription className="text-sm text-muted-foreground">
             Sign in to your account
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-5 px-8 pb-8">
+        <CardContent className="space-y-5 px-6 sm:px-8 pb-6 sm:pb-8">
           <div className="space-y-1">
             <Input
               id="email"
