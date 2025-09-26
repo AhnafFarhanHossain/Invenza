@@ -10,11 +10,29 @@ interface KeyboardShortcut {
   preventDefault?: boolean;
 }
 
+// Check if the event target is an input element
+const isInputElement = (element: Element | null): boolean => {
+  if (!element) return false;
+  
+  const tagName = element.tagName.toLowerCase();
+  return (
+    tagName === 'input' ||
+    tagName === 'textarea' ||
+    tagName === 'select' ||
+    (element.getAttribute('contenteditable') === 'true')
+  );
+};
+
 export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[]) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Skip if event.key is undefined (can happen during autocomplete)
       if (!event.key) return;
+      
+      // Don't trigger shortcuts when typing in input fields
+      if (isInputElement(event.target as Element)) {
+        return;
+      }
       
       shortcuts.forEach(({ key, ctrlKey, shiftKey, altKey, metaKey, action, preventDefault = true }) => {
         // Skip if key is undefined
