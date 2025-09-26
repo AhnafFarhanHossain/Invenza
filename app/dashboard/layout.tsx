@@ -36,7 +36,7 @@ export default function DashboardLayout({
       localStorage.removeItem("userName");
       router.push("/auth/signin");
       toast.success("Logged out successfully");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error logging out", err);
       toast.error("Failed to logout");
     }

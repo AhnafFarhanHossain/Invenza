@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import axios from "axios";
@@ -51,11 +51,7 @@ export default function CustomerReport({ dateRange }: CustomerReportProps) {
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState("revenue");
 
-  useEffect(() => {
-    fetchCustomerData();
-  }, [dateRange, sortBy]);
-
-  const fetchCustomerData = async () => {
+  const fetchCustomerData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -78,7 +74,11 @@ export default function CustomerReport({ dateRange }: CustomerReportProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [dateRange, sortBy]);
+
+  useEffect(() => {
+    fetchCustomerData();
+  }, [fetchCustomerData]);
 
   if (loading) {
     return (

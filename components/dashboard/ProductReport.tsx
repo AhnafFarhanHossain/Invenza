@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import axios from "axios";
@@ -48,11 +48,7 @@ export default function ProductReport({ dateRange }: ProductReportProps) {
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState("revenue");
 
-  useEffect(() => {
-    fetchProductData();
-  }, [dateRange, sortBy]);
-
-  const fetchProductData = async () => {
+  const fetchProductData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -75,7 +71,11 @@ export default function ProductReport({ dateRange }: ProductReportProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [dateRange, sortBy]);
+
+  useEffect(() => {
+    fetchProductData();
+  }, [fetchProductData]);
 
   if (loading) {
     return (
@@ -162,7 +162,7 @@ export default function ProductReport({ dateRange }: ProductReportProps) {
           <div className="text-xs font-light tracking-wider text-gray-500">
             TOTAL ITEMS SOLD
           </div>
-          <div className="text-2xl font-mono font-light mt极狐1">
+          <div className="text-2xl font-mono font-light mt-1">
             {data.summary.totalItemsSold.toLocaleString()}
           </div>
         </div>

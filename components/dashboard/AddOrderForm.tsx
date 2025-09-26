@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { ShoppingCart, Plus, X } from "lucide-react";
@@ -140,17 +140,17 @@ const AddOrderForm = () => {
       } else {
         toast.error("Failed to create order.");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error creating order:", error);
 
       // Handle specific error messages from the API
-      if (error.response) {
+      if (error instanceof AxiosError && error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         const errorMessage =
           error.response.data?.message || "Failed to create order.";
         toast.error(errorMessage);
-      } else if (error.request) {
+      } else if (error instanceof AxiosError && error.request) {
         // The request was made but no response was received
         toast.error("No response from server. Please try again.");
       } else {

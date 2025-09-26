@@ -46,16 +46,6 @@ interface OrdersTableProps {
   orders: Order[];
 }
 
-// Map status to custom class names for a subtle, brand-tinted pill
-const statusClassMap: Record<string, string> = {
-  pending: "status-badge status-badge-pending",
-  processing: "status-badge status-badge-processing",
-  completed: "status-badge status-badge-completed",
-  cancelled: "status-badge status-badge-cancelled",
-  shipped: "status-badge status-badge-shipped",
-  delivered: "status-badge status-badge-completed",
-};
-
 export default function OrdersTable({ orders }: OrdersTableProps) {
   const router = useRouter();
 

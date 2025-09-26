@@ -120,9 +120,9 @@ export async function GET(req: NextRequest) {
     };
 
     return NextResponse.json(dashboardData, { status: 200 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { message: "Internal Server Error: " + error.message },
+      { message: "Internal Server Error: " + (error as Error).message },
       { status: 500 }
     );
   }

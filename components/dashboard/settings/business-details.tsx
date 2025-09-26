@@ -122,7 +122,7 @@ export default function BusinessSection() {
             </div>
             <h3 className="font-medium text-lg md:text-xl mb-3">No Business Information</h3>
             <p className="text-gray-500 text-sm font-mono mb-6 max-w-md mx-auto">
-              You haven't added any business details yet. Adding this information will help personalize your experience.
+              You haven&apos;t added any business details yet. Adding this information will help personalize your experience.
             </p>
             <Button onClick={() => setIsEditing(true)} className="px-6 py-2.5">
               Add Business Details

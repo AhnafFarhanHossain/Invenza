@@ -148,7 +148,7 @@ export default function DashboardPage() {
             </div>
             <div>
               <p className="text-[10px] sm:text-xs font-light text-gray-500 tracking-wider uppercase">
-                Today's Revenue
+                Today&apos;s Revenue
               </p>
               <p className="text-lg sm:text-xl font-light text-black font-mono mt-0.5 sm:mt-1">
                 ${stats.todayRevenue.toFixed(2)}
@@ -163,7 +163,7 @@ export default function DashboardPage() {
             </div>
             <div>
               <p className="text-[10px] sm:text-xs font-light text-gray-500 tracking-wider uppercase">
-                Today's Orders
+                Today&apos;s Orders
               </p>
               <p className="text-lg sm:text-xl font-light text-black font-mono mt-0.5 sm:mt-1">
                 {stats.todayOrders}

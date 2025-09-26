@@ -9,14 +9,11 @@ import {
   ChevronDown,
   Home,
   LogOut,
-  Package,
   PanelRightOpen,
   PlusSquare,
   Settings,
   ShoppingCart,
-  User,
   Users,
-  X,
 } from "lucide-react";
 import Image from "next/image";
 

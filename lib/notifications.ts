@@ -7,7 +7,7 @@ export class NotificationService {
     type: NotificationType;
     title: string;
     message: string;
-    metadata: Record<string, any>;
+    metadata: Record<string, unknown>;
   }) {
     return Notification.create(data);
   }

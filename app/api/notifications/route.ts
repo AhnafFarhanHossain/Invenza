@@ -24,9 +24,9 @@ export async function GET(req: NextRequest) {
       .limit(limit);
 
     return NextResponse.json({ notifications });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { message: "Error fetching Notifications from API: " + error.message },
+      { message: "Error fetching Notifications from API: " + (error as Error).message },
       { status: 500 }
     );
   }
@@ -44,9 +44,9 @@ export async function DELETE(req: NextRequest) {
     await Notification.deleteMany({ userId });
 
     return NextResponse.json({ message: "All notifications cleared" });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { message: "Error clearing notifications: " + error.message },
+      { message: "Error clearing notifications: " + (error as Error).message },
       { status: 500 }
     );
   }

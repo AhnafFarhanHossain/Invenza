@@ -126,9 +126,9 @@ export async function GET(request: NextRequest) {
     };
 
     return NextResponse.json(response);
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { message: "Failed to generate product report", error: error.message },
+      { message: "Failed to generate product report", error: (error as Error).message },
       { status: 500 }
     );
   }

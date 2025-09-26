@@ -33,9 +33,9 @@ export async function GET(req: NextRequest) {
       );
     }
     return NextResponse.json(customers);
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { message: "Failed to fetch customers " + error.message },
+      { message: "Failed to fetch customers " + (error as Error).message },
       { status: 500 }
     );
   }

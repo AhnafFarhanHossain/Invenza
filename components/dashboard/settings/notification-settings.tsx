@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Bell,
   AlertTriangle,
@@ -71,41 +71,6 @@ const NotificationSettings = () => {
     fetchPreferences();
   }, []);
 
-  // Check if there are unsaved changes
-  useEffect(() => {
-    const hasChanges =
-      preferences.lowStockNotifications !==
-        originalPreferences.lowStockNotifications ||
-      preferences.newOrderNotification !==
-        originalPreferences.newOrderNotification ||
-      preferences.outOfStockNotification !==
-        originalPreferences.outOfStockNotification;
-
-    setHasChanges(hasChanges);
-  }, [preferences, originalPreferences]);
-
-  // Keyboard shortcuts for save and reset
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      // Ctrl/Cmd + S to save
-      if ((event.ctrlKey || event.metaKey) && event.key === "s") {
-        event.preventDefault();
-        if (hasChanges && !saving) {
-          savePreferences();
-        }
-      }
-      // Escape to reset
-      if (event.key === "Escape") {
-        if (hasChanges && !saving) {
-          resetPreferences();
-        }
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [hasChanges, saving]);
-
   const handleToggle = (key: keyof NotificationPreferences) => {
     // Optimistic UI update
     const newPreferences = {
@@ -138,7 +103,7 @@ const NotificationSettings = () => {
     );
   };
 
-  const savePreferences = async () => {
+  const savePreferences = useCallback(async () => {
     try {
       setSaving(true);
       await axios.patch("/api/user/preferences", {
@@ -177,9 +142,9 @@ const NotificationSettings = () => {
     } finally {
       setSaving(false);
     }
-  };
+  }, [preferences, originalPreferences]);
 
-  const resetPreferences = () => {
+  const resetPreferences = useCallback(() => {
     setPreferences(originalPreferences);
     toast("Preferences reset to last saved values", {
       duration: 2000,
@@ -190,7 +155,43 @@ const NotificationSettings = () => {
       },
       className: "font-mono",
     });
-  };
+  }, [originalPreferences]);
+
+  // Check if there are unsaved changes
+  useEffect(() => {
+    const hasChanges =
+      preferences.lowStockNotifications !==
+        originalPreferences.lowStockNotifications ||
+      preferences.newOrderNotification !==
+        originalPreferences.newOrderNotification ||
+      preferences.outOfStockNotification !==
+        originalPreferences.outOfStockNotification;
+
+    setHasChanges(hasChanges);
+  }, [preferences, originalPreferences]);
+
+  // Keyboard shortcuts for save and reset
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Ctrl/Cmd + S to save
+      if ((event.ctrlKey || event.metaKey) && event.key === "s") {
+        event.preventDefault();
+        if (hasChanges && !saving) {
+          savePreferences();
+        }
+      }
+      // Escape to reset
+      if (event.key === "Escape") {
+        event.preventDefault();
+        if (hasChanges && !saving) {
+          resetPreferences();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [hasChanges, saving, savePreferences, resetPreferences]);
 
   if (loading) {
     return (

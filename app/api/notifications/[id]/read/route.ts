@@ -6,8 +6,9 @@ import mongoose from "mongoose";
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params;
   try {
     await dbConnect();
     const userId = await getUserIdFromRequest(req);
@@ -17,7 +18,7 @@ export async function PATCH(
     }
 
     const updated = await Notification.findOneAndUpdate(
-      { _id: new mongoose.Types.ObjectId(params.id), userId },
+      { _id: new mongoose.Types.ObjectId(id), userId },
       { read: true },
       { new: true }
     );
@@ -29,9 +30,9 @@ export async function PATCH(
       message: "Notification Status Updated Successfully",
       success: true,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { message: "Error updating notification: " + error.message },
+      { message: "Error updating notification: " + (error as Error).message },
       { status: 500 }
     );
   }

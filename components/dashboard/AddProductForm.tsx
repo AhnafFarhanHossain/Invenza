@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
 
 // Zod schema for validation
@@ -140,12 +140,12 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
         // Reset form and redirect
         reset();
         router.push("/dashboard/products");
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Failed to create product:", err);
         
         // Show error toast
         let errorMessage = "Failed to create product";
-        if (err.response) {
+        if (err instanceof AxiosError && err.response) {
           console.error("Error response:", err.response.data);
           // Handle authentication errors
           if (err.response.status === 401) {
@@ -154,14 +154,14 @@ export function AddProductForm({ onSubmit, onCancel }: AddProductFormProps) {
             return;
           }
           errorMessage = err.response.data.message || errorMessage;
-        } else if (err.request) {
+        } else if (err instanceof AxiosError && err.request) {
           errorMessage = "Network error: Unable to connect to server";
         }
         
         toast.error(errorMessage);
       }
-    } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
+    } catch (err: unknown) {
+      toast.error((err as Error).message || "Something went wrong");
     } finally {
       setIsSubmitting(false);
     }

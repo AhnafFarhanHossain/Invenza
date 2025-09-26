@@ -152,10 +152,10 @@ export async function GET(req: NextRequest) {
     };
 
     return NextResponse.json(response);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching customer report:", error);
     return NextResponse.json(
-      { message: "Error fetching customer report", error: error.message },
+      { message: "Error fetching customer report", error: (error as Error).message },
       { status: 500 }
     );
   }

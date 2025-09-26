@@ -19,10 +19,10 @@ export async function GET(request: Request) {
     }).limit(10);
     Product.createIndexes({ name: "text" });
     return NextResponse.json(results);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching search results: ", error);
     return NextResponse.json(
-      { message: "Error fetching search results: " + error.message },
+      { message: "Error fetching search results: " + (error as Error).message },
       { status: 500 }
     );
   }

@@ -1,7 +1,6 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrendingUp } from "lucide-react";
 
 interface SummaryCardProps {
   title: string;
@@ -19,7 +18,6 @@ export const SummaryCard = ({
   value,
   description,
   icon,
-  trend,
   className,
   iconBgColor,
   iconColor,

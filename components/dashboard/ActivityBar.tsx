@@ -3,17 +3,13 @@
 import React from "react";
 import Image from "next/image";
 import {
-  Bell,
   Menu,
-  Plus,
-  Search,
   User,
   LogOut,
   Settings,
   Calendar,
   ClipboardList,
   Package,
-  X,
 } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -24,13 +20,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import { usePathname } from "next/navigation";
-import { useSearch } from "@/lib/context/SearchContext";
 import { useGlobalShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
-import SearchBar from "./ProductsSearchBar";
-import { Input } from "../ui/input";
 import NotificationsDropdown from "./NotificationDropdown";
 import { useRouter } from "next/navigation";
 
@@ -50,9 +41,7 @@ export function ActivityBar({
   const [userEmail, setUserEmail] = React.useState<string>("");
   const [userName, setUserName] = React.useState<string>("");
   const [userLoading, setUserLoading] = React.useState(true);
-  const pathname = usePathname();
   const router = useRouter();
-  const { searchQuery, setSearchQuery } = useSearch();
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
   // Enable keyboard shortcuts
@@ -108,10 +97,6 @@ export function ActivityBar({
     },
   ]);
 
-  const checkIfProductsPage = () => {
-    return pathname.endsWith("/products");
-  };
-
   const fetchUserData = React.useCallback(async () => {
     try {
       setUserLoading(true);
@@ -156,10 +141,6 @@ export function ActivityBar({
       }
     }
   }, [fetchUserData]);
-
-  const clearSearch = () => {
-    setSearchQuery("");
-  };
 
   const handleAddProduct = () => {
     if (onAddProduct) {

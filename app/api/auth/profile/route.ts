@@ -16,10 +16,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       user: { id: user._id, name: user.name, email: user.email },
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { message: "Internal server error", error: error.message },
+      { message: "Internal server error", error: (error as Error).message },
       { status: 500 }
     );
   }
@@ -41,9 +40,9 @@ export async function PATCH(req: NextRequest) {
     await user.save();
 
     return NextResponse.json({ message: "Profile updated successfully" });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { message: "Internal server error", error: error.message },
+      { message: "Internal server error", error: (error as Error).message },
       { status: 500 }
     );
   }

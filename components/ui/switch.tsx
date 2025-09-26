@@ -55,10 +55,6 @@ const Switch = ({
 const Switcher = () => {
   const [isChecked, setIsChecked] = React.useState(false);
 
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
-
   return <Switch checked={isChecked} onCheckedChange={setIsChecked} />;
 };
 

@@ -37,8 +37,8 @@ export async function GET(req: NextRequest) {
       weightUnit: business.weightUnit,
       lowStockThreshold: business.lowStockThreshold,
     });
-  } catch (error: any) {
-    console.error("Error fetching business settings:", error.message);
+  } catch (error: unknown) {
+    console.error("Error fetching business settings:", (error as Error).message);
     return NextResponse.json(
       { error: "Failed to fetch business settings" },
       { status: 500 }
@@ -107,9 +107,9 @@ export async function PATCH(req: NextRequest) {
         lowStockThreshold: business.lowStockThreshold,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { message: "Error updating / creating business data: " + error.message },
+      { message: "Error updating / creating business data: " + (error as Error).message },
       { status: 500 }
     );
   }

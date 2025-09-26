@@ -1,11 +1,5 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { } from "@/components/ui/card";
 import OrdersTable, { Order } from "@/components/dashboard/OrdersTable";
 import { useEffect, useState } from "react";
 

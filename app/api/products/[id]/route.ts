@@ -6,11 +6,11 @@ import { NotificationService } from "@/lib/notifications";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     await dbConnect();
-    const { id } = await params;
+    const { id } = await context.params;
     const userId = await getUserIdFromRequest(req);
     const product = await Product.findOne({
       _id: id,
@@ -34,11 +34,11 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     await dbConnect();
-    const { id } = await params;
+    const { id } = await context.params;
     const body = await req.json();
     const userId = await getUserIdFromRequest(req);
     const product = await Product.findOneAndUpdate(
@@ -76,11 +76,11 @@ export async function PATCH(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     await dbConnect();
-    const { id } = await params;
+    const { id } = await context.params;
     const userId = await getUserIdFromRequest(req);
     const product = await Product.findOneAndDelete({
       _id: id,

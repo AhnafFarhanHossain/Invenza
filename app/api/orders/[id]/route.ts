@@ -6,14 +6,15 @@ import mongoose from "mongoose";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params;
   try {
     await dbConnect();
     const userId = await getUserIdFromRequest(req);
 
     // Convert the string ID from the URL to an ObjectId
-    const orderId = new mongoose.Types.ObjectId(params.id);
+    const orderId = new mongoose.Types.ObjectId(id);
 
     // Find the order. Crucial: check that it belongs to the user!
     const order = await Order.findOne({
@@ -27,8 +28,7 @@ export async function GET(
     }
 
     return NextResponse.json(order);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Single order fetch error:", error);
     return NextResponse.json(
       { message: "Failed to fetch order" },
@@ -39,8 +39,9 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params;
   try {
     await dbConnect();
     const userId = await getUserIdFromRequest(req);
@@ -51,7 +52,7 @@ export async function PATCH(
       return NextResponse.json({ message: "Invalid Status" }, { status: 400 });
     }
 
-    const orderId = new mongoose.Types.ObjectId(params.id);
+    const orderId = new mongoose.Types.ObjectId(id);
 
     const updatedOrder = await Order.findOneAndUpdate(
       {
@@ -67,10 +68,10 @@ export async function PATCH(
     }
 
     return NextResponse.json({ order: updatedOrder });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Order update error:", error);
     return NextResponse.json(
-      { message: "Failed to update order" + error.message },
+      { message: "Failed to update order" + (error as Error).message },
       { status: 500 }
     );
   }

@@ -19,11 +19,11 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json(userPreferences);
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
       {
         message:
-          "Internal Server Error - Fetching User Preferences: " + error.message,
+          "Internal Server Error - Fetching User Preferences: " + (error as Error).message,
       },
       { status: 500 }
     );
@@ -52,11 +52,11 @@ export async function PATCH(req: NextRequest) {
     ).select("preferences");
 
     return NextResponse.json(updatedUserPreferences);
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
       {
         message:
-          "Internal Server Error - Updating User Preferences: " + error.message,
+          "Internal Server Error - Updating User Preferences: " + (error as Error).message,
       },
       { status: 500 }
     );

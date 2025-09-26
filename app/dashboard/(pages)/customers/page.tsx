@@ -11,10 +11,16 @@ const CustomerPage = () => {
   const fetchCustomers = async () => {
     try {
       const response = await axios.get("/api/get-customers");
+
+      if (!response) {
+        setLoading(false);
+      }
       setCustomers(response.data);
       setLoading(false);
-    } catch (error) {
+    } catch (error: unknown) {
       setLoading(false);
+      // Error is caught but not displayed as the table handles empty state
+      console.log("Failed to fetch customers:", error);
     }
   };
 

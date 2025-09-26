@@ -91,10 +91,10 @@ export async function GET(req: NextRequest) {
     };
 
     return NextResponse.json(response);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Sales report error:", error);
     return NextResponse.json(
-      { message: "Failed to generate sales report", error: error.message },
+      { message: "Failed to generate sales report", error: (error as Error).message },
       { status: 500 }
     );
   }
