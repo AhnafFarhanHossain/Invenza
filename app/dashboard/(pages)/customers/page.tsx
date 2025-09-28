@@ -30,9 +30,12 @@ const CustomerPage = () => {
 
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-2xl font-light text-black tracking-wide mb-4">
-        Customers
-      </h1>
+      <div className="space-y-2 mb-6">
+          <h1 className="text-3xl font-bold text-black tracking-tight">
+            Customers
+          </h1>
+          <p className="text-sm lg:text-base text-dark-base">List of your customers who placed orders.</p>
+        </div>
       <CustomersTable customers={customers} loading={loading} />
     </div>
   );

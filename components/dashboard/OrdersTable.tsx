@@ -85,7 +85,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
 
   if (orders.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center rounded-xl border border-gray-200/60 bg-white">
+      <div className="flex flex-col items-center justify-center py-16 text-center rounded-none border border-gray-200/60 bg-white">
         <FileText className="h-12 w-12 text-muted-foreground mb-4" />
         <h3 className="text-xl font-semibold tracking-tight mb-2">
           No orders yet
@@ -200,7 +200,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
       </div>
 
       {/* Desktop Table Layout */}
-      <div className="hidden md:block rounded-lg overflow-auto">
+      <div className="hidden md:block rounded-none overflow-auto">
         <div className="overflow-x-auto">
           <Table className="bg-gray-50 min-w-[800px]">
             <TableHeader>

@@ -1,5 +1,5 @@
 "use client";
-import { } from "@/components/ui/card";
+import {} from "@/components/ui/card";
 import OrdersTable, { Order } from "@/components/dashboard/OrdersTable";
 import { useEffect, useState } from "react";
 
@@ -39,9 +39,14 @@ export default function OrdersPage() {
   if (loading) {
     return (
       <div className="p-4 space-y-4">
-        <h1 className="text-2xl font-light text-black tracking-wide mb-4">
-          Orders
-        </h1>
+        <div className="space-y-2 mb-6">
+          <h1 className="text-3xl font-bold text-black tracking-tight mb-4">
+            Orders
+          </h1>
+          <p className="text-sm lg:text-base text-dark-base">
+            List of all orders placed by customers.
+          </p>
+        </div>
         <div className="border border-gray-200 bg-white p-4 rounded-none">
           <div className="flex items-center justify-center py-8">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div>
@@ -53,9 +58,14 @@ export default function OrdersPage() {
 
   return (
     <div className="p-4 space-y-4 w-full">
-      <h1 className="text-2xl font-light text-black tracking-wide mb-4">
-        Orders
-      </h1>
+      <div className="space-y-2 mb-6">
+        <h1 className="text-3xl font-bold text-black tracking-tight">
+          Orders
+        </h1>
+        <p className="text-sm lg:text-base text-dark-base">
+          List of all orders placed by customers.
+        </p>
+      </div>
       <div className="bg-white rounded-none">
         <OrdersTable orders={orders} />
       </div>

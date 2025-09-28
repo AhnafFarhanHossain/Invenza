@@ -19,9 +19,14 @@ export default function ReportsPage() {
     : null;
 
   return (
-    <div className="space-y-4 w-full overflow-x-hidden">
+    <div className="space-y-4 w-full overflow-x-hidden p-2">
       <div>
-        <h2 className="text-2xl font-medium mb-8">Analytics Reports</h2>
+        <div className="space-y-2 mb-6">
+          <h1 className="text-3xl font-bold text-black tracking-tight">
+            Analytics and Reports
+          </h1>
+          <p className="text-sm lg:text-base text-dark-base">Overview of your sales, products, and customers.</p>
+        </div>
         <DateRangePicker onDateChange={setDateRange} />
       </div>
 
