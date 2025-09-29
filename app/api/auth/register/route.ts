@@ -47,6 +47,17 @@ export async function POST(req: NextRequest) {
       path: "/",
     });
 
+    // Send webhook to n8n
+    await fetch("https://n8n-6tqq.onrender.com/webhook-test/new-user", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: newUser.name,
+        email: newUser.email,
+        createdAt: newUser.createdAt,
+      }),
+    });
+
     return response;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
