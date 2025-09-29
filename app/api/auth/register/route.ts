@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     });
 
     // Send webhook to n8n
-    await fetch("https://n8n-6tqq.onrender.com/webhook-test/new-user", {
+    await fetch("https://n8n-6tqq.onrender.com/webhook/new-user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
