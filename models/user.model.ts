@@ -13,6 +13,12 @@ export const UserSchema = new mongoose.Schema(
         outOfStockNotification: true,
       },
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: String,
+    verificationTokenExpires: Date,
   },
   { timestamps: true }
 );

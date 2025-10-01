@@ -1,21 +1,38 @@
 import RegisterForm from "@/components/auth/register-form";
-import { MoveLeft } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function RegisterPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8 font-sans">
-      <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
-        <Link
-          href="/"
-          className="text-sm font-medium text-muted-foreground flex items-center gap-1.5 px-3 py-1.5 rounded-none hover:bg-soft-gray transition"
-        >
-          <MoveLeft className=" mr-1 h-4 w-4" />
-          Go back
-        </Link>
-      </div>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-md">
+        <div className="mb-8 text-center">
+          <Link href="/" className="inline-block">
+            <Image
+              src="/invenza-white.png"
+              alt="Invenza Logo"
+              width={150}
+              height={50}
+              priority
+            />
+          </Link>
+          <h1 className="mt-6 font-boldonse text-4xl font-bold text-gray-900">
+            Create Your Account
+          </h1>
+          <p className="mt-2 text-lg text-gray-600">
+            Join Invenza and streamline your inventory management.
+          </p>
+        </div>
         <RegisterForm />
+        <p className="mt-8 text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <Link
+            href="/auth/signin"
+            className="font-semibold text-primary hover:underline"
+          >
+            Sign In
+          </Link>
+        </p>
       </div>
     </div>
   );

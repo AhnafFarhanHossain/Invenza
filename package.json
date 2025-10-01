@@ -7,7 +7,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate": "tsx lib/scripts/add-verification-fields.script.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
@@ -24,6 +25,7 @@
     "@radix-ui/react-tabs": "^1.1.13",
     "@radix-ui/react-toggle": "^1.1.10",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@types/nodemailer": "^7.0.2",
     "@upstash/context7-mcp": "^1.0.17",
     "axios": "^1.11.0",
     "bcryptjs": "^3.0.2",
@@ -39,6 +41,7 @@
     "motion": "^12.23.12",
     "next": "15.4.5",
     "next-themes": "^0.4.6",
+    "nodemailer": "^7.0.6",
     "react": "19.1.0",
     "react-day-picker": "^9.9.0",
     "react-dom": "19.1.0",
