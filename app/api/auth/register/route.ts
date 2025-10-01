@@ -1,10 +1,10 @@
 import { dbConnect } from "@/lib/db/db";
 import User from "@/models/user.model";
 import bcrypt from "bcryptjs";
-import { SignJWT } from "jose";
 import { NextRequest, NextResponse } from "next/server";
-
-const JWT_SECRET = process.env.JWT_SECRET!;
+import crypto from "crypto";
+import { sendEmail } from "@/lib/utils/send-email";
+import { getVerificationEmailTemplate } from "@/lib/utils/email-templates";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,54 +12,58 @@ export async function POST(req: NextRequest) {
     const { name, email, password } = await req.json();
 
     const existingUser = await User.findOne({ email });
-    if (existingUser)
-      return NextResponse.json({ message: "User exists" }, { status: 400 });
+    if (existingUser) {
+      if (existingUser.isVerified) {
+        return NextResponse.json(
+          { message: "User already exists" },
+          { status: 400 }
+        );
+      } else {
+        // Resend verification email if user exists but is not verified
+        const verificationToken = crypto.randomBytes(32).toString("hex");
+        const verificationTokenExpires = new Date(Date.now() + 3600000); // 1 hour
+
+        existingUser.verificationToken = verificationToken;
+        existingUser.verificationTokenExpires = verificationTokenExpires;
+        await existingUser.save();
+
+        const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/verify?token=${verificationToken}`;
+        await sendEmail({
+          to: email,
+          subject: "Verify your email address",
+          html: getVerificationEmailTemplate(name, verificationLink),
+        });
+
+        return NextResponse.json(
+          { message: "Verification email sent" },
+          { status: 200 }
+        );
+      }
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+    const verificationTokenExpires = new Date(Date.now() + 3600000); // 1 hour
+
     const newUser = await User.create({
       name,
       email,
       password: hashedPassword,
+      verificationToken,
+      verificationTokenExpires,
     });
 
-    // Generate JWT with jose (Edge-compatible)
-    const secret = new TextEncoder().encode(JWT_SECRET);
-    const token = await new SignJWT({ id: newUser._id.toString() })
-      .setProtectedHeader({ alg: "HS256" })
-      .setExpirationTime("7d")
-      .sign(secret);
+    const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/verify?token=${verificationToken}`;
+    await sendEmail({
+      to: email,
+      subject: "Verify your email address",
+      html: getVerificationEmailTemplate(newUser.name, verificationLink),
+    });
 
-    // Create the response
-    const response = NextResponse.json(
-      {
-        user: { id: newUser._id, name: newUser.name, email: newUser.email },
-        message: "User created",
-      },
+    return NextResponse.json(
+      { message: "Verification email sent" },
       { status: 201 }
     );
-
-    // Set JWT in HTTP-only cookie
-    response.cookies.set("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 7 * 24 * 60 * 60, // 7 days
-      sameSite: "strict",
-      path: "/",
-    });
-
-    // Send webhook to n8n
-    await fetch("https://n8n-6tqq.onrender.com/webhook/new-user", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: newUser.name,
-        email: newUser.email,
-        createdAt: newUser.createdAt,
-      }),
-    });
-
-    return response;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return NextResponse.json(
       { message: "Internal server error", error: error.message },

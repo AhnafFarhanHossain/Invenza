@@ -23,6 +23,13 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       );
 
+    if (!user.isVerified) {
+      return NextResponse.json(
+        { message: "Please verify your email before logging in." },
+        { status: 403 }
+      );
+    }
+
     // Generate JWT with jose (Edge-compatible)
     const secret = new TextEncoder().encode(JWT_SECRET);
     const token = await new SignJWT({ id: user._id.toString() })
