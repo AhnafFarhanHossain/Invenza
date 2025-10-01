@@ -22,6 +22,7 @@ export default function VerificationFailure() {
       router.push(`/verification-sent?email=${email}`);
     } catch (err) {
       toast.error("Failed to resend verification email.");
+      console.log(err);
     } finally {
       setIsResending(false);
     }

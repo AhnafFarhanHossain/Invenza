@@ -25,7 +25,7 @@ export default function SignInPage() {
         </div>
         <LoginForm />
         <p className="mt-8 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             href="/auth/register"
             className="font-semibold text-primary hover:underline"

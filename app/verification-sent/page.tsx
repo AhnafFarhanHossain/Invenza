@@ -17,16 +17,16 @@ export default function VerificationSent() {
           Confirm Your Email
         </h1>
         <p className="mt-4 text-lg text-gray-600">
-          We've sent a verification link to your email address:
+          We&apos;ve sent a verification link to your email address:
         </p>
         <p className="mt-2 text-xl font-semibold text-primary">{email}</p>
         <p className="mt-6 text-base text-gray-500">
           Please check your inbox and click the link to activate your account.
-          If you don't see the email, please check your spam folder.
+          If you don&apos;t see the email, please check your spam folder.
         </p>
       </div>
       <p className="mt-8 text-sm text-gray-500">
-        Didn't receive the email?{" "}
+        Didn&apos;t receive the email?{" "}
         <a href="#" className="font-medium text-primary hover:underline">
           Resend verification link
         </a>

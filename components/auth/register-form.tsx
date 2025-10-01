@@ -79,8 +79,8 @@ export default function RegisterForm() {
       const response = await axios.post("/api/auth/register", formData);
       toast.success(response.data.message);
       router.push(`/verification-sent?email=${formData.email}`);
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Registration failed");
+    } catch (error: unknown) {
+      toast.error((error as Error).message || "Registration failed");
     } finally {
       setIsSubmitting(false);
     }

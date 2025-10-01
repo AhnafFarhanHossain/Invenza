@@ -1,5 +1,5 @@
-import { dbConnect } from "@/lib/db/db";
-import User from "@/models/user.model";
+import { dbConnect } from "../db/db";
+import User from "../../models/user.model";
 
 const addVerificationFields = async () => {
   await dbConnect();
