@@ -89,15 +89,15 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-2 md:p-4 space-y-3">
+    <div className="p-2 md:p-4 space-y-4">
       {/* Main Metrics - Responsive cards */}
-      <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         <SummaryCard
           title="Total Revenue"
           value={`$${stats.totalRevenue.toFixed(2)}`}
           icon={<TrendingUp className="w-4 h-4" />}
           description="All time revenue"
-          className="border border-gray-200 bg-gradient-to-br from-[#cc4400] via-[#ff6b00] to-[#ff8533] rounded-none text-white xl:col-span-1"
+          className="border border-gray-200 bg-gradient-to-br from-[#cc4400] via-[#ff6b00] to-[#ff8533] rounded-md text-white xl:col-span-1"
           iconBgColor="bg-white/20"
           iconColor="text-white"
         />
@@ -106,7 +106,7 @@ export default function DashboardPage() {
           value={stats.totalOrders}
           icon={<ShoppingCart className="w-4 h-4" />}
           description="All time orders"
-          className="border border-gray-200 bg-white rounded-none"
+          className="border border-gray-200 bg-white rounded-md"
           iconBgColor="bg-blue-50"
           iconColor="text-blue-600"
         />
@@ -115,7 +115,7 @@ export default function DashboardPage() {
           value={stats.totalProducts}
           icon={<Package className="w-4 h-4" />}
           description="Active products"
-          className="border border-gray-200 bg-white rounded-none"
+          className="border border-gray-200 bg-white rounded-md"
           iconBgColor="bg-purple-50"
           iconColor="text-purple-600"
         />
@@ -124,7 +124,7 @@ export default function DashboardPage() {
           value={stats.totalCustomers}
           icon={<Users className="w-4 h-4" />}
           description="Registered customers"
-          className="border border-gray-200 bg-white rounded-none lg:col-span-1 xl:col-span-1"
+          className="border border-gray-200 bg-white rounded-md lg:col-span-1 xl:col-span-1"
           iconBgColor="bg-indigo-50"
           iconColor="text-indigo-600"
         />
@@ -133,39 +133,39 @@ export default function DashboardPage() {
           value={stats.pendingOrders}
           icon={<Clock className="w-4 h-4" />}
           description="Pending orders"
-          className="border border-gray-200 bg-white rounded-none sm:col-span-2 lg:col-span-1 xl:col-span-1"
+          className="border border-gray-200 bg-white rounded-md sm:col-span-2 lg:col-span-1 xl:col-span-1"
           iconBgColor="bg-amber-50"
           iconColor="text-amber-600"
         />
       </div>
 
       {/* Today's Stats - Responsive layout */}
-      <div className="grid gap-2 grid-cols-1 sm:grid-cols-2">
-        <div className="p-3 sm:p-4 border border-gray-200 bg-white rounded-none">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 mb-4">
+        <div className="p-3 sm:p-4 border border-gray-200 bg-white rounded-lg shadow-sm hover:shadow transition-shadow duration-200">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-emerald-50 flex items-center justify-center rounded-none">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-emerald-50 flex items-center justify-center rounded">
               <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
             </div>
             <div>
-              <p className="text-[10px] sm:text-xs font-light text-gray-500 tracking-wider uppercase">
-                Today&apos;s Revenue
+              <p className="text-[10px] sm:text-xs font-light text-gray-600 tracking-wider uppercase">
+                Today's Revenue
               </p>
-              <p className="text-lg sm:text-xl font-light text-black font-mono mt-0.5 sm:mt-1">
+              <p className="text-lg sm:text-xl font-light text-gray-800 font-mono mt-0.5 sm:mt-1">
                 ${stats.todayRevenue.toFixed(2)}
               </p>
             </div>
           </div>
         </div>
-        <div className="p-3 sm:p-4 border border-gray-200 bg-white rounded-none">
+        <div className="p-3 sm:p-4 border border-gray-200 bg-white rounded-lg shadow-sm hover:shadow transition-shadow duration-200">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-50 flex items-center justify-center rounded-none">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-50 flex items-center justify-center rounded">
               <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" />
             </div>
             <div>
-              <p className="text-[10px] sm:text-xs font-light text-gray-500 tracking-wider uppercase">
-                Today&apos;s Orders
+              <p className="text-[10px] sm:text-xs font-light text-gray-600 tracking-wider uppercase">
+                Today's Orders
               </p>
-              <p className="text-lg sm:text-xl font-light text-black font-mono mt-0.5 sm:mt-1">
+              <p className="text-lg sm:text-xl font-light text-gray-800 font-mono mt-0.5 sm:mt-1">
                 {stats.todayOrders}
               </p>
             </div>
@@ -174,7 +174,7 @@ export default function DashboardPage() {
       </div>
       
       {/* Recent Orders and Low Stock - Responsive layout */}
-      <div className="grid gap-2 grid-cols-1 lg:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <RecentOrdersTable orders={stats.recentOrders} />
         </div>

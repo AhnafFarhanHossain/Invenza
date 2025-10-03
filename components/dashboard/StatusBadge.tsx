@@ -39,12 +39,12 @@ export const StatusBadge = ({ status, priority = "low" }: StatusBadgeProps) => {
   const priorityClass = priorityConfig[priority];
 
   return (
-    <Badge variant="secondary" className={`${config.className} ${priorityClass}`}>
+    <Badge variant="secondary" className={`${config.className} ${priorityClass} shadow-none hover:shadow-sm transition-shadow duration-200`}>
       <div className="flex items-center gap-1.5">
-        <div className={`w-1.5 h-1.5 rounded-none ${config.dotColor}`}></div>
-        {config.label}
+        <div className={`w-1.5 h-1.5 rounded-full ${config.dotColor}`}></div>
+        <span className="font-medium text-xs">{config.label}</span>
         {priority === "high" && status === "pending" && (
-          <span className="ml-1 text-xs">!</span>
+          <span className="ml-1 text-xs font-bold">!</span>
         )}
       </div>
     </Badge>
