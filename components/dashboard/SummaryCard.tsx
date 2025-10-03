@@ -27,30 +27,30 @@ export const SummaryCard = ({
   const hasLightBackground = className?.includes("bg-[var(--light-base)]");
 
   return (
-    <Card className={`shadow-none rounded-none border border-gray-200 ${className}`}>
+    <Card className={`shadow-sm hover:shadow-md transition-shadow duration-200 rounded-lg border border-gray-200 ${className}`}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 sm:pb-2">
         <CardTitle
           className={`text-[10px] sm:text-xs font-light uppercase tracking-wider ${
-            isDarkGradient ? "text-gray-200" : "text-gray-600"
+            isDarkGradient ? "text-gray-300" : "text-gray-600"
           }`}
         >
           {title}
         </CardTitle>
         <div
-          className={`p-1 sm:p-2 rounded-none ${
+          className={`p-1 sm:p-2 rounded ${
             iconBgColor ||
             (hasLightBackground
-              ? "bg-gray-100"
+              ? "bg-white"
               : isDarkGradient
               ? "bg-white/10"
-              : "bg-gray-100")
+              : "bg-white")
           } ${
             iconColor ||
             (hasLightBackground
-              ? "text-gray-800"
+              ? "text-gray-700"
               : isDarkGradient
               ? "text-gray-200"
-              : "text-gray-800")
+              : "text-gray-700")
           }`}
         >
           {icon}
@@ -60,10 +60,10 @@ export const SummaryCard = ({
         <div
           className={`text-2xl sm:text-4xl font-light font-mono tracking-tight ${
             hasLightBackground
-              ? "text-black"
+              ? "text-gray-800"
               : isDarkGradient
               ? "text-white"
-              : "text-black"
+              : "text-gray-800"
           }`}
         >
           {value}
