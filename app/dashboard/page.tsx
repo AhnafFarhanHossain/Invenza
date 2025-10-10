@@ -53,19 +53,19 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="p-6 space-y-6">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+      <div className="p-2 md:p-4 space-y-4">
+        <div className="grid gap-2 md:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           <SummaryCardSkeleton />
           <SummaryCardSkeleton />
           <SummaryCardSkeleton />
           <SummaryCardSkeleton />
           <SummaryCardSkeleton />
         </div>
-        <div className="grid grid-cols-2 h-24 gap-4">
-          <div className="px-6 py-3 bg-white border border-soft-gray col-span-1"></div>
-          <div className="px-6 py-3 bg-white border border-soft-gray col-span-1"></div>
+        <div className="grid gap-2 md:gap-4 grid-cols-1 sm:grid-cols-2">
+          <div className="p-2 sm:p-3 bg-white border border-gray-200 col-span-1"></div>
+          <div className="p-2 sm:p-3 bg-white border border-gray-200 col-span-1"></div>
         </div>
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-2 md:gap-4 grid-cols-1">
           <div className="lg:col-span-2">
             <RecentOrdersTableSkeleton />
           </div>
