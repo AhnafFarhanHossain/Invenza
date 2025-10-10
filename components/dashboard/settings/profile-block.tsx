@@ -144,11 +144,11 @@ const ProfileBlock = () => {
         </div>
       </div>
 
-      <div className="flex sm:flex-row items-center gap-2 w-full sm:w-auto mt-2">
+      <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto mt-2">
         <Button
           variant={"destructive"}
           onClick={() => handleSignOut()}
-          className="w-auto flex-1 justify-center px-3 md:px-4 py-2 text-sm"
+          className="flex-1 justify-center px-3 md:px-4 py-2 text-sm"
         >
           Sign Out
           <LogOut className="w-4 h-4 ml-2" />
@@ -173,7 +173,7 @@ const ProfileBlock = () => {
           <Button
             variant="outline"
             onClick={startEditing}
-            className="w-auto flex-1 px-3 md:px-4 py-2 text-sm text-left"
+            className="flex-1 px-3 md:px-4 py-2 text-sm text-left"
           >
             Edit Profile
           </Button>
