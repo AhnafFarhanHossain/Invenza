@@ -125,7 +125,7 @@ export default function BusinessSection() {
               No Business Information
             </h3>
             <p className="text-gray-500 text-xs md:text-sm font-mono mb-4 md:mb-6 max-w-md mx-auto">
-              You haven't added any business details yet. Adding this
+              You haven&apos;t added any business details yet. Adding this
               information will help personalize your experience.
             </p>
             <Button
