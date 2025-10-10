@@ -224,15 +224,15 @@ const NotificationSettings = () => {
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-none p-5 md:p-6">
+    <div className="bg-white border border-gray-200 rounded-none p-4 md:p-6">
       {/* Header Section */}
-      <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+      <div className="flex items-center justify-between mb-4 md:mb-6 pb-4 border-b border-gray-200">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-orange-50 flex items-center justify-center rounded-none">
-            <Bell className="w-5 h-5 md:w-6 md:h-6 text-orange-500" />
+          <div className="w-8 h-8 md:w-10 md:h-10 bg-orange-50 flex items-center justify-center rounded-none">
+            <Bell className="w-4 h-4 md:w-5 md:h-5 text-orange-500" />
           </div>
           <div>
-            <h3 className="font-medium text-lg md:text-xl">
+            <h3 className="font-medium text-base md:text-lg">
               Notification Settings
             </h3>
             <p className="text-xs text-gray-500 font-mono mt-0.5">
@@ -247,7 +247,7 @@ const NotificationSettings = () => {
         </div>
 
         {hasChanges && (
-          <div className="flex items-center gap-2 text-xs font-mono text-orange-600 bg-orange-50 px-3 py-1.5 rounded-none">
+          <div className="flex items-center gap-2 text-xs font-mono text-orange-600 bg-orange-50 px-2 md:px-3 py-1.5 rounded-none">
             <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
             Unsaved changes
           </div>
@@ -256,18 +256,18 @@ const NotificationSettings = () => {
 
       {/* Content Section */}
       <TooltipProvider>
-        <div className="space-y-4">
+        <div className="space-y-3 md:space-y-4">
           {/* Low Stock Notifications */}
-          <div className="bg-gray-50 rounded-none p-4 md:p-5">
+          <div className="bg-gray-50 rounded-none p-3 md:p-5">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-yellow-100 flex items-center justify-center rounded-none">
-                  <Package className="w-5 h-5 text-yellow-600" />
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="w-8 h-8 md:w-10 md:h-10 bg-yellow-100 flex items-center justify-center rounded-none">
+                  <Package className="w-4 h-4 md:w-5 md:h-5 text-yellow-600" />
                 </div>
                 <div className="flex-1">
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
-                      <h4 className="font-medium text-black text-base md:text-lg">
+                      <h4 className="font-medium text-black text-sm md:text-base">
                         Low Stock Alerts
                       </h4>
                       <Tooltip>
@@ -298,16 +298,16 @@ const NotificationSettings = () => {
           </div>
 
           {/* Out of Stock Notifications */}
-          <div className="bg-gray-50 rounded-none p-4 md:p-5">
+          <div className="bg-gray-50 rounded-none p-3 md:p-5">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-red-100 flex items-center justify-center rounded-none">
-                  <AlertTriangle className="w-5 h-5 text-red-600" />
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="w-8 h-8 md:w-10 md:h-10 bg-red-100 flex items-center justify-center rounded-none">
+                  <AlertTriangle className="w-4 h-4 md:w-5 md:h-5 text-red-600" />
                 </div>
                 <div className="flex-1">
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
-                      <h4 className="font-medium text-black text-base md:text-lg">
+                      <h4 className="font-medium text-black text-sm md:text-base">
                         Out of Stock Alerts
                       </h4>
                       <Tooltip>
@@ -338,16 +338,16 @@ const NotificationSettings = () => {
           </div>
 
           {/* New Order Notifications */}
-          <div className="bg-gray-50 rounded-none p-4 md:p-5">
+          <div className="bg-gray-50 rounded-none p-3 md:p-5">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-green-100 flex items-center justify-center rounded-none">
-                  <ShoppingCart className="w-5 h-5 text-green-600" />
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="w-8 h-8 md:w-10 md:h-10 bg-green-100 flex items-center justify-center rounded-none">
+                  <ShoppingCart className="w-4 h-4 md:w-5 md:h-5 text-green-600" />
                 </div>
                 <div className="flex-1">
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
-                      <h4 className="font-medium text-black text-base md:text-lg">
+                      <h4 className="font-medium text-black text-sm md:text-base">
                         New Order Alerts
                       </h4>
                       <Tooltip>
@@ -381,11 +381,11 @@ const NotificationSettings = () => {
 
       {/* Action Buttons */}
       {hasChanges && (
-        <div className="flex gap-3 pt-6 mt-6 border-t border-gray-200">
+        <div className="flex gap-2 md:gap-3 pt-4 md:pt-6 mt-4 md:mt-6 border-t border-gray-200">
           <Button
             onClick={savePreferences}
             disabled={saving}
-            className="px-5 py-2.5 text-sm"
+            className="px-4 md:px-5 py-2.5 text-sm"
           >
             {saving ? "Saving..." : "Save Preferences"}
           </Button>
@@ -393,7 +393,7 @@ const NotificationSettings = () => {
             variant="outline"
             onClick={resetPreferences}
             disabled={saving}
-            className="px-5 py-2.5 text-sm"
+            className="px-4 md:px-5 py-2.5 text-sm"
           >
             Reset Changes
           </Button>

@@ -42,24 +42,24 @@ const KeyboardShortcuts = () => {
   ];
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6">
-      <h2 className="font-mono text-base font-bold text-black mb-6">
+    <div className="bg-white border border-gray-200 rounded-lg p-4 md:p-6">
+      <h2 className="font-mono text-sm md:text-base font-bold text-black mb-4 md:mb-6">
         Keyboard Shortcuts
       </h2>
-      <div className="space-y-4">
+      <div className="space-y-3 md:space-y-4">
         {shortcuts.map((shortcut, index) => (
           <div
             key={index}
-            className="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors"
+            className="flex items-center gap-3 md:gap-4 p-3 md:p-4 hover:bg-gray-50 rounded-lg transition-colors"
           >
-            <div className="flex items-center justify-center w-24 h-10 bg-gray-100 border border-gray-200 rounded font-mono text-sm font-bold text-black">
+            <div className="flex items-center justify-center w-16 md:w-24 h-8 md:h-10 bg-gray-100 border border-gray-200 rounded font-mono text-xs md:text-sm font-bold text-black">
               {shortcut.key}
             </div>
             <div className="flex-1">
-              <p className="font-mono text-sm font-bold text-black">
+              <p className="font-mono text-xs md:text-sm font-bold text-black">
                 {shortcut.description}
               </p>
-              <p className="font-mono text-sm text-gray-600 mt-1">
+              <p className="font-mono text-xs md:text-sm text-gray-600 mt-1">
                 {shortcut.action}
               </p>
             </div>

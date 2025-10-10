@@ -1,4 +1,3 @@
-// components/settings/BusinessSection.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -85,26 +84,28 @@ export default function BusinessSection() {
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-none p-5 md:p-6">
+    <div className="bg-white border border-gray-200 rounded-none p-4 md:p-6">
       {/* Header Section */}
-      <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+      <div className="flex items-center justify-between mb-4 md:mb-6 pb-4 border-b border-gray-200">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-orange-50 flex items-center justify-center rounded-none">
-            <Building2 className="w-5 h-5 md:w-6 md:h-6 text-orange-500" />
+          <div className="w-8 h-8 md:w-10 md:h-10 bg-orange-50 flex items-center justify-center rounded-none">
+            <Building2 className="w-4 h-4 md:w-5 md:h-5 text-orange-500" />
           </div>
           <div>
-            <h3 className="font-medium text-lg md:text-xl">Business Information</h3>
+            <h3 className="font-medium text-base md:text-lg">
+              Business Information
+            </h3>
             <p className="text-xs text-gray-500 font-mono mt-0.5">
               Manage your business profile and settings
             </p>
           </div>
         </div>
-        
+
         {!isEditing && data.exists && (
           <Button
             onClick={() => setIsEditing(true)}
             variant="outline"
-            className="px-4 py-2 text-sm"
+            className="px-3 md:px-4 py-2 text-sm"
           >
             <Pencil className="w-4 h-4 mr-2" />
             Edit Details
@@ -113,80 +114,86 @@ export default function BusinessSection() {
       </div>
 
       {/* Content Section */}
-      <div className="space-y-6">
+      <div className="space-y-4 md:space-y-6">
         {!isEditing && !data.exists ? (
           // Empty state - no business details yet
-          <div className="text-center py-10">
-            <div className="mx-auto w-16 h-16 bg-orange-50 flex items-center justify-center rounded-none mb-6">
-              <Building2 className="w-8 h-8 text-orange-500" />
+          <div className="text-center py-8 md:py-10">
+            <div className="mx-auto w-12 h-12 md:w-16 md:h-16 bg-orange-50 flex items-center justify-center rounded-none mb-4 md:mb-6">
+              <Building2 className="w-6 h-6 md:w-8 md:h-8 text-orange-500" />
             </div>
-            <h3 className="font-medium text-lg md:text-xl mb-3">No Business Information</h3>
-            <p className="text-gray-500 text-sm font-mono mb-6 max-w-md mx-auto">
-              You haven&apos;t added any business details yet. Adding this information will help personalize your experience.
+            <h3 className="font-medium text-base md:text-lg mb-3">
+              No Business Information
+            </h3>
+            <p className="text-gray-500 text-xs md:text-sm font-mono mb-4 md:mb-6 max-w-md mx-auto">
+              You haven&apos;t added any business details yet. Adding this
+              information will help personalize your experience.
             </p>
-            <Button onClick={() => setIsEditing(true)} className="px-6 py-2.5">
+            <Button
+              onClick={() => setIsEditing(true)}
+              className="px-4 md:px-6 py-2.5 text-sm"
+            >
               Add Business Details
             </Button>
           </div>
         ) : !isEditing ? (
           // Display mode - business details exist
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div className="bg-gray-50 rounded-none p-4 md:p-5">
+          <div className="space-y-3 md:space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
+              <div className="bg-gray-50 rounded-none p-3 md:p-5">
                 <div className="flex flex-col gap-1">
                   <Label className="text-xs text-gray-500 uppercase tracking-wider font-light">
                     Business Name
                   </Label>
-                  <p className="font-medium text-black text-base md:text-lg">
+                  <p className="font-medium text-black text-sm md:text-base ">
                     {data.businessName || "Not set"}
                   </p>
                 </div>
               </div>
-              
-              <div className="bg-gray-50 rounded-none p-4 md:p-5">
+
+              <div className="bg-gray-50 rounded-none p-3 md:p-5">
                 <div className="flex flex-col gap-1">
                   <Label className="text-xs text-gray-500 uppercase tracking-wider font-light">
                     Currency
                   </Label>
-                  <p className="font-medium text-black text-base md:text-lg">
+                  <p className="font-medium text-black text-sm md:text-base ">
                     {data.currency}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-gray-50 rounded-none p-4 md:p-5">
+            <div className="bg-gray-50 rounded-none p-3 md:p-5">
               <div className="flex flex-col gap-1">
                 <Label className="text-xs text-gray-500 uppercase tracking-wider font-light">
                   Address
                 </Label>
-                <p className="font-medium text-black text-base md:text-lg">
+                <p className="font-medium text-black text-sm md:text-base ">
                   {data.address || "Not provided"}
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
               {data.phone && (
-                <div className="bg-gray-50 rounded-none p-4 md:p-5">
+                <div className="bg-gray-50 rounded-none p-3 md:p-5">
                   <div className="flex flex-col gap-1">
                     <Label className="text-xs text-gray-500 uppercase tracking-wider font-light">
                       Phone
                     </Label>
-                    <p className="font-medium text-black text-base md:text-lg">
+                    <p className="font-medium text-black text-sm md:text-base ">
                       {data.phone}
                     </p>
                   </div>
                 </div>
               )}
-              
+
               {data.email && (
-                <div className="bg-gray-50 rounded-none p-4 md:p-5">
+                <div className="bg-gray-50 rounded-none p-3 md:p-5">
                   <div className="flex flex-col gap-1">
                     <Label className="text-xs text-gray-500 uppercase tracking-wider font-light">
                       Email
                     </Label>
-                    <p className="font-medium text-black text-base md:text-lg">
+                    <p className="font-medium text-black text-sm md:text-base ">
                       {data.email}
                     </p>
                   </div>
@@ -196,20 +203,25 @@ export default function BusinessSection() {
           </div>
         ) : (
           // Edit mode
-          <div className="space-y-6">
-            <div className="bg-orange-50 rounded-none p-4 md:p-5">
+          <div className="space-y-4 md:space-y-6">
+            <div className="bg-orange-50 rounded-none p-3 md:p-5">
               <div className="flex items-center gap-3">
-                <Building2 className="w-5 h-5 text-orange-500" />
-                <h3 className="font-medium text-lg md:text-xl">Edit Business Information</h3>
+                <Building2 className="w-4 h-4 md:w-5 md:h-5 text-orange-500" />
+                <h3 className="font-medium text-base md:text-lg">
+                  Edit Business Information
+                </h3>
               </div>
               <p className="text-xs text-gray-500 font-mono mt-1">
                 Update your business details below
               </p>
             </div>
-            
-            <div className="grid grid-cols-1 gap-5 md:gap-6">
+
+            <div className="grid grid-cols-1 gap-4 md:gap-6">
               <div className="space-y-2">
-                <Label htmlFor="businessName" className="text-xs text-gray-500 uppercase tracking-wider font-light">
+                <Label
+                  htmlFor="businessName"
+                  className="text-xs text-gray-500 uppercase tracking-wider font-light"
+                >
                   Business Name
                 </Label>
                 <Input
@@ -219,12 +231,15 @@ export default function BusinessSection() {
                     setFormData({ ...formData, businessName: e.target.value })
                   }
                   placeholder="Your business name"
-                  className="border border-gray-200 rounded-none focus:outline-none focus:ring-1 focus:ring-orange-500 font-light"
+                  className="border border-gray-200 rounded-none focus:outline-none focus:ring-1 focus:ring-orange-500 font-light text-sm md:text-base"
                 />
               </div>
-              
+
               <div className="space-y-2">
-                <Label htmlFor="currency" className="text-xs text-gray-500 uppercase tracking-wider font-light">
+                <Label
+                  htmlFor="currency"
+                  className="text-xs text-gray-500 uppercase tracking-wider font-light"
+                >
                   Currency
                 </Label>
                 <Select
@@ -233,7 +248,7 @@ export default function BusinessSection() {
                     setFormData({ ...formData, currency: value })
                   }
                 >
-                  <SelectTrigger className="border border-gray-200 rounded-none focus:outline-none focus:ring-1 focus:ring-orange-500 font-light">
+                  <SelectTrigger className="border border-gray-200 rounded-none focus:outline-none focus:ring-1 focus:ring-orange-500 font-light text-sm md:text-base">
                     <SelectValue placeholder="Select currency" />
                   </SelectTrigger>
                   <SelectContent>
@@ -247,7 +262,10 @@ export default function BusinessSection() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="address" className="text-xs text-gray-500 uppercase tracking-wider font-light">
+                <Label
+                  htmlFor="address"
+                  className="text-xs text-gray-500 uppercase tracking-wider font-light"
+                >
                   Address (Optional)
                 </Label>
                 <textarea
@@ -258,13 +276,16 @@ export default function BusinessSection() {
                   }
                   placeholder="Business address"
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-none focus:outline-none focus:ring-1 focus:ring-orange-500 font-light resize-none"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-none focus:outline-none focus:ring-1 focus:ring-orange-500 font-light resize-none text-sm md:text-base"
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-xs text-gray-500 uppercase tracking-wider font-light">
+                  <Label
+                    htmlFor="phone"
+                    className="text-xs text-gray-500 uppercase tracking-wider font-light"
+                  >
                     Phone (Optional)
                   </Label>
                   <Input
@@ -274,11 +295,14 @@ export default function BusinessSection() {
                       setFormData({ ...formData, phone: e.target.value })
                     }
                     placeholder="Phone number"
-                    className="border border-gray-200 rounded-none focus:outline-none focus:ring-1 focus:ring-orange-500 font-light"
+                    className="border border-gray-200 rounded-none focus:outline-none focus:ring-1 focus:ring-orange-500 font-light text-sm md:text-base"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-xs text-gray-500 uppercase tracking-wider font-light">
+                  <Label
+                    htmlFor="email"
+                    className="text-xs text-gray-500 uppercase tracking-wider font-light"
+                  >
                     Email (Optional)
                   </Label>
                   <Input
@@ -289,16 +313,23 @@ export default function BusinessSection() {
                       setFormData({ ...formData, email: e.target.value })
                     }
                     placeholder="Business email"
-                    className="border border-gray-200 rounded-none focus:outline-none focus:ring-1 focus:ring-orange-500 font-light"
+                    className="border border-gray-200 rounded-none focus:outline-none focus:ring-1 focus:ring-orange-500 font-light text-sm md:text-base"
                   />
                 </div>
               </div>
 
-              <div className="flex gap-3 pt-4">
-                <Button onClick={handleSave} className="px-5 py-2.5 text-sm">
+              <div className="flex gap-2 md:gap-3 pt-2 md:pt-4">
+                <Button
+                  onClick={handleSave}
+                  className="px-4 md:px-5 py-2.5 text-sm"
+                >
                   Save Details
                 </Button>
-                <Button variant="outline" onClick={handleCancel} className="px-5 py-2.5 text-sm">
+                <Button
+                  variant="outline"
+                  onClick={handleCancel}
+                  className="px-4 md:px-5 py-2.5 text-sm"
+                >
                   Cancel
                 </Button>
               </div>
